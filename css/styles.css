@@ -1,8 +1,22 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/Poppins-ExtraLight.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Glacial';
+    src: url('fonts/GlacialIndifference-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #f4f4f4;
     color: #0d0d0d;
     display: flex;
@@ -112,7 +126,7 @@ footer {
 .form-group textarea {
     resize: vertical;
     min-height: 60px;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .form-group textarea#descripcion {
