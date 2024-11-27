@@ -12,42 +12,8 @@ $user_id = $_SESSION['user_id'];
 
 $conn = OpenCon();
 
-// Procesar la imagen recortada
-if (isset($_POST['croppedImage']) && !empty($_POST['croppedImage'])) {
-    $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $_POST['croppedImage']));
-    
-    $sql = "UPDATE infousuarios SET fotoPerfil = ? WHERE user_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $imageData, $user_id);
-    
-    if ($stmt->execute()) {
-        $message = "Foto de perfil actualizada correctamente";
-    } else {
-        $success = false;
-        $message = "Error al actualizar la foto de perfil";
-    }
-    
-    $stmt->close();
-    
-    // Responder con JSON para la actualización de imagen
-    header('Content-Type: application/json');
-    echo json_encode([
-        'success' => $success,
-        'message' => $message
-    ]);
-    exit();
-}
-
-// Después de obtener el user_id
-$sqlPlaza = "SELECT * FROM plazas_comerciales WHERE user_id = ?";
-$stmt = $conn->prepare($sqlPlaza);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$resultPlaza = $stmt->get_result();
-$plazaData = $resultPlaza->fetch_assoc();
-
-// Obtener información del usuario desde la tabla infousuarios
-$sql = "SELECT infousuarios.*, usuarios.email, usuarios.nombreUsuario  FROM infousuarios JOIN usuarios ON infousuarios.user_id = usuarios.id WHERE infousuarios.user_id = ?";
+// Obtener información de la plaza comercial
+$sql = "SELECT * FROM plazas_comerciales WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -55,23 +21,30 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $fotoPerfilSrc = isset($row['fotoPerfil']) ? 'data:image/jpeg;base64,' . base64_encode($row['fotoPerfil']) : 'img/noUserPhoto.png';
-    $email = isset($row['email']) ? $row['email'] : '';
-    $numeroTelefono = isset($row['numeroTelefono']) ? $row['numeroTelefono'] : '';
-    $nombreUsuario = isset($row['nombreUsuario']) ? $row['nombreUsuario'] : ''; 
+    $logoPlazaSrc = isset($row['logo']) ? 'data:image/jpeg;base64,' . base64_encode($row['logo']) : 'img/noLogo.png';
     $nombre = isset($row['nombre']) ? $row['nombre'] : '';
-    $apellidos = isset($row['apellidos']) ? $row['apellidos'] : '';
-    $fechaNacimiento = isset($row['fechaNacimiento']) ? $row['fechaNacimiento'] : '';
-    $genero = isset($row['genero']) ? $row['genero'] : '';
+    $categoria = isset($row['categoria']) ? $row['categoria'] : '';
+    $direccion = isset($row['direccion']) ? $row['direccion'] : '';
+    $telefono = isset($row['telefono']) ? $row['telefono'] : '';
+    $horarioApertura = isset($row['horarioApertura']) ? $row['horarioApertura'] : '';
+    $horarioCierre = isset($row['horarioCierre']) ? $row['horarioCierre'] : '';
+    $sitioWeb = isset($row['sitioWeb']) ? $row['sitioWeb'] : '';
+    $facebook = isset($row['facebook']) ? $row['facebook'] : '';
+    $instagram = isset($row['instagram']) ? $row['instagram'] : '';
+    $descripcion = isset($row['descripcion']) ? $row['descripcion'] : '';
 } else {
-    // Si no se encuentran datos del usuario, inicializa las variables con valores predeterminados
-    $fotoPerfilSrc = 'img/noUserPhoto.png';
-    $email = '';
-    $numeroTelefono = '';
+    // Inicializar variables con valores predeterminados si no se encuentran datos
+    $logoPlazaSrc = 'img/noLogo.png';
     $nombre = '';
-    $apellidos = '';
-    $fechaNacimiento = '';
-    $genero = '';
+    $categoria = '';
+    $direccion = '';
+    $telefono = '';
+    $horarioApertura = '';
+    $horarioCierre = '';
+    $sitioWeb = '';
+    $facebook = '';
+    $instagram = '';
+    $descripcion = '';
 }
 
 $stmt->close();
@@ -83,7 +56,7 @@ CloseCon($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiosk Dashboard</title>
+    <title>Manage Plaza</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/fontAwesome/all.min.css">
     <link rel="stylesheet" href="libs/cropperjs/cropper.min.css">
@@ -118,8 +91,8 @@ CloseCon($conn);
                 <h2>Dashboard</h2>
             </div>
             <ul>
-            <li><a href="/userInfo.php" data-section="user-info">User Info</a></li>
-                <li><a href="#" data-section="manage-plaza" class="active">Manage Plaza</a></li>
+                <li><a href="userInfo.php" data-section="user-info">User Info</a></li>
+                <li><a href="managePlaza.php" data-section="manage-plaza" class="active">Manage Plaza</a></li>
                 <li><a href="#" data-section="kiosk-react">Kiosk React</a></li>
                 <li><a href="#" data-section="kiosk-ui">Kiosk UI</a></li>
                 <li><a href="#" data-section="oak-labs">Oak Labs</a></li>
@@ -129,101 +102,72 @@ CloseCon($conn);
             <a href="backend/logout.php" class="logout-button">
                 <i class="fas fa-sign-out-alt logout-icon"></i>
                 Logout
-            </a>
+            </a> 
         </div>
         </aside>
         <main class="main-content">
-                <h1>Administrar Plaza Comercial</h1>
-                <form id="plaza-form" action="backend/update_plaza_info.php" method="POST" enctype="multipart/form-data">
-                    <div class="plaza-info">
-                        <div class="form-group">
-                            <label for="logoPlaza">Logo de la Plaza:</label>
-                            <img src="<?php 
-                                echo isset($plazaData['logo']) ? 
-                                    'data:image/jpeg;base64,' . base64_encode($plazaData['logo']) : 
-                                    'img/noPlazaLogo.png'; 
-                            ?>" alt="Logo Plaza" class="profile-pic" id="plaza-logo">
-                            <input type="file" id="logoInput" name="logoPlaza" style="display: none;" 
-                                accept="image/*" onchange="loadLogo(event)">
-                            <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoInput').click();"></i>
-                        </div>
-                        <div class="form-group" id="crop-container-logo" style="display: none;">
-                            <label for="cropper-logo">Redimensionar Logo:</label>
-                            <div class="cropper-wrapper">
-                                <img id="cropper-logo" style="max-width: 100%;">
-                            </div>
-                            <button type="button" class="btn-crop" onclick="cropLogo()">Recortar y Guardar</button>
-                        </div>
-                        <input type="hidden" id="croppedLogo" name="croppedLogo">
-                        <div class="form-group">
-                            <label for="nombrePlaza">Nombre de la Plaza:</label>
-                            <input type="text" id="nombrePlaza" name="nombrePlaza" 
-                                value="<?php echo isset($plazaData['nombre']) ? $plazaData['nombre'] : ''; ?>" readonly>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('nombrePlaza');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="categoria">Categoría:</label>
-                            <select id="categoria" name="categoria" disabled>
-                                <option value="shopping">Centro Comercial</option>
-                                <option value="strip">Plaza Strip</option>
-                                <option value="lifestyle">Centro de Estilo de Vida</option>
-                                <option value="outlet">Outlets</option>
-                            </select>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('categoria');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="direccion">Dirección:</label>
-                            <textarea id="direccion" name="direccion" readonly rows="3"><?php echo isset($plazaData['direccion']) ? $plazaData['direccion'] : ''; ?></textarea>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('direccion');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="telefono">Teléfono:</label>
-                            <input type="tel" id="telefono" name="telefono" 
-                                value="<?php echo isset($plazaData['telefono']) ? $plazaData['telefono'] : ''; ?>" readonly>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('telefono');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="horarioApertura">Horario de Apertura:</label>
-                            <input type="time" id="horarioApertura" name="horarioApertura" 
-                                value="<?php echo isset($plazaData['horarioApertura']) ? $plazaData['horarioApertura'] : ''; ?>" readonly>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('horarioApertura');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="horarioCierre">Horario de Cierre:</label>
-                            <input type="time" id="horarioCierre" name="horarioCierre" 
-                                value="<?php echo isset($plazaData['horarioCierre']) ? $plazaData['horarioCierre'] : ''; ?>" readonly>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('horarioCierre');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="sitioWeb">Sitio Web:</label>
-                            <input type="url" id="sitioWeb" name="sitioWeb" 
-                                value="<?php echo isset($plazaData['sitioWeb']) ? $plazaData['sitioWeb'] : ''; ?>" readonly>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('sitioWeb');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="facebook">Facebook:</label>
-                            <input type="url" id="facebook" name="facebook" 
-                                value="<?php echo isset($plazaData['facebook']) ? $plazaData['facebook'] : ''; ?>" readonly>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('facebook');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="instagram">Instagram:</label>
-                            <input type="url" id="instagram" name="instagram" 
-                                value="<?php echo isset($plazaData['instagram']) ? $plazaData['instagram'] : ''; ?>" readonly>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('instagram');"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcion">Descripción:</label>
-                            <textarea id="descripcion" name="descripcion" readonly rows="4"><?php echo isset($plazaData['descripcion']) ? $plazaData['descripcion'] : ''; ?></textarea>
-                            <i class="fas fa-edit edit-icon" onclick="enableEdit('descripcion');"></i>
-                        </div>
-                        <button type="submit" class="btn-save" style="display: none;">Guardar Cambios</button>
+                <h1>Manage Plaza</h1>
+                <form id="plaza-info-form" action="backend/update_plaza_info.php" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="logoPlaza">Logo de la plaza:</label>
+                        <img src="<?php echo $logoPlazaSrc; ?>" alt="Logo de la plaza" class="profile-pic" id="logo-plaza">
+                        <input type="file" id="logoPlaza" name="logoPlaza" style="display: none;" accept="image/*" onchange="loadImage(event)">
+                        <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoPlaza').click();"></i>
                     </div>
+                    <div class="form-group" id="crop-container" style="display: none;">
+                        <label for="cropper">Redimensionar Logo:</label>
+                        <div class="cropper-wrapper">
+                            <img id="cropper" style="max-width: 100%;">
+                        </div>
+                        <button type="button" class="btn-crop" onclick="cropImage()">Recortar y Guardar</button>
+                    </div>
+                    <input type="hidden" id="croppedImage" name="croppedImage">
+                
+                    <div class="form-group">
+                        <label for="nombre">Nombre de la plaza:</label>
+                        <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoria">Categoría:</label>
+                        <input type="text" id="categoria" name="categoria" value="<?php echo $categoria; ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion">Dirección:</label>
+                        <textarea id="direccion" name="direccion" required><?php echo $direccion; ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono:</label>
+                        <input type="text" id="telefono" name="telefono" value="<?php echo $telefono; ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="horarioApertura">Horario de Apertura:</label>
+                        <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo $horarioApertura; ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="horarioCierre">Horario de Cierre:</label>
+                        <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo $horarioCierre; ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sitioWeb">Sitio Web:</label>
+                        <input type="text" id="sitioWeb" name="sitioWeb" value="<?php echo $sitioWeb; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook">Facebook:</label>
+                        <input type="text" id="facebook" name="facebook" value="<?php echo $facebook; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="instagram">Instagram:</label>
+                        <input type="text" id="instagram" name="instagram" value="<?php echo $instagram; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" required><?php echo $descripcion; ?></textarea>
+                    </div>
+                    <button type="submit" class="btn-save">Guardar</button>
                 </form>
         </main>
     </div>
     <script src="libs/cropperjs/cropper.min.js"></script>
-    <script src="js/home.js"></script>
+    <script src="js/managePlaza.js"></script>
 </body>
 </html>
-

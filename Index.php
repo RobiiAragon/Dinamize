@@ -19,7 +19,7 @@ session_start();
         </div>
         <div class="auth-buttons">
         <?php if(isset($_SESSION['user_id'])): ?>
-        <a href="home.php" class="user-profile">
+        <a href="userInfo.php" class="user-profile">
         <?php
         // Verificar si existe fotoPerfil en la sesión
         if (isset($_SESSION['fotoPerfil']) && $_SESSION['fotoPerfil'] !== null) {

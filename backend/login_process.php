@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['fotoPerfil'] = $row['fotoPerfil'];
         }
         
-        header("Location: ../home.php");
+        header("Location: ../userInfo.php");
     } else {
         $_SESSION['error'] = "Correo electrónico o contraseña incorrectos.";
         header("Location: login.php");
