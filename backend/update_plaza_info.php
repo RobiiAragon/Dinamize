@@ -16,11 +16,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $conn = OpenCon();
 
+    // Verificar si ya existe un registro para el user_id
+    $sql_check = "SELECT * FROM plazas_comerciales WHERE user_id = ?";
+    $stmt_check = $conn->prepare($sql_check);
+    $stmt_check->bind_param("i", $user_id);
+    $stmt_check->execute();
+    $result_check = $stmt_check->get_result();
+    $exists = $result_check->num_rows > 0;
+    $stmt_check->close();
+
     // Procesar la imagen recortada
     if (isset($_POST['croppedImage']) && !empty($_POST['croppedImage'])) {
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $_POST['croppedImage']));
         
-        $sql = "UPDATE plazas_comerciales SET logo = ? WHERE user_id = ?";
+        if ($exists) {
+            $sql = "UPDATE plazas_comerciales SET logo = ? WHERE user_id = ?";
+        } else {
+            $sql = "INSERT INTO plazas_comerciales (logo, user_id) VALUES (?, ?)";
+        }
+        
         $stmt = $conn->prepare($sql);
         $stmt->send_long_data(0, $imageData); // Enviar datos largos
         $stmt->bind_param("si", $imageData, $user_id);
@@ -48,7 +62,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $instagram = $_POST['instagram'] ?? '';
         $descripcion = $_POST['descripcion'] ?? '';
         
-        $sql = "UPDATE plazas_comerciales SET nombre = ?, categoria = ?, direccion = ?, telefono = ?, horarioApertura = ?, horarioCierre = ?, sitioWeb = ?, facebook = ?, instagram = ?, descripcion = ? WHERE user_id = ?";
+        if ($exists) {
+            $sql = "UPDATE plazas_comerciales SET nombre = ?, categoria = ?, direccion = ?, telefono = ?, horarioApertura = ?, horarioCierre = ?, sitioWeb = ?, facebook = ?, instagram = ?, descripcion = ? WHERE user_id = ?";
+        } else {
+            $sql = "INSERT INTO plazas_comerciales (nombre, categoria, direccion, telefono, horarioApertura, horarioCierre, sitioWeb, facebook, instagram, descripcion, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        }
+        
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssssssssssi", $nombre, $categoria, $direccion, $telefono, $horarioApertura, $horarioCierre, $sitioWeb, $facebook, $instagram, $descripcion, $user_id);
         if (!$stmt->execute()) {
