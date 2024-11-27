@@ -70,8 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['error'] = "Error al actualizar los datos";
     }
 
-    // Redireccionar de vuelta a home.php
-    header("Location: ../home.php");
+    // Redireccionar de vuelta a managePLaza.php
+    header("Location: ../managePLaza.php");
     exit();
 }
 ?>

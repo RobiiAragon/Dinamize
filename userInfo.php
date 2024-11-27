@@ -129,7 +129,7 @@ CloseCon($conn);
             <a href="backend/logout.php" class="logout-button">
                 <i class="fas fa-sign-out-alt logout-icon"></i>
                 Logout
-            </a>
+            </a> 
         </div>
         </aside>
         <main class="main-content">
