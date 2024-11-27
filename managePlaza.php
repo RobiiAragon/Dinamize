@@ -118,8 +118,8 @@ CloseCon($conn);
                 <h2>Dashboard</h2>
             </div>
             <ul>
-                <li><a href="#" data-section="user-info" class="active">User Info</a></li>
-                <li><a href="#" data-section="manage-plaza">Manage Plaza</a></li>
+            <li><a href="/userInfo.php" data-section="user-info">User Info</a></li>
+                <li><a href="#" data-section="manage-plaza" class="active">Manage Plaza</a></li>
                 <li><a href="#" data-section="kiosk-react">Kiosk React</a></li>
                 <li><a href="#" data-section="kiosk-ui">Kiosk UI</a></li>
                 <li><a href="#" data-section="oak-labs">Oak Labs</a></li>
@@ -133,67 +133,6 @@ CloseCon($conn);
         </div>
         </aside>
         <main class="main-content">
-            <section id="user-info">
-                <h1>User Info</h1>
-                <form id="user-info-form" action="backend/update_user_info.php" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="fotoPerfil">Foto de perfil:</label>
-                        <img src="<?php echo $fotoPerfilSrc; ?>" alt="Foto de perfil" class="profile-pic" id="profile-pic">
-                        <input type="file" id="fotoPerfil" name="fotoPerfil" style="display: none;" accept="image/*" onchange="loadImage(event)">
-                        <i class="fas fa-edit edit-icon" onclick="document.getElementById('fotoPerfil').click();"></i>
-                    </div>
-                    <div class="form-group" id="crop-container" style="display: none;">
-                        <label for="cropper">Redimensionar Foto:</label>
-                        <div class="cropper-wrapper">
-                            <img id="cropper" style="max-width: 100%;">
-                        </div>
-                        <button type="button" class="btn-crop" onclick="cropImage()">Recortar y Guardar</button>
-                    </div>
-                    <input type="hidden" id="croppedImage" name="croppedImage">
-                
-                    <div class="form-group">
-                        <label for="email">Correo Electrónico:</label>
-                        <input type="email" id="email" name="email" value="<?php echo $email; ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombreUsuario">Nombre de Usuario:</label>
-                        <input type="text" id="nombreUsuario" name="nombreUsuario" value="<?php echo $nombreUsuario; ?>" readonly>
-                        <i class="fas fa-edit edit-icon" onclick="enableEdit('nombreUsuario');"></i>
-                    </div>
-                    <div class="form-group">
-                        <label for="numeroTelefono">Número de Teléfono:</label>
-                        <input type="text" id="numeroTelefono" name="numeroTelefono" value="<?php echo $numeroTelefono; ?>" readonly>
-                        <i class="fas fa-edit edit-icon" onclick="enableEdit('numeroTelefono');"></i>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre">Nombres:</label>
-                        <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="apellidos">Apellidos:</label>
-                        <input type="text" id="apellidos" name="apellidos" value="<?php echo $apellidos; ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" value="<?php echo $fechaNacimiento; ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="genero">Género:</label>
-                        <select id="genero" name="genero" disabled>
-                            <option value="Masculino" <?php echo ($genero == 'Masculino') ? 'selected' : ''; ?>>Masculino</option>
-                            <option value="Femenino" <?php echo ($genero == 'Femenino') ? 'selected' : ''; ?>>Femenino</option>
-                            <option value="No binario" <?php echo ($genero == 'No binario') ? 'selected' : ''; ?>>No binario</option>
-                        </select>
-                        <i class="fas fa-edit edit-icon" onclick="enableEdit('genero');"></i>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Contraseña:</label>
-                        <button type="button" class="btn-change-password">Cambiar Contraseña</button>
-                    </div>
-                    <button type="submit" class="btn-save" style="display: none;">Guardar</button>
-                </form>
-            </section>
-            <section id="manage-plaza">
                 <h1>Administrar Plaza Comercial</h1>
                 <form id="plaza-form" action="backend/update_plaza_info.php" method="POST" enctype="multipart/form-data">
                     <div class="plaza-info">
@@ -281,26 +220,10 @@ CloseCon($conn);
                         <button type="submit" class="btn-save" style="display: none;">Guardar Cambios</button>
                     </div>
                 </form>
-            </section>
-            <section id="kiosk-react">
-                <h1>Kiosk React</h1>
-                <!-- Contenido de Kiosk React aquí -->
-            </section>
-            <section id="kiosk-ui">
-                <h1>Kiosk UI</h1>
-                <!-- Contenido de Kiosk UI aquí -->
-            </section>
-            <section id="oak-labs">
-                <h1>Oak Labs</h1>
-                <!-- Contenido de Oak Labs aquí -->
-            </section>
-            <section id="digital-signage">
-                <h1>Digital Signage</h1>
-                <!-- Contenido de Digital Signage aquí -->
-            </section>
         </main>
     </div>
     <script src="libs/cropperjs/cropper.min.js"></script>
     <script src="js/home.js"></script>
 </body>
 </html>
+
