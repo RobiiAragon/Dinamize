@@ -52,10 +52,7 @@ CREATE TABLE negocios (
     sitioWeb VARCHAR(255),
     facebook VARCHAR(255),
     instagram VARCHAR(255),
-    descripcion TEXT,
-    imagen1 LONGBLOB,
-    imagen2 LONGBLOB,
-    imagen3 LONGBLOB
+    descripcion TEXT
 );
 
 INSERT INTO usuarios (nombreUsuario, email, password)

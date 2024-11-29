@@ -12,42 +12,8 @@ $user_id = $_SESSION['user_id'];
 
 $conn = OpenCon();
 
-// Procesar la imagen recortada
-if (isset($_POST['croppedImage']) && !empty($_POST['croppedImage'])) {
-    $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $_POST['croppedImage']));
-    
-    $sql = "UPDATE infousuarios SET fotoPerfil = ? WHERE user_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $imageData, $user_id);
-    
-    if ($stmt->execute()) {
-        $message = "Foto de perfil actualizada correctamente";
-    } else {
-        $success = false;
-        $message = "Error al actualizar la foto de perfil";
-    }
-    
-    $stmt->close();
-    
-    // Responder con JSON para la actualización de imagen
-    header('Content-Type: application/json');
-    echo json_encode([
-        'success' => $success,
-        'message' => $message
-    ]);
-    exit();
-}
-
-// Después de obtener el user_id
-$sqlPlaza = "SELECT * FROM plazas_comerciales WHERE user_id = ?";
-$stmt = $conn->prepare($sqlPlaza);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$resultPlaza = $stmt->get_result();
-$plazaData = $resultPlaza->fetch_assoc();
-
-// Obtener información del usuario desde la tabla infousuarios
-$sql = "SELECT infousuarios.*, usuarios.email, usuarios.nombreUsuario  FROM infousuarios JOIN usuarios ON infousuarios.user_id = usuarios.id WHERE infousuarios.user_id = ?";
+// Obtener información del local
+$sql = "SELECT * FROM negocios WHERE plaza_id = (SELECT id FROM plazas_comerciales WHERE user_id = ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -55,23 +21,38 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $fotoPerfilSrc = isset($row['fotoPerfil']) ? 'data:image/jpeg;base64,' . base64_encode($row['fotoPerfil']) : 'img/noUserPhoto.png';
-    $email = isset($row['email']) ? $row['email'] : '';
-    $numeroTelefono = isset($row['numeroTelefono']) ? $row['numeroTelefono'] : '';
-    $nombreUsuario = isset($row['nombreUsuario']) ? $row['nombreUsuario'] : ''; 
-    $nombre = isset($row['nombre']) ? $row['nombre'] : '';
-    $apellidos = isset($row['apellidos']) ? $row['apellidos'] : '';
-    $fechaNacimiento = isset($row['fechaNacimiento']) ? $row['fechaNacimiento'] : '';
-    $genero = isset($row['genero']) ? $row['genero'] : '';
+    $logoLocalSrc = isset($row['logo']) ? 'data:image/jpeg;base64,' . base64_encode($row['logo']) : 'img/noPlazaLogo.png';
+    $nombreLocal = isset($row['nombre']) ? $row['nombre'] : '';
+    $categoria = isset($row['categoria']) ? $row['categoria'] : '';
+    $telefono = isset($row['telefono']) ? $row['telefono'] : '';
+    $horarioApertura = isset($row['horarioApertura']) ? $row['horarioApertura'] : '';
+    $horarioCierre = isset($row['horarioCierre']) ? $row['horarioCierre'] : '';
+    $sitioWeb = isset($row['sitioWeb']) ? $row['sitioWeb'] : '';
+    $facebook = isset($row['facebook']) ? $row['facebook'] : '';
+    $instagram = isset($row['instagram']) ? $row['instagram'] : '';
+    $descripcion = isset($row['descripcion']) ? $row['descripcion'] : '';
+    $numeroLocal = isset($row['NumeroLocal']) ? $row['NumeroLocal'] : '';
+    $diasLaborales = isset($row['DiasLaborales']) ? $row['DiasLaborales'] : '';
+    $imagen1 = isset($row['imagen1']) ? 'data:image/jpeg;base64,' . base64_encode($row['imagen1']) : 'img/noImage.png';
+    $imagen2 = isset($row['imagen2']) ? 'data:image/jpeg;base64,' . base64_encode($row['imagen2']) : 'img/noImage.png';
+    $imagen3 = isset($row['imagen3']) ? 'data:image/jpeg;base64,' . base64_encode($row['imagen3']) : 'img/noImage.png';
 } else {
-    // Si no se encuentran datos del usuario, inicializa las variables con valores predeterminados
-    $fotoPerfilSrc = 'img/noUserPhoto.png';
-    $email = '';
-    $numeroTelefono = '';
-    $nombre = '';
-    $apellidos = '';
-    $fechaNacimiento = '';
-    $genero = '';
+    // Inicializar variables con valores predeterminados si no se encuentran datos
+    $logoLocalSrc = 'img/noPlazaLogo.png';
+    $nombreLocal = '';
+    $categoria = '';
+    $telefono = '';
+    $horarioApertura = '';
+    $horarioCierre = '';
+    $sitioWeb = '';
+    $facebook = '';
+    $instagram = '';
+    $descripcion = '';
+    $numeroLocal = '';
+    $diasLaborales = '';
+    $imagen1 = 'img/noImage.png';
+    $imagen2 = 'img/noImage.png';
+    $imagen3 = 'img/noImage.png';
 }
 
 $stmt->close();
@@ -83,7 +64,7 @@ CloseCon($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiosk Dashboard</title>
+    <title>Manage Local</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/fontAwesome/all.min.css">
     <link rel="stylesheet" href="libs/cropperjs/cropper.min.css">
@@ -124,105 +105,90 @@ CloseCon($conn);
                 <li><a href="kioskUI.php" data-section="kiosk-ui">Kiosk UI</a></li>
             </ul>
             <div class="logout-container">
-            <a href="backend/logout.php" class="logout-button">
-                <i class="fas fa-sign-out-alt logout-icon"></i>
-                Logout
-            </a> 
-        </div>
+                <a href="backend/logout.php" class="logout-button">
+                    <i class="fas fa-sign-out-alt logout-icon"></i>
+                    Logout
+                </a>
+            </div>
         </aside>
         <main class="main-content">
-    <h1>Manage Local</h1>
-    <form id="local-info-form" action="backend/update_local_info.php" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="logoLocal">Logo del Local:</label>
-            <img src="<?php echo $logoLocalSrc ?? 'img/noPlazaLogo.png'; ?>" alt="Logo del local" class="profile-pic" id="profile-pic">
-            <input type="file" id="logoLocal" name="logoLocal" style="display: none;" accept="image/*" onchange="loadImage(event)">
-            <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoLocal').click();"></i>
-        </div>
-        <div class="form-group" id="crop-container" style="display: none;">
-            <label for="cropper">Redimensionar Logo:</label>
-            <div class="cropper-wrapper">
-                <img id="cropper" style="max-width: 100%;">
-            </div>
-            <button type="button" class="btn-crop" onclick="cropImage()">Recortar y Guardar</button>
-        </div>
-        <input type="hidden" id="croppedImage" name="croppedImage">
-        
-        <div class="form-group">
-            <label for="nombreLocal">Nombre del Local:</label>
-            <input type="text" id="nombreLocal" name="nombreLocal" value="<?php echo $nombreLocal ?? ''; ?>" required>
-        </div>
-
-        <div class="form-group">
-            <label for="categoria">Categoría:</label>
-            <input type="text" id="categoria" name="categoria" value="<?php echo $categoria ?? ''; ?>" required>
-        </div>
-
-        <div class="form-group">
-            <label for="telefono">Teléfono:</label>
-            <input type="tel" id="telefono" name="telefono" value="<?php echo $telefono ?? ''; ?>">
-        </div>
-
-        <div class="form-group">
-            <label for="horarioApertura">Horario de Apertura:</label>
-            <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo $horarioApertura ?? ''; ?>" required>
-        </div>
-
-        <div class="form-group">
-            <label for="horarioCierre">Horario de Cierre:</label>
-            <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo $horarioCierre ?? ''; ?>" required>
-        </div>
-
-        <div class="form-group">
-            <label for="sitioWeb">Sitio Web:</label>
-            <input type="url" id="sitioWeb" name="sitioWeb" value="<?php echo $sitioWeb ?? ''; ?>" placeholder="https://">
-        </div>
-
-        <div class="form-group">
-            <label for="facebook">Facebook:</label>
-            <input type="url" id="facebook" name="facebook" value="<?php echo $facebook ?? ''; ?>" placeholder="https://">
-        </div>
-
-        <div class="form-group">
-            <label for="instagram">Instagram:</label>
-            <input type="url" id="instagram" name="instagram" value="<?php echo $instagram ?? ''; ?>" placeholder="https://">
-        </div>
-
-        <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" rows="4"><?php echo $descripcion ?? ''; ?></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="imagen1">Imagen 1:</label>
-            <input type="file" id="imagen1" name="imagen1" accept="image/*">
-            <?php if (isset($imagen1Src)): ?>
-                <img src="<?php echo $imagen1Src; ?>" alt="Imagen 1" class="preview-image">
-            <?php endif; ?>
-        </div>
-
-        <div class="form-group">
-            <label for="imagen2">Imagen 2:</label>
-            <input type="file" id="imagen2" name="imagen2" accept="image/*">
-            <?php if (isset($imagen2Src)): ?>
-                <img src="<?php echo $imagen2Src; ?>" alt="Imagen 2" class="preview-image">
-            <?php endif; ?>
-        </div>
-
-        <div class="form-group">
-            <label for="imagen3">Imagen 3:</label>
-            <input type="file" id="imagen3" name="imagen3" accept="image/*">
-            <?php if (isset($imagen3Src)): ?>
-                <img src="<?php echo $imagen3Src; ?>" alt="Imagen 3" class="preview-image">
-            <?php endif; ?>
-        </div>
-
-        <button type="submit" class="btn-save">Guardar</button>
-    </form>
-</main>
+            <h1>Manage Local</h1>
+            <form id="local-info-form" action="backend/update_local_info.php" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="logoLocal">Logo del Local:</label>
+                    <img src="<?php echo $logoLocalSrc; ?>" alt="Logo del local" class="profile-pic" id="logo-local">
+                    <input type="file" id="logoLocal" name="logoLocal" style="display: none;" accept="image/*" onchange="loadImage(event, 'logo-local')">
+                    <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoLocal').click();"></i>
+                </div>
+                <div class="form-group" id="crop-container" style="display: none;">
+                    <label for="cropper">Redimensionar Logo:</label>
+                    <div class="cropper-wrapper">
+                        <img id="cropper" style="max-width: 100%;">
+                    </div>
+                    <button type="button" class="btn-crop" onclick="cropImage()">Recortar y Guardar</button>
+                </div>
+                <input type="hidden" id="croppedImage" name="croppedImage">
+            
+                <div class="form-group">
+                    <label for="nombreLocal">Nombre del Local:</label>
+                    <input type="text" id="nombreLocal" name="nombreLocal" value="<?php echo $nombreLocal; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('nombreLocal');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="categoria">Categoría:</label>
+                    <input type="text" id="categoria" name="categoria" value="<?php echo $categoria; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('categoria');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono" value="<?php echo $telefono; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('telefono');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="horarioApertura">Horario de Apertura:</label>
+                    <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo $horarioApertura; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('horarioApertura');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="horarioCierre">Horario de Cierre:</label>
+                    <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo $horarioCierre; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('horarioCierre');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="sitioWeb">Sitio Web:</label>
+                    <input type="text" id="sitioWeb" name="sitioWeb" value="<?php echo $sitioWeb; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('sitioWeb');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="facebook">Facebook:</label>
+                    <input type="text" id="facebook" name="facebook" value="<?php echo $facebook; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('facebook');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="instagram">Instagram:</label>
+                    <input type="text" id="instagram" name="instagram" value="<?php echo $instagram; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('instagram');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" readonly><?php echo $descripcion; ?></textarea>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('descripcion');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="numeroLocal">Número del Local:</label>
+                    <input type="text" id="numeroLocal" name="numeroLocal" value="<?php echo $numeroLocal; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('numeroLocal');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="diasLaborales">Días Laborales:</label>
+                    <input type="text" id="diasLaborales" name="diasLaborales" value="<?php echo $diasLaborales; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('diasLaborales');"></i>
+                </div>
+                <button type="submit" class="btn-save" style="display: none;">Guardar</button>
+            </form>
+        </main>
     </div>
     <script src="libs/cropperjs/cropper.min.js"></script>
-    <script src="js/userInfo.js"></script>
+    <script src="js/manageLocals.js"></script>
 </body>
 </html>
-
