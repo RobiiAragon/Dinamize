@@ -9,9 +9,6 @@ CREATE TABLE usuarios (
     password VARCHAR(100) NOT NULL
 );
 
-ALTER TABLE usuarios
-CHANGE COLUMN nombreCompleto nombreUsuario VARCHAR(100);
-
 CREATE TABLE infousuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -34,7 +31,7 @@ VALUES (1, 'Jesus Roberto', 'Aragon Lopez', '2002-10-01', '6633016320', 'Masculi
 CREATE TABLE plazas_comerciales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES usuarios(id);
+    FOREIGN KEY (user_id) REFERENCES usuarios(id),
     nombre VARCHAR(100) NOT NULL,
     logo LONGBLOB,
     direccion TEXT NOT NULL,
@@ -44,18 +41,19 @@ CREATE TABLE plazas_comerciales (
     sitioWeb VARCHAR(255),
     facebook VARCHAR(255),
     instagram VARCHAR(255),
-    descripcion TEXT,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ultima_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    descripcion TEXT
 );
-CREATE TABLE locales (
+
+CREATE TABLE negocios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     plaza_id INT NOT NULL,
     FOREIGN KEY (plaza_id) REFERENCES plazas_comerciales(id),
+    NumeroLocal INT,
     logo LONGBLOB,
     nombre VARCHAR(100) NOT NULL,
     categoria VARCHAR(100) NOT NULL,
     telefono VARCHAR(20),
+    DiasLaborales VARCHAR(100),
     horarioApertura TIME NOT NULL,
     horarioCierre TIME NOT NULL,
     sitioWeb VARCHAR(255),
@@ -64,7 +62,5 @@ CREATE TABLE locales (
     descripcion TEXT,
     imagen1 LONGBLOB,
     imagen2 LONGBLOB,
-    imagen3 LONGBLOB,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ultima_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    imagen3 LONGBLOB
 );

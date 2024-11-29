@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verificar que las contraseñas coincidan
     if ($password !== $confirm_password) {
         $_SESSION['error'] = "Las contraseñas no coinciden.";
-        header("Location: register.php");
+        header("Location: ../register.php");
         exit();
     }
 
@@ -25,14 +25,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Insertar en la tabla usuarios
     $sql = "INSERT INTO usuarios (nombreUsuario, email, password) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
+
+    if (!$stmt) {
+        $_SESSION['error'] = "Error en la preparación de la consulta: " . $conn->error;
+        header("Location: ../register.php");
+        exit();
+    }
+
     $stmt->bind_param("sss", $nombres, $email, $hashed_password);
 
     if ($stmt->execute()) {
         $user_id = $stmt->insert_id;
 
         // Insertar en la tabla infousuarios
-        $sql_info = "INSERT INTO infousuarios (user_id, nombre, apellidos, fechaNacimiento) VALUES (?, ?, ?, ?)";
+        $sql_info = "INSERT INTO infousuarios (user_id, nombres, apellidos, fechaNacimiento) VALUES (?, ?, ?, ?)";
         $stmt_info = $conn->prepare($sql_info);
+
+        if (!$stmt_info) {
+            $_SESSION['error'] = "Error en la preparación de la consulta de información del usuario: " . $conn->error;
+            header("Location: ../register.php");
+            exit();
+        }
+
         $stmt_info->bind_param("isss", $user_id, $nombres, $apellidos, $birthdate);
 
         if ($stmt_info->execute()) {

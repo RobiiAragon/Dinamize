@@ -8,12 +8,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conn = OpenCon();
 
+    if ($conn->connect_error) {
+        $_SESSION['error'] = "Error de conexión a la base de datos: " . $conn->connect_error;
+        header("Location: ../login.php");
+        exit();
+    }
+
     $sql = "SELECT u.id, u.nombreUsuario, u.email, i.* 
             FROM usuarios u 
             LEFT JOIN infousuarios i ON u.id = i.user_id 
             WHERE u.email = ? AND u.password = ?";
     
     $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        $_SESSION['error'] = "Error en la preparación de la consulta: " . $conn->error;
+        header("Location: ../login.php");
+        exit();
+    }
+
     $stmt->bind_param("ss", $email, $password);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -34,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: ../userInfo.php");
     } else {
         $_SESSION['error'] = "Correo electrónico o contraseña incorrectos.";
-        header("Location: login.php");
+        header("Location: ../login.php");
     }
 
     $stmt->close();
