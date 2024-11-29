@@ -59,7 +59,7 @@ if ($result->num_rows > 0) {
     $email = isset($row['email']) ? $row['email'] : '';
     $numeroTelefono = isset($row['numeroTelefono']) ? $row['numeroTelefono'] : '';
     $nombreUsuario = isset($row['nombreUsuario']) ? $row['nombreUsuario'] : ''; 
-    $nombre = isset($row['nombre']) ? $row['nombre'] : '';
+    $nombres = isset($row['nombres']) ? $row['nombres'] : '';
     $apellidos = isset($row['apellidos']) ? $row['apellidos'] : '';
     $fechaNacimiento = isset($row['fechaNacimiento']) ? $row['fechaNacimiento'] : '';
     $genero = isset($row['genero']) ? $row['genero'] : '';
@@ -68,7 +68,7 @@ if ($result->num_rows > 0) {
     $fotoPerfilSrc = 'img/noUserPhoto.png';
     $email = '';
     $numeroTelefono = '';
-    $nombre = '';
+    $nombres = '';
     $apellidos = '';
     $fechaNacimiento = '';
     $genero = '';
@@ -163,8 +163,8 @@ CloseCon($conn);
                         <i class="fas fa-edit edit-icon" onclick="enableEdit('numeroTelefono');"></i>
                     </div>
                     <div class="form-group">
-                        <label for="nombre">Nombres:</label>
-                        <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" readonly>
+                        <label for="nombres">Nombres:</label>
+                        <input type="text" id="nombres" name="nombres" value="<?php echo $nombres; ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="apellidos">Apellidos:</label>
