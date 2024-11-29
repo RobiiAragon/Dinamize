@@ -21,7 +21,7 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $logoPlazaSrc = isset($row['logo']) ? 'data:image/jpeg;base64,' . base64_encode($row['logo']) : 'img/noLogo.png';
+    $logoPlazaSrc = isset($row['logo']) ? 'data:image/jpeg;base64,' . base64_encode($row['logo']) : 'img/noPlazaLogo.png';
     $nombre = isset($row['nombre']) ? $row['nombre'] : '';
     $categoria = isset($row['categoria']) ? $row['categoria'] : '';
     $direccion = isset($row['direccion']) ? $row['direccion'] : '';
@@ -34,7 +34,7 @@ if ($result->num_rows > 0) {
     $descripcion = isset($row['descripcion']) ? $row['descripcion'] : '';
 } else {
     // Inicializar variables con valores predeterminados si no se encuentran datos
-    $logoPlazaSrc = 'img/noLogo.png';
+    $logoPlazaSrc = 'img/noPlazaLogo.png';
     $nombre = '';
     $categoria = '';
     $direccion = '';
@@ -91,8 +91,8 @@ CloseCon($conn);
                 <h2>Dashboard</h2>
             </div>
             <ul>
-            <li><a href="userInfo.php" data-section="user-info" class="active">User Info</a></li>
-                <li><a href="managePlaza.php" data-section="manage-plaza">Manage Plaza</a></li>
+            <li><a href="userInfo.php" data-section="user-info">User Info</a></li>
+                <li><a href="managePlaza.php" data-section="manage-plaza" class="active">Manage Plaza</a></li>
                 <li><a href="manageLocals.php" data-section="manage-locals">Manage Locals</a></li>
                 <li><a href="kioskUI.php" data-section="kiosk-ui">Kiosk UI</a></li>
             </ul>

@@ -56,10 +56,10 @@ CloseCon($conn);
                 <h2>Dashboard</h2>
             </div>
             <ul>
-            <li><a href="userInfo.php" data-section="user-info" class="active">User Info</a></li>
+            <li><a href="userInfo.php" data-section="user-info">User Info</a></li>
                 <li><a href="managePlaza.php" data-section="manage-plaza">Manage Plaza</a></li>
                 <li><a href="manageLocals.php" data-section="manage-locals">Manage Locals</a></li>
-                <li><a href="kioskUI.php" data-section="kiosk-ui">Kiosk UI</a></li>
+                <li><a href="kioskUI.php" data-section="kiosk-ui" class="active">Kiosk UI</a></li>
             </ul>
             <div class="logout-container">
             <a href="backend/logout.php" class="logout-button">

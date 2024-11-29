@@ -135,7 +135,7 @@ CloseCon($conn);
     <form id="local-info-form" action="backend/update_local_info.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="logoLocal">Logo del Local:</label>
-            <img src="<?php echo $logoLocalSrc ?? 'img/noLogo.png'; ?>" alt="Logo del local" class="profile-pic" id="profile-pic">
+            <img src="<?php echo $logoLocalSrc ?? 'img/noPlazaLogo.png'; ?>" alt="Logo del local" class="profile-pic" id="profile-pic">
             <input type="file" id="logoLocal" name="logoLocal" style="display: none;" accept="image/*" onchange="loadImage(event)">
             <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoLocal').click();"></i>
         </div>
