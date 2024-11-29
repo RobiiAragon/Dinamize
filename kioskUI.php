@@ -16,7 +16,6 @@ $conn = OpenCon();
 
 CloseCon($conn);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,8 +71,10 @@ CloseCon($conn);
         <main class="main-content">
     <h1>SVG Editor</h1>
     <div id="svg-editor-container">
-        <svg id="svg-editor" viewBox="0 0 553.1 727.11" preserveAspectRatio="xMidYMid meet">
-            <defs>
+        <div id="div-container" style="position: relative;">
+            <svg id="svg-editor" viewBox="0 0 553.1 727.11" preserveAspectRatio="xMidYMid meet">
+                <!-- SVG content -->
+                <defs>
             <style>
       .cls-1 {
         fill: #fff;
@@ -359,12 +360,13 @@ CloseCon($conn);
     <rect class="cls-2" x="152.18" y="609.28" width="21.19" height="8.17" transform="translate(-448.78 782.79) rotate(-90.62)"/>
     <rect class="cls-2" x="150.79" y="582.81" width="21.19" height="8.17" transform="translate(-423.72 754.65) rotate(-90.62)"/>
   </g>
-                </svg>
-            </div>
-        </main>
+            </svg>
+        </div>
     </div>
-    <script src="js/svg-editor.js"></script>
-    <div id="modal" class="modal">
+</main>
+</div>
+<script src="js/svg-editor.js"></script>
+<div id="modal" class="modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
         <h2>Seleccione un negocio</h2>
