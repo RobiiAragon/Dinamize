@@ -48,3 +48,23 @@ CREATE TABLE plazas_comerciales (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ultima_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+CREATE TABLE locales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plaza_id INT NOT NULL,
+    FOREIGN KEY (plaza_id) REFERENCES plazas_comerciales(id),
+    logo LONGBLOB,
+    nombre VARCHAR(100) NOT NULL,
+    categoria VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20),
+    horarioApertura TIME NOT NULL,
+    horarioCierre TIME NOT NULL,
+    sitioWeb VARCHAR(255),
+    facebook VARCHAR(255),
+    instagram VARCHAR(255),
+    descripcion TEXT,
+    imagen1 LONGBLOB,
+    imagen2 LONGBLOB,
+    imagen3 LONGBLOB,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ultima_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
