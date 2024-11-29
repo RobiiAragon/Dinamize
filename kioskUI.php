@@ -12,7 +12,20 @@ $user_id = $_SESSION['user_id'];
 
 $conn = OpenCon();
 
-// Aquí puedes agregar cualquier lógica adicional que necesites
+// Consulta para obtener los negocios
+$sql = "SELECT nombre, logo FROM negocios"; // Ajusta el nombre de la tabla y columnas según tu base de datos
+$result = $conn->query($sql);
+
+$businesses = [];
+if ($result) {
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $businesses[] = $row;
+        }
+    }
+} else {
+    echo "Error en la consulta SQL: " . $conn->error;
+}
 
 CloseCon($conn);
 ?>
@@ -21,10 +34,9 @@ CloseCon($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiosk SVG Editor</title>
+    <title>Digital Kiosk</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/fontAwesome/all.min.css">
-    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/kiosk.css">
 </head>
 <body>
 <?php if(isset($_SESSION['message'])): ?>
@@ -56,26 +68,26 @@ CloseCon($conn);
                 <h2>Dashboard</h2>
             </div>
             <ul>
-            <li><a href="userInfo.php" data-section="user-info">User Info</a></li>
+                <li><a href="userInfo.php" data-section="user-info">User Info</a></li>
                 <li><a href="managePlaza.php" data-section="manage-plaza">Manage Plaza</a></li>
                 <li><a href="manageLocals.php" data-section="manage-locals">Manage Locals</a></li>
                 <li><a href="kioskUI.php" data-section="kiosk-ui" class="active">Kiosk UI</a></li>
             </ul>
             <div class="logout-container">
-            <a href="backend/logout.php" class="logout-button">
-                <i class="fas fa-sign-out-alt logout-icon"></i>
-                Logout
-            </a> 
-        </div>
+                <a href="backend/logout.php" class="logout-button">
+                    <i class="fas fa-sign-out-alt logout-icon"></i>
+                    Logout
+                </a> 
+            </div>
         </aside>
         <main class="main-content">
-    <h1>SVG Editor</h1>
-    <div id="svg-editor-container">
-        <div id="div-container" style="position: relative;">
-            <svg id="svg-editor" viewBox="0 0 553.1 727.11" preserveAspectRatio="xMidYMid meet">
-                <!-- SVG content -->
+          <div class="content-header">
+              <h1>Digital Kiosk</h1>
+          </div>
+          <div class="kiosk-container">
+    <svg width="100%" height="100%" viewBox="0 0 470 730" preserveAspectRatio="xMidYMid meet">
                 <defs>
-            <style>
+    <style>
       .cls-1 {
         fill: #fff;
       }
@@ -362,16 +374,14 @@ CloseCon($conn);
   </g>
             </svg>
         </div>
+        </main>
     </div>
-</main>
-</div>
-<script src="js/svg-editor.js"></script>
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h2>Seleccione un negocio</h2>
-        <ul id="business-list"></ul>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Seleccione un negocio</h2>
+            <ul id="business-list"></ul>
+        </div>
     </div>
-</div>
 </body>
 </html>

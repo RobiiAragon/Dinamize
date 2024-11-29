@@ -1,4 +1,9 @@
 <?php
+// No debe haber espacios ni líneas en blanco antes de <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include 'db_connection.php';
 
 header('Content-Type: application/json');
@@ -43,3 +48,4 @@ if (isset($_GET['localId'])) {
     echo json_encode($response);
 }
 ?>
+<!-- No debe haber espacios ni líneas en blanco después de ?> -->
