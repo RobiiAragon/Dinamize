@@ -12,9 +12,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const telefono = local.getAttribute('data-telefono');
             const horarioApertura = formatTime(local.getAttribute('data-horario-apertura'));
             const horarioCierre = formatTime(local.getAttribute('data-horario-cierre'));
-            const sitioWeb = local.getAttribute('data-sitio-web');
-            const facebook = local.getAttribute('data-facebook');
-            const instagram = local.getAttribute('data-instagram');
+            let sitioWeb = local.getAttribute('data-sitio-web');
+            let facebook = local.getAttribute('data-facebook');
+            let instagram = local.getAttribute('data-instagram');
+
+            // Verificar y completar URLs si es necesario
+            sitioWeb = sitioWeb && !/^https?:\/\//i.test(sitioWeb) ? `http://${sitioWeb}` : sitioWeb;
+            facebook = facebook && !/^https?:\/\//i.test(facebook) ? `http://${facebook}` : facebook;
+            instagram = instagram && !/^https?:\/\//i.test(instagram) ? `http://${instagram}` : instagram;
 
             popup.innerHTML = `
                 <h2>${nombre}</h2>

@@ -4,8 +4,12 @@ include 'backend/db_connection.php';
 
 $conn = OpenCon();
 
-$sql = "SELECT nombre, logo, descripcion, telefono, horarioApertura, horarioCierre, sitioWeb, facebook, instagram FROM locales";
+$sql = "SELECT nombre, logo, descripcion, telefono, horarioApertura, horarioCierre, sitioWeb, facebook, instagram FROM negocios";
 $result = $conn->query($sql);
+
+if ($result === false) {
+    die("Error en la consulta SQL: " . $conn->error);
+}
 
 $locales = [];
 if ($result->num_rows > 0) {

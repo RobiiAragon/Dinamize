@@ -128,3 +128,38 @@ function showMessage(message, type = 'success') {
         tooltipContainer.remove();
     }, 3000);
 }
+
+// Función para cargar la imagen seleccionada
+function loadImage(event, imageId) {
+    const image = document.getElementById(imageId);
+    const cropContainer = document.getElementById('crop-container');
+    const cropperImage = document.getElementById('cropper');
+
+    image.src = URL.createObjectURL(event.target.files[0]);
+    cropContainer.style.display = 'block';
+    cropperImage.src = image.src;
+
+    const cropper = new Cropper(cropperImage, {
+        aspectRatio: 1,
+        viewMode: 1,
+        autoCropArea: 1,
+    });
+
+    document.querySelector('.btn-crop').onclick = function() {
+        const canvas = cropper.getCroppedCanvas();
+        const croppedImage = canvas.toDataURL('image/jpeg');
+        
+        // Asignar la imagen recortada al campo oculto
+        document.getElementById('croppedImage').value = croppedImage;
+
+        // Mostrar la imagen recortada en el formulario
+        image.src = croppedImage;
+
+        cropContainer.style.display = 'none';
+        cropper.destroy();
+    };
+}
+
+document.getElementById('nuevoLogo').addEventListener('change', function(event) {
+    loadImage(event, 'nuevoLogo');
+});
