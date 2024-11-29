@@ -1,5 +1,29 @@
 <?php
 session_start();
+include 'backend/db_connection.php';
+
+if (isset($_SESSION['user_id'])) {
+    $conn = OpenCon();
+    if ($conn === false) {
+        die("Error al conectar a la base de datos: " . $conn->connect_error);
+    }
+
+    $user_id = $_SESSION['user_id'];
+    $sql = "SELECT fotoPerfil FROM infousuarios WHERE user_id = ?";
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt === false) {
+        die("Error al preparar la consulta: " . $conn->error);
+    }
+
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($fotoPerfil);
+    $stmt->fetch();
+    $_SESSION['fotoPerfil'] = $fotoPerfil;
+    $stmt->close();
+    CloseCon($conn);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +48,8 @@ session_start();
         // Verificar si existe fotoPerfil en la sesión
         if (isset($_SESSION['fotoPerfil']) && $_SESSION['fotoPerfil'] !== null) {
             $fotoPerfilSrc = 'data:image/jpeg;base64,' . base64_encode($_SESSION['fotoPerfil']);
+            // Depuración: Mostrar el tamaño de la imagen
+            echo '<!-- Tamaño de la imagen: ' . strlen($_SESSION['fotoPerfil']) . ' bytes -->';
         } else {
             $fotoPerfilSrc = 'img/noUserPhoto.png';
         }

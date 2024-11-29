@@ -2,6 +2,12 @@
 session_start();
 include 'db_connection.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+ini_set('log_errors', 1);
+ini_set('error_log', 'path/to/your/error.log'); // Cambia 'path/to/your/error.log' por la ruta de tu archivo de log
+
 header('Content-Type: application/json');
 
 $response = [
@@ -43,43 +49,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message = "Logo de la plaza actualizado correctamente";
         } else {
             $success = false;
-            $message = "Error al actualizar el logo de la plaza";
+            $message = "Error al actualizar el logo de la plaza: " . $stmt->error;
         }
         
         $stmt->close();
     }
     
     // Procesar otros campos
-    if (isset($_POST['nombre']) || isset($_POST['categoria']) || isset($_POST['direccion']) || isset($_POST['telefono']) || isset($_POST['horarioApertura']) || isset($_POST['horarioCierre']) || isset($_POST['sitioWeb']) || isset($_POST['facebook']) || isset($_POST['instagram']) || isset($_POST['descripcion'])) {
-        $nombre = $_POST['nombre'] ?? '';
-        $categoria = $_POST['categoria'] ?? '';
-        $direccion = $_POST['direccion'] ?? '';
-        $telefono = $_POST['telefono'] ?? '';
-        $horarioApertura = $_POST['horarioApertura'] ?? '';
-        $horarioCierre = $_POST['horarioCierre'] ?? '';
-        $sitioWeb = $_POST['sitioWeb'] ?? '';
-        $facebook = $_POST['facebook'] ?? '';
-        $instagram = $_POST['instagram'] ?? '';
-        $descripcion = $_POST['descripcion'] ?? '';
-        
-        if ($exists) {
-            $sql = "UPDATE plazas_comerciales SET nombre = ?, categoria = ?, direccion = ?, telefono = ?, horarioApertura = ?, horarioCierre = ?, sitioWeb = ?, facebook = ?, instagram = ?, descripcion = ? WHERE user_id = ?";
-        } else {
-            $sql = "INSERT INTO plazas_comerciales (nombre, categoria, direccion, telefono, horarioApertura, horarioCierre, sitioWeb, facebook, instagram, descripcion, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $fields = ['nombre', 'categoria', 'direccion', 'telefono', 'horarioApertura', 'horarioCierre', 'sitioWeb', 'facebook', 'instagram', 'descripcion'];
+    foreach ($fields as $field) {
+        if (isset($_POST[$field])) {
+            $value = $_POST[$field];
+            if ($exists) {
+                $sql = "UPDATE plazas_comerciales SET $field = ? WHERE user_id = ?";
+            } else {
+                $sql = "INSERT INTO plazas_comerciales ($field, user_id) VALUES (?, ?)";
+            }
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("si", $value, $user_id);
+            if (!$stmt->execute()) {
+                $success = false;
+                $message = "Error al actualizar el campo $field: " . $stmt->error;
+                break;
+            }
+            $stmt->close();
         }
-        
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssssssssi", $nombre, $categoria, $direccion, $telefono, $horarioApertura, $horarioCierre, $sitioWeb, $facebook, $instagram, $descripcion, $user_id);
-        if (!$stmt->execute()) {
-            $success = false;
-        }
-        $stmt->close();
     }
     
     CloseCon($conn);
 
     $response['success'] = $success;
-    $response['message'] = $success ? "Datos de la plaza actualizados correctamente" : "Error al actualizar los datos de la plaza";
+    $response['message'] = $success ? "Datos de la plaza actualizados correctamente" : $message;
 }
 
 echo json_encode($response);

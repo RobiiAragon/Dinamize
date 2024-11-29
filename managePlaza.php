@@ -91,78 +91,88 @@ CloseCon($conn);
                 <h2>Dashboard</h2>
             </div>
             <ul>
-            <li><a href="userInfo.php" data-section="user-info">User Info</a></li>
+                <li><a href="userInfo.php" data-section="user-info">User Info</a></li>
                 <li><a href="managePlaza.php" data-section="manage-plaza" class="active">Manage Plaza</a></li>
                 <li><a href="manageLocals.php" data-section="manage-locals">Manage Locals</a></li>
                 <li><a href="kioskUI.php" data-section="kiosk-ui">Kiosk UI</a></li>
             </ul>
             <div class="logout-container">
-            <a href="backend/logout.php" class="logout-button">
-                <i class="fas fa-sign-out-alt logout-icon"></i>
-                Logout
-            </a>
-        </div>
+                <a href="backend/logout.php" class="logout-button">
+                    <i class="fas fa-sign-out-alt logout-icon"></i>
+                    Logout
+                </a>
+            </div>
         </aside>
         <main class="main-content">
-                <h1>Manage Plaza</h1>
-                <form id="plaza-info-form" action="backend/update_plaza_info.php" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="logoPlaza">Logo de la plaza:</label>
-                        <img src="<?php echo $logoPlazaSrc; ?>" alt="Logo de la plaza" class="profile-pic" id="logo-plaza">
-                        <input type="file" id="logoPlaza" name="logoPlaza" style="display: none;" accept="image/*" onchange="loadImage(event)">
-                        <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoPlaza').click();"></i>
+            <h1>Manage Plaza</h1>
+            <form id="plaza-info-form" action="backend/update_plaza_info.php" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="logoPlaza">Logo de la plaza:</label>
+                    <img src="<?php echo $logoPlazaSrc; ?>" alt="Logo de la plaza" class="profile-pic" id="logo-plaza">
+                    <input type="file" id="logoPlaza" name="logoPlaza" style="display: none;" accept="image/*" onchange="loadImage(event)">
+                    <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoPlaza').click();"></i>
+                </div>
+                <div class="form-group" id="crop-container" style="display: none;">
+                    <label for="cropper">Redimensionar Logo:</label>
+                    <div class="cropper-wrapper">
+                        <img id="cropper" style="max-width: 100%;">
                     </div>
-                    <div class="form-group" id="crop-container" style="display: none;">
-                        <label for="cropper">Redimensionar Logo:</label>
-                        <div class="cropper-wrapper">
-                            <img id="cropper" style="max-width: 100%;">
-                        </div>
-                        <button type="button" class="btn-crop" onclick="cropImage()">Recortar y Guardar</button>
-                    </div>
-                    <input type="hidden" id="croppedImage" name="croppedImage">
-                
-                    <div class="form-group">
-                        <label for="nombre">Nombre de la plaza:</label>
-                        <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoria">Categoría:</label>
-                        <input type="text" id="categoria" name="categoria" value="<?php echo $categoria; ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="direccion">Dirección:</label>
-                        <textarea id="direccion" name="direccion" required><?php echo $direccion; ?></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">Teléfono:</label>
-                        <input type="text" id="telefono" name="telefono" value="<?php echo $telefono; ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="horarioApertura">Horario de Apertura:</label>
-                        <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo $horarioApertura; ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="horarioCierre">Horario de Cierre:</label>
-                        <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo $horarioCierre; ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="sitioWeb">Sitio Web:</label>
-                        <input type="text" id="sitioWeb" name="sitioWeb" value="<?php echo $sitioWeb; ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="facebook">Facebook:</label>
-                        <input type="text" id="facebook" name="facebook" value="<?php echo $facebook; ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="instagram">Instagram:</label>
-                        <input type="text" id="instagram" name="instagram" value="<?php echo $instagram; ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcion">Descripción:</label>
-                        <textarea id="descripcion" name="descripcion" required><?php echo $descripcion; ?></textarea>
-                    </div>
-                    <button type="submit" class="btn-save">Guardar</button>
-                </form>
+                    <button type="button" class="btn-crop" onclick="cropImage()">Recortar y Guardar</button>
+                </div>
+                <input type="hidden" id="croppedImage" name="croppedImage">
+            
+                <div class="form-group">
+                    <label for="nombre">Nombre de la plaza:</label>
+                    <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('nombre');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="categoria">Categoría:</label>
+                    <input type="text" id="categoria" name="categoria" value="<?php echo $categoria; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('categoria');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección:</label>
+                    <textarea id="direccion" name="direccion" readonly><?php echo $direccion; ?></textarea>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('direccion');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono" value="<?php echo $telefono; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('telefono');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="horarioApertura">Horario de Apertura:</label>
+                    <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo $horarioApertura; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('horarioApertura');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="horarioCierre">Horario de Cierre:</label>
+                    <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo $horarioCierre; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('horarioCierre');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="sitioWeb">Sitio Web:</label>
+                    <input type="text" id="sitioWeb" name="sitioWeb" value="<?php echo $sitioWeb; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('sitioWeb');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="facebook">Facebook:</label>
+                    <input type="text" id="facebook" name="facebook" value="<?php echo $facebook; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('facebook');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="instagram">Instagram:</label>
+                    <input type="text" id="instagram" name="instagram" value="<?php echo $instagram; ?>" readonly>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('instagram');"></i>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" readonly><?php echo $descripcion; ?></textarea>
+                    <i class="fas fa-edit edit-icon" onclick="enableEdit('descripcion');"></i>
+                </div>
+                <button type="submit" class="btn-save" style="display: none;">Guardar</button>
+            </form>
         </main>
     </div>
     <script src="libs/cropperjs/cropper.min.js"></script>
