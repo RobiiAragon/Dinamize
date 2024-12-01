@@ -26,13 +26,19 @@ if (isset($_SESSION['user_id'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="<?php echo (isset($_COOKIE['darkMode']) && $_COOKIE['darkMode'] === 'true') ? 'dark-mode' : ''; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dinamize - Digital Kiosk</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/fontAwesome/all.min.css">
+    <script>
+        // Aplicar la clase dark-mode al cargar la página si está en localStorage
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
 </head>
 <body>
     <header>

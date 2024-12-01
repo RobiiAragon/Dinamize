@@ -46,21 +46,65 @@ function loadImage(event) {
     };
 }
 
-// Función para habilitar la edición de un campo
 function enableEdit(fieldId) {
     const field = document.getElementById(fieldId);
-    field.readOnly = false;
-    field.focus();
-    field.onblur = function() {
-        field.readOnly = true;
-        updateField(fieldId, field.value);
-    };
+    if (field.tagName === 'SELECT') {
+        field.disabled = false;
+        field.focus();
+        field.onblur = function() {
+            field.disabled = true;
+            updateField(fieldId, field.value);
+        };
+    } else {
+        field.readOnly = false;
+        field.focus();
+        field.onblur = function() {
+            field.readOnly = true;
+            updateField(fieldId, field.value);
+        };
+    }
 }
 
-// Función para actualizar un campo del formulario
+// Función para actualizar un campo específico del formulario
 function updateField(fieldId, value) {
     const formData = new FormData();
     formData.append(fieldId, value);
+
+    fetch('backend/update_user_info.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(data.message);
+            } else {
+                showMessage(data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error al actualizar los datos', 'error');
+        });
+}
+
+function showMessage(message, type = 'success') {
+    const tooltipContainer = document.createElement('div');
+    tooltipContainer.className = `tooltip-container ${type}`;
+    const tooltipContent = document.createElement('div');
+    tooltipContent.className = 'tooltip-content';
+    tooltipContent.innerText = message;
+    tooltipContainer.appendChild(tooltipContent);
+    document.body.appendChild(tooltipContainer);
+
+    setTimeout(() => {
+        tooltipContainer.remove();
+    }, 3000);
+}
+// Función para guardar los cambios del formulario
+function saveChanges() {
+    const form = document.getElementById('user-info-form');
+    const formData = new FormData(form);
 
     fetch('backend/update_user_info.php', {
         method: 'POST',
@@ -76,20 +120,6 @@ function updateField(fieldId, value) {
     })
     .catch(error => {
         console.error('Error:', error);
-        showMessage('Error al actualizar el campo', 'error');
+        showMessage('Error al actualizar los datos', 'error');
     });
-}
-
-function showMessage(message, type = 'success') {
-    const tooltipContainer = document.createElement('div');
-    tooltipContainer.className = `tooltip-container ${type}`;
-    const tooltipContent = document.createElement('div');
-    tooltipContent.className = 'tooltip-content';
-    tooltipContent.innerText = message;
-    tooltipContainer.appendChild(tooltipContent);
-    document.body.appendChild(tooltipContainer);
-
-    setTimeout(() => {
-        tooltipContainer.remove();
-    }, 3000);
 }

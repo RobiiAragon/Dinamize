@@ -1,32 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Aplicar modo oscuro antes de que se cargue la página
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    if (isDarkMode) {
-        document.body.classList.add('dark-mode');
-    }
-    
     const darkModeToggle = document.getElementById('darkModeToggle');
     const icon = darkModeToggle.querySelector('i');
     
-    // Actualizar el icono según el modo actual
-    if (isDarkMode) {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
+    // Función para actualizar el modo
+    const updateTheme = (isDark, withTransition = true) => {
+        if (withTransition) {
+            document.body.classList.add('transition');
+            window.setTimeout(() => {
+                document.body.classList.remove('transition');
+            }, 300);
+        }
+        document.body.classList.toggle('dark-mode', isDark);
+        document.documentElement.classList.toggle('dark-mode', isDark);
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        
+        // Actualizar icono
+        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        
+        // Guardar preferencia en localStorage y cookies
+        localStorage.setItem('darkMode', isDark);
+        document.cookie = `darkMode=${isDark}; path=/; max-age=31536000`; // 1 año
+    };
+    
+    // Verificar preferencia guardada
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const storedTheme = localStorage.getItem('darkMode');
+    
+    // Aplicar tema inicial sin transición
+    if (storedTheme !== null) {
+        updateTheme(storedTheme === 'true', false);
+    } else {
+        updateTheme(prefersDark.matches, false);
     }
     
-    // Manejar el cambio de modo
+    // Escuchar cambios en el botón
     darkModeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        
-        // Actualizar el icono
-        if (document.body.classList.contains('dark-mode')) {
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-            localStorage.setItem('darkMode', 'true');
-        } else {
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
-            localStorage.setItem('darkMode', 'false');
+        updateTheme(!document.body.classList.contains('dark-mode'));
+    });
+    
+    // Escuchar cambios en preferencias del sistema
+    prefersDark.addEventListener('change', (e) => {
+        if (localStorage.getItem('darkMode') === null) {
+            updateTheme(e.matches, false);
         }
     });
 });

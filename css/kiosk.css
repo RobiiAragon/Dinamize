@@ -1,10 +1,27 @@
+.content-header {
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left; /* Centra el título */
+}
+
+.content-header h1 {
+    margin: 0;
+    font-size: 2em;
+    color: #333; /* O el color que combine con tu diseño */
+}
+
 .kiosk-container {
-    width: 100%;
+    width: 50%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     overflow-y: auto;
     min-height: calc(100vh - 100px); /* Ajusta según el header */
+}
+
+/* Si necesitas ajustar la altura también, puedes agregar: */
+.kiosk-container svg {
+    height: auto; /* Mantiene la proporción del aspecto */
 }
 
 .main-content {

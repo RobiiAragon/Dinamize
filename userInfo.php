@@ -178,9 +178,9 @@ CloseCon($conn);
                     <div class="form-group">
                         <label for="genero">Género:</label>
                         <select id="genero" name="genero" disabled>
+                            <option value="Seleccione Genero" <?php echo ($genero == 'Seleccione Genero') ? 'selected' : ''; ?>>Seleccione Genero</option>
                             <option value="Masculino" <?php echo ($genero == 'Masculino') ? 'selected' : ''; ?>>Masculino</option>
                             <option value="Femenino" <?php echo ($genero == 'Femenino') ? 'selected' : ''; ?>>Femenino</option>
-                            <option value="No binario" <?php echo ($genero == 'No binario') ? 'selected' : ''; ?>>No binario</option>
                         </select>
                         <i class="fas fa-edit edit-icon" onclick="enableEdit('genero');"></i>
                     </div>
@@ -188,7 +188,6 @@ CloseCon($conn);
                         <label for="password">Contraseña:</label>
                         <button type="button" class="btn-change-password">Cambiar Contraseña</button>
                     </div>
-                    <button type="submit" class="btn-save" style="display: none;">Guardar</button>
                 </form>
         </main>
     </div>

@@ -119,7 +119,11 @@ CloseCon($conn);
                 </div>
                 <div class="form-group">
                     <label for="nuevoLogo">Logo del Local:</label>
+                    <label for="nuevoLogo" class="custom-file-upload">
+                        Seleccionar archivo
+                    </label>
                     <input type="file" id="nuevoLogo" name="logo" accept="image/*">
+                    <span id="file-name"></span>
                 </div>
                 <input type="hidden" id="croppedImage" name="croppedImage">
                 <button type="submit" class="btn-save">Añadir</button>

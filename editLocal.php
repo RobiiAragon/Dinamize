@@ -153,8 +153,8 @@ CloseCon($conn);
                     <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="diasLaborales">Días Laborales:</label>
-                    <input type="text" id="diasLaborales" name="diasLaborales" value="<?php echo $diasLaborales; ?>">
+                    <label for="DiasLaborales">Días Laborales:</label>
+                    <input type="text" id="DiasLaborales" name="DiasLaborales" value="<?php echo $diasLaborales; ?>">
                 </div>
                 <button type="submit" class="btn-save">Guardar</button>
             </form>
