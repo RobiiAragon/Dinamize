@@ -6,7 +6,9 @@
     <title>Login - Dinamize</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/loginRegister.css">
+    <link rel="stylesheet" href="css/fontAwesome/all.min.css">
 </head>
+
 <body>
     <header>
         <div class="logo-container">
@@ -56,5 +58,9 @@
             }
         }
     </script>
+    <script src="js/darkMode.js"></script>
+    <button class="dark-mode-toggle" id="darkModeToggle" title="Cambiar modo oscuro">
+    <i class="fas fa-moon"></i>
+</button>
 </body>
 </html>

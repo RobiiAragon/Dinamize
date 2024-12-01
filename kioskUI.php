@@ -37,6 +37,7 @@ CloseCon($conn);
     <title>Digital Kiosk</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/kiosk.css">
+    <link rel="stylesheet" href="css/fontAwesome/all.min.css">
 </head>
 <body>
 <?php if(isset($_SESSION['message'])): ?>
@@ -383,5 +384,9 @@ CloseCon($conn);
             <ul id="business-list"></ul>
         </div>
     </div>
+    <button class="dark-mode-toggle" id="darkModeToggle" title="Cambiar modo oscuro">
+    <i class="fas fa-moon"></i>
+</button>
+<script src="js/darkMode.js"></script>
 </body>
 </html>

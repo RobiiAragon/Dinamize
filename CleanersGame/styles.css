@@ -27,6 +27,11 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+#scoreboardContainer:hover {
+    transform: translateY(-50%) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
 #nameInput {
     padding: 12px 20px;
     margin-bottom: 15px;
@@ -66,4 +71,101 @@ body {
 ::placeholder {
     color: #666;
     opacity: 0.7;
+}
+/* Agregar al styles.css */
+#scoreboardContainer {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    border-radius: 15px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: 300px;
+    transition: all 0.3s ease;
+}
+
+#scoreboardContainer h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#highScoresTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    color: #fff;
+}
+
+#highScoresTable th {
+    padding: 12px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+#highScoresTable td {
+    padding: 12px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+#highScoresTable tr:hover td {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+}
+
+#highScoresTable th:first-child,
+#highScoresTable td:first-child {
+    border-radius: 8px 0 0 8px;
+    width: 40px;
+}
+
+#highScoresTable th:last-child,
+#highScoresTable td:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+/* Estilo para el jugador actual */
+#highScoresTable tr.current-player td {
+    background: rgba(76, 175, 80, 0.2);
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+/* Estilos para los primeros 3 lugares */
+#highScoresTable tr:nth-child(1) td {
+    background: rgba(255, 215, 0, 0.15);
+}
+
+#highScoresTable tr:nth-child(2) td {
+    background: rgba(192, 192, 192, 0.15);
+}
+
+#highScoresTable tr:nth-child(3) td {
+    background: rgba(205, 127, 50, 0.15);
+}
+
+/* Animación para nuevos puntajes */
+@keyframes newScore {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.new-score {
+    animation: newScore 0.5s ease;
 }

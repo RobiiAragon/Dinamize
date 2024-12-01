@@ -26,3 +26,4 @@ showSlide(currentSlide);
 
 // Desplazar automáticamente cada 2 segundos
 setInterval(nextSlide, 2000);
+

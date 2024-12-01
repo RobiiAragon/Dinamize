@@ -37,6 +37,7 @@ CloseCon($conn);
     <link rel="stylesheet" href="css/fontAwesome/all.min.css">
     <link rel="stylesheet" href="libs/cropperjs/cropper.min.css">
 </head>
+
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
@@ -132,7 +133,11 @@ CloseCon($conn);
             </div>
         </main>
     </div>
+    <script src="js/darkMode.js"></script>
     <script src="libs/cropperjs/cropper.min.js"></script>
     <script src="js/manageLocals.js"></script>
+    <button class="dark-mode-toggle" id="darkModeToggle" title="Cambiar modo oscuro">
+    <i class="fas fa-moon"></i>
+</button>
 </body>
 </html>

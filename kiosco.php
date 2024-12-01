@@ -28,6 +28,7 @@ CloseCon($conn);
     <title>Dinamize - Digital Kiosk</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/kiosco.css">
+    <link rel="stylesheet" href="css/fontAwesome/all.min.css">
 </head>
 <body>
     <header>
@@ -108,6 +109,10 @@ CloseCon($conn);
         <p>&copy; 2024 Dinamize. All rights reserved.</p>
     </footer>
     <script src="js/scripts.js"></script>
+    <script src="js/darkMode.js"></script>
     <script src="js/kiosco.js"></script>
+    <button class="dark-mode-toggle" id="darkModeToggle" title="Cambiar modo oscuro">
+    <i class="fas fa-moon"></i>
+</button>
 </body>
 </html>

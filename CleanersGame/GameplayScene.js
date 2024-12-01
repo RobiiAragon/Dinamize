@@ -1,3 +1,5 @@
+// Agregar al inicio de GameplayScene.js
+let highScores = [];
 let playerName = '';
 let playerNameText;
 let player;
@@ -42,9 +44,25 @@ const config = {
 
 let game;
 
+// Modificar el evento de click del startButton
+document.addEventListener('DOMContentLoaded', () => {
+    // Cargar y mostrar los puntajes al inicio
+    const initialScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    updateScoreBoard(initialScores);
+});
+
 document.getElementById('startButton').addEventListener('click', () => {
     playerName = document.getElementById('nameInput').value;
     if (playerName.trim() !== '') {
+        // Verificar si el jugador ya existe y obtener su mejor puntaje
+        const scores = JSON.parse(localStorage.getItem('highScores')) || [];
+        const existingPlayer = scores.find(item => item.name === playerName);
+        
+        if (existingPlayer) {
+            // Mostrar el mejor puntaje del jugador
+            console.log(`Mejor puntaje anterior: ${existingPlayer.score}`);
+        }
+        
         document.getElementById('nameInputContainer').style.display = 'none';
         game = new Phaser.Game(config);
     }
@@ -87,7 +105,7 @@ function create() {
     // Fondo del juego
     const background = this.add.image(0, 0, 'background');
     background.setOrigin(0, 0);
-    background.setDisplaySize(800, 600);
+    background.setDisplaySize(1280, 720);
 
     // Generación de texturas
     const graphics = this.add.graphics();
@@ -104,7 +122,7 @@ function create() {
     // Textura de basura
     graphics.fillStyle(0x808080, 1.0);
     graphics.fillRect(0, 0, 20, 20);
-    graphics.generateTexture('trashTexture', 20, 20);
+    graphics.generateTexture('trashTexture', 15, 20);
     graphics.destroy();
 
     // 2. CREACIÓN DE ELEMENTOS DEL JUEGO
@@ -182,9 +200,9 @@ function create() {
         trashTimers.push(timer);
     }
     // Objetos del mall
-    createMallObject(this, 200, 150, 'bench', 100, 50);
+    createMallObject(this, 200, 150, 'bench', 100, 60);
     createMallObject(this, 400, 150, 'plant', 50, 70);
-    createMallObject(this, 600, 150, 'bench', 100, 70);
+    createMallObject(this, 600, 150, 'bench', 100, 60);
     createMallObject(this, 200, 400, 'plant', 50, 70);
     createMallObject(this, 400, 400, 'kiosk', 100, 50);
     createMallObject(this, 600, 400, 'plant', 50, 70);
@@ -382,7 +400,7 @@ function dropTrash(npc) {
 }
 
 function collectTrash(player, trash) {
-    if (inventory < 7) {
+    if (inventory < 10) {
         trash.destroy();
         inventory++;
         score += 10;
@@ -427,10 +445,65 @@ function updateTimer() {
     }
 }
 
+// Modificar la función updateHighScores
+function updateHighScores(playerName, score) {
+    let scores = JSON.parse(localStorage.getItem('highScores')) || [];
+    const existingScoreIndex = scores.findIndex(item => item.name === playerName);
+    
+    if (existingScoreIndex !== -1) {
+        if (score > scores[existingScoreIndex].score) {
+            scores[existingScoreIndex].score = score;
+        }
+    } else {
+        scores.push({ name: playerName, score: score });
+    }
+    
+    scores.sort((a, b) => b.score - a.score);
+    scores = scores.slice(0, 10);
+    
+    localStorage.setItem('highScores', JSON.stringify(scores));
+    updateScoreBoard(scores);
+}
+
+// Modificar la función updateScoreBoard
+function updateScoreBoard(scores) {
+    const tbody = document.querySelector('#highScoresTable tbody');
+    tbody.innerHTML = '';
+    
+    if (scores.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td colspan="3">No hay puntajes aún</td>
+        `;
+        tbody.appendChild(row);
+        return;
+    }
+    
+    scores.forEach((item, index) => {
+        const row = document.createElement('tr');
+        const isCurrentPlayer = item.name === playerName;
+        
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.name}${isCurrentPlayer ? ' (Tú)' : ''}</td>
+            <td>${item.score}</td>
+        `;
+        
+        if (isCurrentPlayer) {
+            row.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            row.style.fontWeight = 'bold';
+        }
+        
+        tbody.appendChild(row);
+    });
+}
+
+// Modificar la función endGame para incluir la actualización de puntajes
 function endGame() {
     this.physics.pause();
     trashTimers.forEach(timer => timer.paused = true);
     gameOverText.setText('Juego terminado! Puntaje final: ' + score);
     gameOverText.setVisible(true);
-    isPaused = true; // Asegurarse de que el juego esté pausado
+    isPaused = true;
+    updateHighScores(playerName, score);
 }

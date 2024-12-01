@@ -160,7 +160,11 @@ CloseCon($conn);
             </form>
         </main>
     </div>
+    <script src="js/darkMode.js"></script>
     <script src="libs/cropperjs/cropper.min.js"></script>
     <script src="js/manageLocals.js"></script>
+    <button class="dark-mode-toggle" id="darkModeToggle" title="Cambiar modo oscuro">
+    <i class="fas fa-moon"></i>
+</button>
 </body>
 </html>

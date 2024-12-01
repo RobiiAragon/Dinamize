@@ -11,7 +11,6 @@
     font-weight: normal;
     font-style: normal;
 }
-
 html, body {
     height: 100%;
     margin: 0;
@@ -547,7 +546,6 @@ header {
     padding: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
-    transition: all 0.3s ease;
 }
 
 .main-content section h1 {
@@ -750,4 +748,148 @@ header {
 
 #business-list li:hover {
     background-color: #f1f1f1;
+}
+
+/* Estilos para el botón de modo oscuro */
+.dark-mode-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #277365;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.1);
+    background: #f28b0c;
+}
+
+.dark-mode-toggle i {
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+/* Estilos para el modo oscuro */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+body.dark-mode .main-content {
+    background-color: #2d2d2d;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
+    background-color: #3d3d3d;
+    border-color: #4d4d4d;
+    color: #fff;
+}
+
+body.dark-mode .form-group input[readonly],
+body.dark-mode .form-group select[disabled] {
+    background-color: #2d2d2d;
+    color: #aaa;
+}
+
+body.dark-mode .sidebar {
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+}
+
+body.dark-mode header {
+    background-color: #1a1a1a;
+}
+
+body.dark-mode .tooltip-container {
+    background-color: #2d2d2d;
+}
+/* Estilos adicionales para modo oscuro */
+body.dark-mode .carousel-item {
+    background-color: #2d2d2d;
+    border-color: #4d4d4d;
+    color: #fff;
+}
+
+body.dark-mode .hero {
+    background-color: #f28b0c;
+}
+
+body.dark-mode .carousel-control {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .carousel-item h2 {
+    color: #f28b0c; /* Mantener el color naranja para los títulos */
+}
+
+/* Ajustar color de h1 y otros textos en modo oscuro */
+body.dark-mode .main-content h1,
+body.dark-mode .main-content h2,
+body.dark-mode .main-content h3,
+body.dark-mode .main-content h4,
+body.dark-mode .main-content h5,
+body.dark-mode .main-content h6 {
+    color: #fff;
+}
+
+/* Mantener colores específicos */
+body.dark-mode .hero h1 {
+    color: #fff;
+}
+
+body.dark-mode .properties-panel h2 {
+    color: #f28b0c;
+}
+
+/* Mantener los colores originales para los mensajes de éxito/error */
+.tooltip-container.success {
+    background-color: #277365 !important; /* Usar !important para asegurar que no se sobrescriba */
+    color: white !important;
+}
+
+.tooltip-container.error {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+/* Otros elementos que deberían mantener sus colores originales en modo oscuro */
+body.dark-mode .btn-save,
+body.dark-mode .btn-change-password,
+body.dark-mode .btn-crop {
+    background-color: #277365;
+    color: #fff;
+}
+
+body.dark-mode .btn-save:hover,
+body.dark-mode .btn-change-password:hover,
+body.dark-mode .btn-crop:hover {
+    background-color: #f28b0c;
+}
+
+/* Mantener los estilos de los iconos de edición */
+body.dark-mode .edit-icon {
+    background: #f28b0c;
+    color: white;
+}
+
+body.dark-mode .edit-icon:hover {
+    background: #277365;
+}
+body.dark-mode,
+html.dark-mode {
+    background-color: #1a1a1a;
+    color: #fff;
 }
