@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(popup);
 
     locals.forEach(local => {
-        local.addEventListener('click', function() {
+        // Agregar el event listener al div local y a la imagen
+        const handleClick = function() {
             const nombre = local.getAttribute('data-nombre');
             const logo = local.getAttribute('data-logo');
             const descripcion = local.getAttribute('data-descripcion');
@@ -32,7 +33,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p><strong>Instagram:</strong> <a href="${instagram}" target="_blank">${instagram}</a></p>
             `;
             popup.style.display = 'block';
-        });
+        };
+
+        // Agregar el evento al div local
+        local.addEventListener('click', handleClick);
+        
+        // Agregar el evento a la imagen dentro del div
+        const localImage = local.querySelector('img');
+        if (localImage) {
+            localImage.addEventListener('click', function(e) {
+                e.stopPropagation(); // Evitar que el evento se dispare dos veces
+                handleClick();
+            });
+        }
     });
 
     popup.addEventListener('click', function() {
@@ -52,6 +65,6 @@ function formatTime(time) {
     const minutes = parseInt(minute);
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
-    hours = hours ? hours : 12; // La hora '0' debe ser '12'
+    hours = hours ? hours : 12;
     return `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${ampm}`;
 }

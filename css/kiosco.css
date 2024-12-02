@@ -1,41 +1,68 @@
+.main-content {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    max-width: 2000px;
+    margin: 0;
+    height: 200vh;
+    overflow: hidden;
+}
+
 .map-container {
-    width: 60%;
-    float: left;
-    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
 }
 
 .map {
     position: relative;
     width: 100%;
-    height: 600px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    height: 100%;
+    background-color: #f0f0f000;
 }
 
 .local {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background-color: #fff;
-    border: 1px solid #ccc;
+    position: relative;
+    z-index: 2; /* Encima del fondo */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0);
     text-align: center;
     cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.local:hover {
+    transform: scale(1.05);
+    z-index: 2;
 }
 
 .local img {
-    width: 50px;
-    height: 50px;
+    width: 100px; /* Ajusta el tamaño según tus necesidades */
+    height: 100px; /* Ajusta el tamaño según tus necesidades */
+    object-fit: cover; /* Mantiene la proporción de la imagen */
 }
 
 .local p {
-    margin: 0;
-    font-size: 14px;
+    margin: 5px 0;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .container {
-    width: 35%;
-    float: left; /* Cambiado de right a left */
     padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    max-width: 100%;
+    overflow: auto;
 }
 
 .info-popup {
@@ -44,12 +71,16 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
+    width: 90%;
+    max-width: 600px;
+    height: 80%;
+    max-height: 600px;
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    overflow: auto;
 }
 
 .info-popup p {
@@ -57,8 +88,156 @@
 }
 
 .info-popup img {
-    width: 100px; /* Ajusta el tamaño según tus necesidades */
-    height: auto;
+    width: 250px;
+    height: 250px;
     display: block;
-    margin: 0 auto 10px; /* Centra la imagen y añade un margen inferior */
+    margin: 0 auto 10px;
+}
+
+.hero {
+    padding: 20px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: 2em;
+    color: var(--text-primary);
+}
+
+.hero p {
+    margin: 10px 0;
+    color: var(--text-secondary);
+}
+
+.features {
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.carousel {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-item {
+    min-width: 100%;
+    padding: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .main-content {
+        padding: 1rem;
+        overflow-y: auto;
+    }
+    
+    .map-container,
+    .container {
+        max-width: 100%;
+        margin: 0;
+    }
+}
+
+/* Modo oscuro para elementos específicos de kiosco.php */
+body.dark-mode .map {
+    background-color: #2d2d2d;
+    border-color: #404040;
+}
+
+body.dark-mode .local {
+    background-color: rgba(45, 45, 45, 0.8);
+    border-color: rgba(64, 64, 64, 0.8);
+}
+
+body.dark-mode .local:hover {
+    background-color: rgba(55, 55, 55, 0.9);
+    box-shadow: 0 0 15px rgba(242, 139, 12, 0.3);
+}
+
+body.dark-mode .local p {
+    color: #fff;
+}
+
+body.dark-mode .info-popup {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+body.dark-mode .info-popup img {
+    filter: brightness(0.9);
+}
+
+body.dark-mode .map-container {
+    background-color: #1a1a1a;
+    border-color: #404040;
+}
+
+body.dark-mode .container {
+    background-color: #2d2d2d;
+    border-color: #404040;
+}
+
+body.dark-mode .local img {
+    filter: brightness(0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.map,
+.local,
+.info-popup,
+.map-container,
+.container {
+    transition: background-color 0.3s ease, 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease;
+}
+
+body.dark-mode .dark-mode-toggle {
+    background-color: #f28b0c;
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+    background-color: #277365;
+}
+
+body.dark-mode .local a {
+    color: #f28b0c;
+}
+
+body.dark-mode .local a:hover {
+    color: #fff;
+}
+
+body.dark-mode .map {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode [data-theme="dark"] .local {
+    background-color: rgba(45, 45, 45, 0.8);
+}
+
+.svg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Fondo */
+}
+
+.svg-container svg {
+    width: 100%;
+    height: 100%;
+    display: block;
 }

@@ -924,3 +924,157 @@ input[type="file"] {
     margin-left: 10px;
     font-style: italic;
 }
+
+
+/* Ajustes para formato 16:9 */
+@media screen and (aspect-ratio: 16/9) {
+    .main-content {
+        flex-direction: row;
+        margin-left: 0;
+        padding: 2rem;
+    }
+
+    .map-container,
+    .container {
+        max-width: 50%;
+        margin: 0;
+    }
+
+    .map {
+        height: 60vh;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+    }
+
+    .local img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .local p {
+        font-size: 12px;
+    }
+
+    .carousel-item {
+        padding: 1.5rem;
+    }
+
+    .carousel-item h2 {
+        font-size: 1.5rem;
+    }
+
+    .carousel-item p {
+        font-size: 1rem;
+    }
+}
+
+/* Mejoras en formato 9:16 */
+@media screen and (aspect-ratio: 9/21) {
+    .main-content {
+        flex-direction: column;
+        margin-left: 0;
+        padding: 1rem;
+        overflow-y: auto; /* Permitir desplazamiento vertical */
+        max-height: 100vh; /* Limitar altura al viewport */
+    }
+
+    .map-container,
+    .container {
+        max-width: 80%;
+        margin: 0;
+    }
+
+    .map {
+        height: 35vh; /* Ajustar altura para mejor visibilidad */
+    }
+
+    .hero {
+        padding: 1rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem; /* Reducir para adaptarse al ancho */
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+        /* Reducir tamaño del menú y logo */
+        .sidebar {
+            width: 60px; /* Reducir ancho del menú */
+        }
+    
+        .sidebar .sidebar-header h2 {
+            display: none; /* Ocultar texto del logo */
+        }
+    
+        .sidebar .sidebar-header img {
+            height: 30px; /* Reducir tamaño del logo */
+            margin: 0 auto;
+        }
+
+    .local img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .local p {
+        font-size: 9px;
+    }
+
+    .carousel-item {
+        padding: 0.5rem;
+    }
+
+    .carousel-item h2 {
+        font-size: 1rem;
+    }
+
+    .carousel-item p {
+        font-size: 0.8rem;
+    }
+
+    /* Asegurar que secciones se muestren correctamente */
+    .main-content section {
+        display: block;
+    }
+}
+
+/* Ajustes para zoom al 150% en formato 9:16 */
+@media screen and (aspect-ratio: 9/16) and (min-width: 500px) {
+    .main-content {
+        overflow-y: scroll;
+    }
+}
+
+/* Ajustes generales para mantener la proporcionalidad */
+@media screen and (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .map-container,
+    .container {
+        max-width: 100%;
+    }
+
+    .map {
+        height: 50vh;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+}
