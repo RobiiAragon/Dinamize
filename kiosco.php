@@ -49,19 +49,19 @@ class KioscoController {
 }
 
 $coordenadasLocales = [
-    1 => ['x' => 3.29, 'y' => 5.6, 'width' => 104.82, 'height' => 149.61],
+    1 => ['x' => 3.29, 'y' => 30, 'width' => 100, 'height' => 149],
     2 => ['x' => 108.11, 'y' => 5.6, 'width' => 91.92, 'height' => 88.85],
     3 => ['x' => 200.03, 'y' => 5.6, 'width' => 84.77, 'height' => 88.85],
     4 => ['x' => 284.79, 'y' => 5.6, 'width' => 92.77, 'height' => 88.85],
-    5 => ['x' => 377.56, 'y' => 5.6, 'width' => 83.91, 'height' => 124.94],
-    6 => ['x' => 377.56, 'y' => 130.53, 'width' => 83.91, 'height' => 60.6],
-    7 => ['x' => 377.56, 'y' => 191.13, 'width' => 83.91, 'height' => 122.89],
+    5 => ['x' => 377.56, 'y' => 25, 'width' => 83.91, 'height' => 124.94],
+    6 => ['x' => 377.56, 'y' => 125, 'width' => 80, 'height' => 60],
+    7 => ['x' => 377.56, 'y' => 211.13, 'width' => 83.91, 'height' => 122.89],
     8 => ['x' => 377.56, 'y' => 314.02, 'width' => 83.91, 'height' => 81.45],
-    9 => ['x' => 377.56, 'y' => 395.47, 'width' => 83.91, 'height' => 171.83],
+    9 => ['x' => 377.56, 'y' => 430.47, 'width' => 83.91, 'height' => 171.83],
     10 => ['x' => 377.56, 'y' => 567.3, 'width' => 83.91, 'height' => 80.17],
-    11 => ['x' => 377.56, 'y' => 647.47, 'width' => 83.91, 'height' => 71.74],
-    12 => ['x' => 85.13, 'y' => 203.21, 'width' => 103.92, 'height' => 49.36],
-    13 => ['x' => 132.11, 'y' => 252.57, 'width' => 126.64, 'height' => 66.05]
+    11 => ['x' => 377.56, 'y' => 642, 'width' => 80, 'height' => 73],
+    12 => ['x' => 79, 'y' => 215, 'width' => 70, 'height' => 90, 'transform' => 'rotate(45, 195, 260)'],
+    13 => ['x' => 140, 'y' => 210, 'width' => 100, 'height' => 100, 'transform' => 'rotate(45, 195, 260)']
 ];
 
 $controller = new KioscoController();
@@ -110,16 +110,7 @@ $locales = $controller->getLocales();
         <div class="map-container">
             <div class="map" role="grid">
                 <div class="svg-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
-                        <defs>
-                        <style>
-                        .cls-1 {
-                            fill: none;
-                            stroke: #1d1d1b;
-                            stroke-miterlimit: 10;
-                        }
-                        </style>
-                        </defs>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" preserveAspectRatio="xMidYMin meet">
                         <g id="local1">
                             <polygon class="cls-1" points="3.29 5.6 108.11 5.6 110.15 155.21 3.29 155.21 3.29 5.6"/>
                             <?php foreach ($locales as $local): ?>
@@ -469,7 +460,10 @@ $locales = $controller->getLocales();
                                         x="<?= $coordenadasLocales[$local['NumeroLocal']]['x'] ?>" 
                                         y="<?= $coordenadasLocales[$local['NumeroLocal']]['y'] ?>" 
                                         width="<?= $coordenadasLocales[$local['NumeroLocal']]['width'] ?>" 
-                                        height="<?= $coordenadasLocales[$local['NumeroLocal']]['height'] ?>">
+                                        height="<?= $coordenadasLocales[$local['NumeroLocal']]['height'] ?>"
+                                        <?php if (isset($coordenadasLocales[$local['NumeroLocal']]['transform'])): ?>
+                                            transform="<?= $coordenadasLocales[$local['NumeroLocal']]['transform'] ?>"
+                                        <?php endif; ?>>
                                         <div xmlns="http://www.w3.org/1999/xhtml" class="local" 
                                              id="localDiv<?= htmlspecialchars($local['NumeroLocal']) ?>"
                                              data-nombre="<?= htmlspecialchars($local['nombre']) ?>"
@@ -500,7 +494,10 @@ $locales = $controller->getLocales();
                                         x="<?= $coordenadasLocales[$local['NumeroLocal']]['x'] ?>" 
                                         y="<?= $coordenadasLocales[$local['NumeroLocal']]['y'] ?>" 
                                         width="<?= $coordenadasLocales[$local['NumeroLocal']]['width'] ?>" 
-                                        height="<?= $coordenadasLocales[$local['NumeroLocal']]['height'] ?>">
+                                        height="<?= $coordenadasLocales[$local['NumeroLocal']]['height'] ?>"
+                                        <?php if (isset($coordenadasLocales[$local['NumeroLocal']]['transform'])): ?>
+                                            transform="<?= $coordenadasLocales[$local['NumeroLocal']]['transform'] ?>"
+                                        <?php endif; ?>>
                                         <div xmlns="http://www.w3.org/1999/xhtml" class="local" 
                                              id="localDiv<?= htmlspecialchars($local['NumeroLocal']) ?>"
                                              data-nombre="<?= htmlspecialchars($local['nombre']) ?>"
