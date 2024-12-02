@@ -7,8 +7,13 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Mover Phaser después del CSS -->
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
+    <div id="mainContainer">
+        <div id="bossContainer">
+            <img id="bossImage" src="assets/boss/Gud.png" alt="Estado del Jefe">
+        </div>
     <div id="gameContainer"></div>
     <!-- Agregar al index.html después del gameContainer -->
 <div id="scoreboardContainer">
@@ -24,6 +29,27 @@
         <tbody>
         </tbody>
     </table>
+</div>
+<!-- Agregar después del scoreboardContainer -->
+<div id="settingsButton">⚙️</div>
+
+<!-- Agregar el popup de ajustes -->
+<div id="settingsPopup" class="popup">
+    <div class="popup-content">
+        <span class="close">&times;</span>
+        <h2>Ajustes</h2>
+        <div class="settings-option">
+            <button id="clearScores">Limpiar Tabla de Puntajes</button>
+        </div>
+        <div class="settings-option">
+            <label for="gameDifficulty">Dificultad:</label>
+            <select id="gameDifficulty">
+                <option value="easy">Fácil</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Difícil</option>
+            </select>
+        </div>
+    </div>
 </div>
     <div id="nameInputContainer">
         <input type="text" id="nameInput" placeholder="Ingresa tu nombre">

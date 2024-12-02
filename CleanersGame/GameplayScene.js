@@ -1,4 +1,6 @@
 // Agregar al inicio de GameplayScene.js
+const PERSONAL_BESTS_KEY = 'personalBests';
+
 let highScores = [];
 let playerName = '';
 let playerNameText;
@@ -41,32 +43,105 @@ const config = {
         }
     }
 };
+let game = null;
 
-let game;
 
-// Modificar el evento de click del startButton
-document.addEventListener('DOMContentLoaded', () => {
-    // Cargar y mostrar los puntajes al inicio
-    const initialScores = JSON.parse(localStorage.getItem('highScores')) || [];
-    updateScoreBoard(initialScores);
-});
-
-document.getElementById('startButton').addEventListener('click', () => {
-    playerName = document.getElementById('nameInput').value;
-    if (playerName.trim() !== '') {
-        // Verificar si el jugador ya existe y obtener su mejor puntaje
-        const scores = JSON.parse(localStorage.getItem('highScores')) || [];
-        const existingPlayer = scores.find(item => item.name === playerName);
-        
-        if (existingPlayer) {
-            // Mostrar el mejor puntaje del jugador
-            console.log(`Mejor puntaje anterior: ${existingPlayer.score}`);
-        }
-        
-        document.getElementById('nameInputContainer').style.display = 'none';
-        game = new Phaser.Game(config);
+const DIFFICULTY_SETTINGS = {
+    easy: {
+        minDelay: 7000,    // 7 segundos
+        maxDelay: 12000,   // 12 segundos
+        penalty: 5,        // Penalización de 5 puntos
+        inventorySize: 15  // Inventario más grande en fácil
+    },
+    normal: {
+        minDelay: 5000,    // 5 segundos
+        maxDelay: 9000,    // 9 segundos
+        penalty: 10,       // Penalización de 10 puntos
+        inventorySize: 10  // Inventario normal
+    },
+    hard: {
+        minDelay: 3000,    // 3 segundos
+        maxDelay: 6000,    // 6 segundos
+        penalty: 20,       // Penalización de 20 puntos
+        inventorySize: 5   // Inventario pequeño en difícil
     }
+};
+
+let currentDifficulty = 'normal';
+
+let gameStarted = false;
+
+// Agregar al inicio de GameplayScene.js
+document.addEventListener('DOMContentLoaded', () => {
+     // Cargar y mostrar los puntajes guardados al inicio
+     const savedScores = JSON.parse(localStorage.getItem('highScores')) || [];
+     updateScoreBoard(savedScores);
+ 
+     const settingsBtn = document.getElementById('settingsButton');
+     const popup = document.getElementById('settingsPopup');
+     const closeBtn = document.querySelector('.close');
+     const clearScoresBtn = document.getElementById('clearScores');
+     const difficultySelect = document.getElementById('gameDifficulty');
+     const nameInput = document.getElementById('nameInput');
+     const startButton = document.getElementById('startButton');
+     const nameInputContainer = document.getElementById('nameInputContainer');
+ 
+
+    startButton.addEventListener('click', () => {
+        const name = nameInput.value.trim();
+        if (name !== '') {
+            playerName = name;
+            nameInputContainer.style.display = 'none';
+            if (!gameStarted) {
+                gameStarted = true;
+                game = new Phaser.Game(config);
+            }
+        } else {
+            alert('Por favor ingresa un nombre');
+        }
+    });
+    
+
+    // También permitir iniciar con Enter
+    nameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            startButton.click();
+        }
+    });
+
+    settingsBtn.onclick = () => popup.style.display = "block";
+    closeBtn.onclick = () => popup.style.display = "none";
+    
+    window.onclick = (e) => {
+        if (e.target == popup) {
+            popup.style.display = "none";
+        }
+    }
+
+    clearScoresBtn.onclick = () => {
+        localStorage.removeItem('highScores');
+        localStorage.removeItem(PERSONAL_BESTS_KEY);
+        updateScoreBoard([]);
+    }
+
+    // 3. Modificar la función de cambio de dificultad en el event listener
+    difficultySelect.onchange = (e) => {
+    currentDifficulty = e.target.value;
+    updateNPCTimers();
+    // Actualizar el texto del inventario con el nuevo tamaño máximo
+    const maxInventory = DIFFICULTY_SETTINGS[currentDifficulty].inventorySize;
+    inventoryText.setText('Inventario: ' + inventory + '/' + maxInventory);
+};
+    
 });
+
+function updateNPCTimers() {
+    const settings = DIFFICULTY_SETTINGS[currentDifficulty];
+    trashTimers.forEach(timer => {
+        timer.delay = Phaser.Math.Between(settings.minDelay, settings.maxDelay);
+        timer.reset(timer.delay);
+    });
+}
 
 function preload() {
     this.load.image('background', 'assets/Background.png');
@@ -191,8 +266,9 @@ function create() {
         npc.setCollideWorldBounds(true);
         npcs.push(npc);
 
+        const settings = DIFFICULTY_SETTINGS[currentDifficulty];
         const timer = this.time.addEvent({
-            delay: Phaser.Math.Between(5000, 9000),
+            delay: Phaser.Math.Between(settings.minDelay, settings.maxDelay),
             callback: () => dropTrash(npc),
             callbackScope: this,
             loop: true
@@ -266,7 +342,8 @@ function create() {
 
     // Textos del juego
     scoreText = this.add.text(16, 16, 'Puntos: ' + score, { fontSize: '32px', fill: '#fff' });
-    inventoryText = this.add.text(16, 50, 'Inventario: ' + inventory, { fontSize: '32px', fill: '#fff' });
+    const maxInventory = DIFFICULTY_SETTINGS[currentDifficulty].inventorySize;
+    inventoryText = this.add.text(16, 50, `Inventario: ${inventory}/${maxInventory}`, { fontSize: '32px', fill: '#fff' });
     timerText = this.add.text(16, 84, 'Tiempo: 02:00', { fontSize: '32px', fill: '#fff' });
 
     // Textos de estado
@@ -362,6 +439,7 @@ function update() {
         // Apply separation behavior to NPCs
         applySeparation();
     }
+    updateBossEmotion();
 }
 
 function changeNpcDirection() {
@@ -370,6 +448,19 @@ function changeNpcDirection() {
         const speed = 100;
         npc.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
     });
+}
+
+function updateBossEmotion() {
+    const trashCount = trashGroup.countActive(true);
+    const bossImage = document.getElementById('bossImage');
+
+    if (trashCount >= 0 && trashCount <= 9) {
+        bossImage.src = 'assets/boss/Gud.png';
+    } else if (trashCount >= 10 && trashCount <= 14) {
+        bossImage.src = 'assets/boss/ok.png';
+    } else if (trashCount >= 15 && trashCount <= 20) {
+        bossImage.src = 'assets/boss/HAAA.png';
+    }
 }
 
 function applySeparation() {
@@ -399,13 +490,15 @@ function dropTrash(npc) {
     }
 }
 
+// 2. Modificar la función collectTrash
 function collectTrash(player, trash) {
-    if (inventory < 10) {
+    const maxInventory = DIFFICULTY_SETTINGS[currentDifficulty].inventorySize;
+    if (inventory < maxInventory) {
         trash.destroy();
         inventory++;
         score += 10;
         scoreText.setText('Puntos: ' + score);
-        inventoryText.setText('Inventario: ' + inventory);
+        inventoryText.setText('Inventario: ' + inventory + '/' + maxInventory);
     } else {
         inventoryFullText.setVisible(true);
         this.time.delayedCall(2000, () => {
@@ -417,7 +510,8 @@ function collectTrash(player, trash) {
 function emptyInventory() {
     if (inventory > 0) {
         inventory = 0;
-        inventoryText.setText('Inventario: ' + inventory);
+        const maxInventory = DIFFICULTY_SETTINGS[currentDifficulty].inventorySize;
+        inventoryText.setText('Inventario: ' + inventory + '/' + maxInventory);
         inventoryCleanText.setVisible(true);
         this.time.delayedCall(2000, () => {
             inventoryCleanText.setVisible(false);
@@ -425,10 +519,12 @@ function emptyInventory() {
     }
 }
 
+
 function checkTrashPenalty() {
     const trashCount = trashGroup.countActive(true);
     if (trashCount > 10 && trashCount < 20 && trashCount > lastTrashCount) {
-        score = Math.max(0, score - 10); // Asegurarse de que el puntaje no sea menor a 0
+        const penalty = DIFFICULTY_SETTINGS[currentDifficulty].penalty;
+        score = Math.max(0, score - penalty); // Asegurarse de que el puntaje no sea menor a 0
         scoreText.setText('Puntos: ' + score);
     }
     lastTrashCount = trashCount;
@@ -449,6 +545,7 @@ function updateTimer() {
 function updateHighScores(playerName, score) {
     let scores = JSON.parse(localStorage.getItem('highScores')) || [];
     const existingScoreIndex = scores.findIndex(item => item.name === playerName);
+    let isNewPlayer = false;
     
     if (existingScoreIndex !== -1) {
         if (score > scores[existingScoreIndex].score) {
@@ -456,13 +553,17 @@ function updateHighScores(playerName, score) {
         }
     } else {
         scores.push({ name: playerName, score: score });
+        isNewPlayer = true;
     }
     
     scores.sort((a, b) => b.score - a.score);
     scores = scores.slice(0, 10);
     
+    // Guardar en localStorage y actualizar la visualización
     localStorage.setItem('highScores', JSON.stringify(scores));
     updateScoreBoard(scores);
+    
+    return isNewPlayer;
 }
 
 // Modificar la función updateScoreBoard
@@ -499,11 +600,41 @@ function updateScoreBoard(scores) {
 }
 
 // Modificar la función endGame para incluir la actualización de puntajes
+// Modificar la función endGame:
 function endGame() {
     this.physics.pause();
     trashTimers.forEach(timer => timer.paused = true);
     gameOverText.setText('Juego terminado! Puntaje final: ' + score);
     gameOverText.setVisible(true);
     isPaused = true;
-    updateHighScores(playerName, score);
+    
+    // Obtener los récords personales de todos los jugadores
+    let personalBests = JSON.parse(localStorage.getItem(PERSONAL_BESTS_KEY)) || {};
+    
+    // Obtener el récord personal del jugador actual
+    const playerBest = personalBests[playerName] || 0;
+    
+    console.log('Puntaje actual:', score);
+    console.log('Mejor puntaje personal:', playerBest);
+
+    // Verificar si es nuevo jugador
+    let isNewPlayer = updateHighScores(playerName, score);
+
+    // Verificar si rompió su récord personal
+    let brokePersonalBest = false;
+    if (score > playerBest) {
+        // Actualizar el récord personal del jugador
+        personalBests[playerName] = score;
+        localStorage.setItem(PERSONAL_BESTS_KEY, JSON.stringify(personalBests));
+        brokePersonalBest = true;
+    }
+
+    // Lanzar confeti si es nuevo jugador o rompió su récord
+    if (isNewPlayer || brokePersonalBest) {
+        confetti({
+            particleCount: 500,
+            spread: 180,
+            origin: { y: 0.6 }
+        });
+    }
 }

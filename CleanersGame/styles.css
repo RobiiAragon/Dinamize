@@ -169,3 +169,111 @@ body {
 .new-score {
     animation: newScore 0.5s ease;
 }
+
+#bossContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200px; /* Ajusta el ancho según necesites */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 130px;
+}
+
+#bossContainer img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Agregar al styles.css */
+#settingsButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+#settingsButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(45deg);
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 300px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.popup-content h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.settings-option {
+    margin: 20px 0;
+    color: #fff;
+}
+
+.settings-option button {
+    width: 100%;
+    padding: 10px;
+    background: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-option button:hover {
+    background: #45a049;
+}
+
+.settings-option select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.settings-option select:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
