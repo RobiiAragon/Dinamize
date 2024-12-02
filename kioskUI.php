@@ -27,7 +27,19 @@ if ($result) {
 }
 
 $coordenadasLocales = [
-  1 => ['x' => 10, 'y' => 20, 'width' => 80, 'height' => 120],
+    1 => ['x' => 3.29, 'y' => 5, 'width' => 100, 'height' => 149],
+    2 => ['x' => 108.11, 'y' => 5.6, 'width' => 91.92, 'height' => 88.85],
+    3 => ['x' => 200.03, 'y' => 5.6, 'width' => 84.77, 'height' => 88.85],
+    4 => ['x' => 284.79, 'y' => 5.6, 'width' => 92.77, 'height' => 88.85],
+    5 => ['x' => 377.56, 'y' => 25, 'width' => 83.91, 'height' => 124.94],
+    6 => ['x' => 377.56, 'y' => 125, 'width' => 80, 'height' => 60],
+    7 => ['x' => 377.56, 'y' => 211.13, 'width' => 83.91, 'height' => 122.89],
+    8 => ['x' => 377.56, 'y' => 314.02, 'width' => 83.91, 'height' => 81.45],
+    9 => ['x' => 377.56, 'y' => 430.47, 'width' => 83.91, 'height' => 171.83],
+    10 => ['x' => 377.56, 'y' => 567.3, 'width' => 83.91, 'height' => 80.17],
+    11 => ['x' => 377.56, 'y' => 642, 'width' => 80, 'height' => 73],
+    12 => ['x' => 79, 'y' => 215, 'width' => 70, 'height' => 90, 'transform' => 'rotate(45, 195, 260)'],
+    13 => ['x' => 140, 'y' => 210, 'width' => 100, 'height' => 100, 'transform' => 'rotate(45, 195, 260)']
 ];
 
 $stmt->close();
@@ -107,6 +119,84 @@ CloseCon($conn);
                       y="<?= $coordenadasLocales[1]['y'] ?>" 
                       width="<?= $coordenadasLocales[1]['width'] ?>" 
                       height="<?= $coordenadasLocales[1]['height'] ?>">
+                      <div xmlns="http://www.w3.org/1999/xhtml" class="local">
+                          <img src="data:image/jpeg;base64,<?= base64_encode($negocio['logo']) ?>" 
+                              alt="Logo de <?= htmlspecialchars($negocio['nombre']) ?>"
+                              class="local-logo">
+                          <p class="local-name"><?= htmlspecialchars($negocio['nombre']) ?></p>
+                      </div>
+                    </foreignObject>
+                    <?php
+                }
+                CloseCon($conn);
+                ?>
+            </g>
+            <g id="local2" class="local-clickable" style="cursor: pointer">
+                <polygon class="cls-1" points="108.11 5.6 200.03 5.6 200.03 94.45 109.32 94.45 108.11 5.6"/>
+                <?php
+                $conn = OpenCon();
+                $sql = "SELECT n.* FROM negocios n WHERE n.NumeroLocal = 2";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    $negocio = $result->fetch_assoc();
+                    ?>
+                    <foreignObject 
+                      x="<?= $coordenadasLocales[2]['x'] ?>" 
+                      y="<?= $coordenadasLocales[2]['y'] ?>" 
+                      width="<?= $coordenadasLocales[2]['width'] ?>" 
+                      height="<?= $coordenadasLocales[2]['height'] ?>">
+                      <div xmlns="http://www.w3.org/1999/xhtml" class="local">
+                          <img src="data:image/jpeg;base64,<?= base64_encode($negocio['logo']) ?>" 
+                              alt="Logo de <?= htmlspecialchars($negocio['nombre']) ?>"
+                              class="local-logo">
+                          <p class="local-name"><?= htmlspecialchars($negocio['nombre']) ?></p>
+                      </div>
+                    </foreignObject>
+                    <?php
+                }
+                CloseCon($conn);
+                ?>
+            </g>
+            <g id="local3" class="local-clickable" style="cursor: pointer">
+                <rect class="cls-1" x="200.03" y="5.6" width="84.77" height="88.85"/>
+                <?php
+                $conn = OpenCon();
+                $sql = "SELECT n.* FROM negocios n WHERE n.NumeroLocal = 3";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    $negocio = $result->fetch_assoc();
+                    ?>
+                    <foreignObject 
+                      x="<?= $coordenadasLocales[3]['x'] ?>" 
+                      y="<?= $coordenadasLocales[3]['y'] ?>" 
+                      width="<?= $coordenadasLocales[3]['width'] ?>" 
+                      height="<?= $coordenadasLocales[3]['height'] ?>">
+                      <div xmlns="http://www.w3.org/1999/xhtml" class="local">
+                          <img src="data:image/jpeg;base64,<?= base64_encode($negocio['logo']) ?>" 
+                              alt="Logo de <?= htmlspecialchars($negocio['nombre']) ?>"
+                              class="local-logo">
+                          <p class="local-name"><?= htmlspecialchars($negocio['nombre']) ?></p>
+                      </div>
+                    </foreignObject>
+                    <?php
+                }
+                CloseCon($conn);
+                ?>
+            </g>
+            <g id="local4" class="local-clickable" style="cursor: pointer">
+                <rect class="cls-1" x="284.79" y="5.6" width="92.77" height="88.85"/>
+                <?php
+                $conn = OpenCon();
+                $sql = "SELECT n.* FROM negocios n WHERE n.NumeroLocal = 4";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    $negocio = $result->fetch_assoc();
+                    ?>
+                    <foreignObject 
+                      x="<?= $coordenadasLocales[4]['x'] ?>" 
+                      y="<?= $coordenadasLocales[4]['y'] ?>" 
+                      width="<?= $coordenadasLocales[4]['width'] ?>" 
+                      height="<?= $coordenadasLocales[4]['height'] ?>">
                       <div xmlns="http://www.w3.org/1999/xhtml" class="local">
                           <img src="data:image/jpeg;base64,<?= base64_encode($negocio['logo']) ?>" 
                               alt="Logo de <?= htmlspecialchars($negocio['nombre']) ?>"
