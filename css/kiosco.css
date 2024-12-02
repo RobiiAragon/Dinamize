@@ -44,14 +44,14 @@
 }
 
 .local img {
-    width: 100px; /* Ajusta el tamaño según tus necesidades */
-    height: 100px; /* Ajusta el tamaño según tus necesidades */
+    width: 60px; /* 10% menos de tamaño */
+    height: 60px; /* 10% menos de tamaño */
     object-fit: cover; /* Mantiene la proporción de la imagen */
 }
 
 .local p {
     margin: 5px 0;
-    font-size: 12px;
+    font-size: 7px; /* 50% menos de tamaño */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
