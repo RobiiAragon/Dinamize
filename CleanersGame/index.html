@@ -3,59 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phaser Game</title>
+    <title>Cleaners Game</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Mover Phaser después del CSS -->
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
+    <meta name="description" content="Cleaners Game - Un juego divertido y desafiante">
+    <meta property="og:title" content="Cleaners Game">
+    <meta property="og:description" content="Cleaners Game - Un juego divertido y desafiante">
+    <meta property="og:image" content="assets/og-image.png">
+    <meta property="og:url" content="https://tu-juego.com">
+    <meta name="twitter:card" content="summary_large_image">
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
+<div id="touchControls" style="display: none;">
+    <div id="upLeftButton" class="direction-button diagonal">⤺</div>
+    <div id="upButton" class="direction-button">↑</div>
+    <div id="upRightButton" class="direction-button diagonal">⤻</div>
+    <div id="leftButton" class="direction-button">←</div>
+    <div id="rightButton" class="direction-button">→</div>
+    <div id="downLeftButton" class="direction-button diagonal">⤹</div>
+    <div id="downButton" class="direction-button">↓</div>
+    <div id="downRightButton" class="direction-button diagonal">⤸</div>
+</div>
     <div id="mainContainer">
         <div id="bossContainer">
-            <img id="bossImage" src="assets/boss/Gud.png" alt="Estado del Jefe">
+            <h2>Estado del Jefe</h2>
+            <img id="bossImage" src="assets/boss/Gud.png" alt="Imagen del estado del jefe">
         </div>
-    <div id="gameContainer"></div>
-    <!-- Agregar al index.html después del gameContainer -->
-<div id="scoreboardContainer">
-    <h2>Top 10 Jugadores</h2>
-    <table id="highScoresTable">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Puntos</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
-<!-- Agregar después del scoreboardContainer -->
-<div id="settingsButton">⚙️</div>
-
-<!-- Agregar el popup de ajustes -->
-<div id="settingsPopup" class="popup">
-    <div class="popup-content">
-        <span class="close">&times;</span>
-        <h2>Ajustes</h2>
-        <div class="settings-option">
-            <button id="clearScores">Limpiar Tabla de Puntajes</button>
+        <div id="gameContainer"></div>
+        <div id="scoreboardContainer">
+            <h2>Top 10 Jugadores</h2>
+            <h3>Socres según la dificultad</h3>
+            <div class="difficulty-tabs" role="tablist">
+                <button class="tab-btn" data-difficulty="easy" role="tab" aria-selected="false">Fácil</button>
+                <button class="tab-btn active" data-difficulty="normal" role="tab" aria-selected="true">Normal</button>
+                <button class="tab-btn" data-difficulty="hard" role="tab" aria-selected="false">Difícil</button>
+            </div>
+            <table id="highScoresTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Puntos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
-        <div class="settings-option">
-            <label for="gameDifficulty">Dificultad:</label>
-            <select id="gameDifficulty">
-                <option value="easy">Fácil</option>
-                <option value="normal" selected>Normal</option>
-                <option value="hard">Difícil</option>
-            </select>
+        <div id="settingsButton" aria-label="Abrir ajustes">⚙️</div>
+        <div id="settingsPopup" class="popup" role="dialog" aria-labelledby="settingsTitle" aria-hidden="true">
+            <div class="popup-content">
+                <span class="close" role="button" aria-label="Cerrar">&times;</span>
+                <h2 id="settingsTitle">Ajustes</h2>
+                <div class="settings-option">
+                    <label for="touchMode">Modo Táctil:</label>
+                    <input type="checkbox" id="touchMode">
+                </div>
+                <div class="settings-option">
+                    <button id="clearScores">Limpiar Tabla de Puntajes</button>
+                </div>
+                <div class="settings-option">
+                    <label for="gameDifficulty">Dificultad:</label>
+                    <select id="gameDifficulty">
+                        <option value="easy">Fácil</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="hard">Difícil</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="nameInputContainer">
+            <input type="text" id="nameInput" placeholder="Ingresa tu nombre" aria-label="Ingresa tu nombre">
+            <button id="startButton">Comenzar</button>
         </div>
     </div>
-</div>
-    <div id="nameInputContainer">
-        <input type="text" id="nameInput" placeholder="Ingresa tu nombre">
-        <button id="startButton">Comenzar</button>
-    </div>
-    <!-- Asegurarnos que GameplayScene.js se cargue al final -->
     <script defer src="GameplayScene.js"></script>
+    <script defer src="service-worker.js"></script>
 </body>
 </html>

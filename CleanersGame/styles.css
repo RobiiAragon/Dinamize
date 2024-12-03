@@ -99,6 +99,16 @@ body {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+#scoreboardContainer h3 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 150;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 #highScoresTable {
     width: 100%;
     border-collapse: separate;
@@ -234,6 +244,12 @@ body {
     text-align: center;
 }
 
+.popup-content h3 {
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .close {
     position: absolute;
     right: 15px;
@@ -276,4 +292,173 @@ body {
 
 .settings-option select:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+.difficulty-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-btn.active {
+    background: rgba(76, 175, 80, 0.3);
+    font-weight: bold;
+}
+
+#bossContainer {
+    position: absolute;
+    left: 0;
+    top: 10%; /* Ajusta la posición superior para dar más espacio al joystick */
+    width: 200px; /* Ajusta el ancho según necesites */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    margin-left: 30px;
+}
+
+#bossContainer h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#bossContainer img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+#touchControls {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    grid-gap: 10px;
+}
+
+.direction-button {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #fff;
+    user-select: none;
+    touch-action: none;
+}
+
+.diagonal {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.direction-button:active {
+    background: rgba(76, 175, 80, 0.5);
+}
+
+/* Consultas de medios para hacer el juego responsivo */
+@media (max-width: 1200px) {
+    #scoreboardContainer {
+        min-width: 250px;
+        padding: 20px;
+    }
+
+    #bossContainer {
+        width: 180px;
+        padding: 15px;
+    }
+
+    #gameContainer {
+        width: 90%;
+        height: 90vh;
+    }
+}
+
+@media (max-width: 992px) {
+    #scoreboardContainer {
+        min-width: 200px;
+        padding: 15px;
+    }
+
+    #bossContainer {
+        width: 160px;
+        padding: 10px;
+    }
+
+    #gameContainer {
+        width: 85%;
+        height: 85vh;
+    }
+}
+
+@media (max-width: 768px) {
+    #scoreboardContainer {
+        position: static;
+        transform: none;
+        margin: 20px auto;
+        min-width: 100%;
+        padding: 10px;
+    }
+
+    #bossContainer {
+        position: static;
+        transform: none;
+        margin: 20px auto;
+        width: 100%;
+        padding: 10px;
+    }
+
+    #gameContainer {
+        width: 80%;
+        height: 80vh;
+    }
+}
+
+@media (max-width: 576px) {
+    #scoreboardContainer {
+        padding: 5px;
+    }
+
+    #bossContainer {
+        padding: 5px;
+    }
+
+    #gameContainer {
+        width: 75%;
+        height: 75vh;
+    }
 }

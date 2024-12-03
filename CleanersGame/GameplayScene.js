@@ -1,5 +1,23 @@
 // Agregar al inicio de GameplayScene.js
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('ServiceWorker registrado con éxito:', registration);
+            })
+            .catch(error => {
+                console.log('Error en el registro del ServiceWorker:', error);
+            });
+    });
+}
+
 const PERSONAL_BESTS_KEY = 'personalBests';
+
+const SCORES_KEYS = {
+    easy: 'highScores_easy',
+    normal: 'highScores_normal',
+    hard: 'highScores_hard'
+};
 
 let highScores = [];
 let playerName = '';
@@ -71,21 +89,35 @@ let currentDifficulty = 'normal';
 
 let gameStarted = false;
 
-// Agregar al inicio de GameplayScene.js
 document.addEventListener('DOMContentLoaded', () => {
-     // Cargar y mostrar los puntajes guardados al inicio
-     const savedScores = JSON.parse(localStorage.getItem('highScores')) || [];
-     updateScoreBoard(savedScores);
- 
-     const settingsBtn = document.getElementById('settingsButton');
-     const popup = document.getElementById('settingsPopup');
-     const closeBtn = document.querySelector('.close');
-     const clearScoresBtn = document.getElementById('clearScores');
-     const difficultySelect = document.getElementById('gameDifficulty');
-     const nameInput = document.getElementById('nameInput');
-     const startButton = document.getElementById('startButton');
-     const nameInputContainer = document.getElementById('nameInputContainer');
- 
+    // Cargar y mostrar los puntajes guardados al inicio
+    updateScoreBoard('normal'); // Mostrar tabla inicial en modo normal
+
+    const settingsBtn = document.getElementById('settingsButton');
+    const popup = document.getElementById('settingsPopup');
+    const closeBtn = document.querySelector('.close');
+    const clearScoresBtn = document.getElementById('clearScores');
+    const difficultySelect = document.getElementById('gameDifficulty');
+    const nameInput = document.getElementById('nameInput');
+    const startButton = document.getElementById('startButton');
+    const nameInputContainer = document.getElementById('nameInputContainer');
+    const touchModeCheckbox = document.getElementById('touchMode');
+
+    // Cargar el estado del modo táctil desde localStorage
+    const touchMode = localStorage.getItem('touchMode') === 'true';
+    touchModeCheckbox.checked = touchMode;
+
+    // Event listeners para las pestañas de dificultad
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remover clase active de todos los botones
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            // Agregar clase active al botón clickeado
+            btn.classList.add('active');
+            // Actualizar la tabla con la dificultad seleccionada
+            updateScoreBoard(btn.dataset.difficulty);
+        });
+    });
 
     startButton.addEventListener('click', () => {
         const name = nameInput.value.trim();
@@ -100,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Por favor ingresa un nombre');
         }
     });
-    
 
     // También permitir iniciar con Enter
     nameInput.addEventListener('keypress', (e) => {
@@ -111,28 +142,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     settingsBtn.onclick = () => popup.style.display = "block";
     closeBtn.onclick = () => popup.style.display = "none";
-    
+
     window.onclick = (e) => {
         if (e.target == popup) {
             popup.style.display = "none";
         }
     }
 
+    // Limpiar puntajes
     clearScoresBtn.onclick = () => {
-        localStorage.removeItem('highScores');
-        localStorage.removeItem(PERSONAL_BESTS_KEY);
-        updateScoreBoard([]);
-    }
+        Object.values(SCORES_KEYS).forEach(key => {
+            localStorage.removeItem(key);
+        });
+        updateScoreBoard(currentDifficulty);
+    };
 
-    // 3. Modificar la función de cambio de dificultad en el event listener
+    // Cambio de dificultad
     difficultySelect.onchange = (e) => {
-    currentDifficulty = e.target.value;
-    updateNPCTimers();
-    // Actualizar el texto del inventario con el nuevo tamaño máximo
-    const maxInventory = DIFFICULTY_SETTINGS[currentDifficulty].inventorySize;
-    inventoryText.setText('Inventario: ' + inventory + '/' + maxInventory);
-};
-    
+        currentDifficulty = e.target.value;
+        updateNPCTimers();
+        // Actualizar el texto del inventario con el nuevo tamaño máximo
+        if (inventoryText) {
+            const maxInventory = DIFFICULTY_SETTINGS[currentDifficulty].inventorySize;
+            inventoryText.setText('Inventario: ' + inventory + '/' + maxInventory);
+        }
+    };
 });
 
 function updateNPCTimers() {
@@ -277,11 +311,11 @@ function create() {
     }
     // Objetos del mall
     createMallObject(this, 200, 150, 'bench', 100, 60);
-    createMallObject(this, 400, 150, 'plant', 50, 70);
+    createMallObject(this, 400, 150, 'plant', 50, 90);
     createMallObject(this, 600, 150, 'bench', 100, 60);
-    createMallObject(this, 200, 400, 'plant', 50, 70);
-    createMallObject(this, 400, 400, 'kiosk', 100, 50);
-    createMallObject(this, 600, 400, 'plant', 50, 70);
+    createMallObject(this, 200, 400, 'plant', 50, 90);
+    createMallObject(this, 400, 400, 'kiosk', 100, 70);
+    createMallObject(this, 600, 400, 'plant', 50, 90);
 
     // 3. FÍSICAS Y COLISIONES
     this.physics.world.setBounds(0, 50, 750, 550);
@@ -543,7 +577,8 @@ function updateTimer() {
 
 // Modificar la función updateHighScores
 function updateHighScores(playerName, score) {
-    let scores = JSON.parse(localStorage.getItem('highScores')) || [];
+    const scoreKey = SCORES_KEYS[currentDifficulty];
+    let scores = JSON.parse(localStorage.getItem(scoreKey)) || [];
     const existingScoreIndex = scores.findIndex(item => item.name === playerName);
     let isNewPlayer = false;
     
@@ -559,22 +594,29 @@ function updateHighScores(playerName, score) {
     scores.sort((a, b) => b.score - a.score);
     scores = scores.slice(0, 10);
     
-    // Guardar en localStorage y actualizar la visualización
-    localStorage.setItem('highScores', JSON.stringify(scores));
-    updateScoreBoard(scores);
+    localStorage.setItem(scoreKey, JSON.stringify(scores));
+    updateScoreBoard();
     
     return isNewPlayer;
 }
 
 // Modificar la función updateScoreBoard
-function updateScoreBoard(scores) {
+function updateScoreBoard(forceDifficulty = null) {
+    const difficulty = forceDifficulty || currentDifficulty;
+    const scores = JSON.parse(localStorage.getItem(SCORES_KEYS[difficulty])) || [];
     const tbody = document.querySelector('#highScoresTable tbody');
+    
+    // Actualizar botones de dificultad
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.difficulty === difficulty);
+    });
+    
     tbody.innerHTML = '';
     
     if (scores.length === 0) {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td colspan="3">No hay puntajes aún</td>
+            <td colspan="3">No hay puntajes para ${difficulty}</td>
         `;
         tbody.appendChild(row);
         return;
@@ -591,16 +633,13 @@ function updateScoreBoard(scores) {
         `;
         
         if (isCurrentPlayer) {
-            row.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-            row.style.fontWeight = 'bold';
+            row.classList.add('current-player');
         }
         
         tbody.appendChild(row);
     });
 }
 
-// Modificar la función endGame para incluir la actualización de puntajes
-// Modificar la función endGame:
 function endGame() {
     this.physics.pause();
     trashTimers.forEach(timer => timer.paused = true);
