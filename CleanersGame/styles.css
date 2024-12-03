@@ -323,7 +323,9 @@ body {
 #bossContainer {
     position: absolute;
     left: 0;
-    top: 10%; /* Ajusta la posición superior para dar más espacio al joystick */
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
     width: 200px; /* Ajusta el ancho según necesites */
     height: auto;
     display: flex;
@@ -358,38 +360,6 @@ body {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
 }
-
-#touchControls {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 60px);
-    grid-gap: 10px;
-}
-
-.direction-button {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    color: #fff;
-    user-select: none;
-    touch-action: none;
-}
-
-.diagonal {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.direction-button:active {
-    background: rgba(76, 175, 80, 0.5);
-}
-
 /* Consultas de medios para hacer el juego responsivo */
 @media (max-width: 1200px) {
     #scoreboardContainer {

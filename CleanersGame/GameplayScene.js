@@ -11,6 +11,22 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+window.addEventListener('gamepadconnected', (e) => {
+    console.log('Control conectado:', e.gamepad);
+    gamepadActive = true;
+});
+
+window.addEventListener('gamepaddisconnected', (e) => {
+    console.log('Control desconectado:', e.gamepad);
+    gamepadActive = false;
+});
+
+document.addEventListener('keydown', () => {
+    if (gamepadActive) {
+        gamepadActive = false;
+    }
+});
+
 const PERSONAL_BESTS_KEY = 'personalBests';
 
 const SCORES_KEYS = {
@@ -41,7 +57,10 @@ let inventoryCleanText;
 let trashBin;
 let timerText;
 let gameOverText;
-let timeLimit = 120; // 2 minutes in seconds
+let timeLimit = 120; // 2 minutes in segundos
+let gamepadActive = false;
+let lastStartButtonState = false;
+let startButtonCooldown = false;
 
 const config = {
     type: Phaser.AUTO,
@@ -151,10 +170,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Limpiar puntajes
     clearScoresBtn.onclick = () => {
-        Object.values(SCORES_KEYS).forEach(key => {
-            localStorage.removeItem(key);
-        });
-        updateScoreBoard(currentDifficulty);
+        // Eliminar solo las entradas de puntajes del localStorage
+        localStorage.removeItem(SCORES_KEYS.easy);
+        localStorage.removeItem(SCORES_KEYS.normal);
+        localStorage.removeItem(SCORES_KEYS.hard);
+        localStorage.removeItem(PERSONAL_BESTS_KEY);
+        // Actualizar la tabla de puntajes
+        updateScoreBoard();
+        alert('Los puntajes han sido borrados.');
     };
 
     // Cambio de dificultad
@@ -402,77 +425,177 @@ function createMallObject(scene, x, y, key, width, height) {
     obj.setImmovable(true);
     mallObjects.push(obj);
 }
+let startButtonPressed = false;
+
+function handleGamepadInput() {
+    const gamepads = navigator.getGamepads();
+    if (!gamepads || !gamepads[0]) return;
+
+    const gamepad = gamepads[0];
+    const speed = 200;
+    let moving = false;
+
+    // Joystick izquierdo
+    const leftStickX = gamepad.axes[0];
+    const leftStickY = gamepad.axes[1];
+    const deadZone = 0.2;
+
+    // Movimiento con joystick
+    if (Math.abs(leftStickX) > deadZone || Math.abs(leftStickY) > deadZone) {
+        player.setVelocityX(leftStickX * speed);
+        player.setVelocityY(leftStickY * speed);
+        moving = true;
+        gamepadActive = true;
+    }
+
+    // D-pad
+    const dpadUp = gamepad.buttons[12]?.pressed;
+    const dpadDown = gamepad.buttons[13]?.pressed;
+    const dpadLeft = gamepad.buttons[14]?.pressed;
+    const dpadRight = gamepad.buttons[15]?.pressed;
+
+    // Movimiento con D-pad
+    if (dpadLeft) {
+        player.setVelocityX(-speed);
+        moving = true;
+        gamepadActive = true;
+    } else if (dpadRight) {
+        player.setVelocityX(speed);
+        moving = true;
+        gamepadActive = true;
+    }
+
+    if (dpadUp) {
+        player.setVelocityY(-speed);
+        moving = true;
+        gamepadActive = true;
+    } else if (dpadDown) {
+        player.setVelocityY(speed);
+        moving = true;
+        gamepadActive = true;
+    }
+
+    // Manejo de pausa mejorado
+    const startButton = gamepad.buttons[9];
+    
+    // Detectar cuando el botón se suelta
+    if (!startButton.pressed && lastStartButtonState) {
+        if (!gameOverText.visible && !startButtonCooldown) {
+            togglePause.call(this);
+            startButtonCooldown = true;
+            // Añadir un pequeño delay para evitar múltiples activaciones
+            setTimeout(() => {
+                startButtonCooldown = false;
+            }, 250);
+        }
+    }
+    
+    lastStartButtonState = startButton.pressed;
+
+    // Actualizar animación si hay movimiento
+    if (moving) {
+        updatePlayerAnimation();
+    } else if (!cursors.left.isDown && !cursors.right.isDown && 
+               !cursors.up.isDown && !cursors.down.isDown) {
+        player.setVelocity(0);
+        player.anims.stop();
+    }
+}
+
+let lastInputType = 'keyboard'; // o 'gamepad'
+
+function handleInput() {
+    if (gamepadActive) {
+        lastInputType = 'gamepad';
+        handleGamepadInput.call(this);
+    } else {
+        lastInputType = 'keyboard';
+        handleKeyboardInput.call(this);
+    }
+}
+
+function handleKeyboardInput() {
+    const speed = 200;
+    let moving = false;
+
+    if (cursors.left.isDown) {
+        player.setVelocityX(-speed);
+        moving = true;
+        gamepadActive = false;
+    } else if (cursors.right.isDown) {
+        player.setVelocityX(speed);
+        moving = true;
+        gamepadActive = false;
+    }
+
+    if (cursors.up.isDown) {
+        player.setVelocityY(-speed);
+        moving = true;
+        gamepadActive = false;
+    } else if (cursors.down.isDown) {
+        player.setVelocityY(speed);
+        moving = true;
+        gamepadActive = false;
+    }
+
+    if (moving) {
+        updatePlayerAnimation();
+    } else {
+        player.setVelocity(0);
+        player.anims.stop();
+    }
+}
+
+function updatePlayerAnimation() {
+    if (player.body.velocity.x < 0) {
+        player.anims.play('walk-left', true);
+    } else if (player.body.velocity.x > 0) {
+        player.anims.play('walk-right', true);
+    } else if (player.body.velocity.y < 0) {
+        player.anims.play('walk-up', true);
+    } else if (player.body.velocity.y > 0) {
+        player.anims.play('walk-down', true);
+    } else {
+        player.anims.stop();
+        if (player.anims.currentAnim) {
+            const direction = player.anims.currentAnim.key.split('-')[1];
+            player.setTexture(`idle-${direction}`);
+        }
+    }
+}
+
+function togglePause() {
+    isPaused = !isPaused;
+    if (isPaused) {
+        this.physics.pause();
+        pauseText.setVisible(true);
+        trashTimers.forEach(timer => timer.paused = true);
+        this.time.paused = true;
+    } else {
+        this.physics.resume();
+        pauseText.setVisible(false);
+        trashTimers.forEach(timer => timer.paused = false);
+        this.time.paused = false;
+    }
+}
 
 function update() {
     if (Phaser.Input.Keyboard.JustDown(pauseKey) && !gameOverText.visible) {
-        isPaused = !isPaused;
-        if (isPaused) {
-            this.physics.pause();
-            pauseText.setVisible(true);
-            trashTimers.forEach(timer => timer.paused = true);
-            this.time.paused = true; // Pausar el tiempo
-        } else {
-            this.physics.resume();
-            pauseText.setVisible(false);
-            trashTimers.forEach(timer => timer.paused = false);
-            this.time.paused = false; // Reanudar el tiempo
-        }
+        togglePause.call(this);
     }
 
     if (!isPaused) {
+        // Resetear velocidad
         player.setVelocity(0);
 
-        let moving = false;
+        // Manejar input
+        handleInput.call(this);
 
-        if (cursors.left.isDown) {
-            player.setVelocityX(-200);
-            moving = true;
-        } else if (cursors.right.isDown) {
-            player.setVelocityX(200);
-            moving = true;
-        }
-
-        if (cursors.up.isDown) {
-            player.setVelocityY(-200);
-            moving = true;
-        } else if (cursors.down.isDown) {
-            player.setVelocityY(200);
-            moving = true;
-        }
-
-        if (moving) {
-            if (cursors.left.isDown && cursors.up.isDown) {
-                player.anims.play('walk-left', true);
-            } else if (cursors.left.isDown && cursors.down.isDown) {
-                player.anims.play('walk-left', true);
-            } else if (cursors.right.isDown && cursors.up.isDown) {
-                player.anims.play('walk-right', true);
-            } else if (cursors.right.isDown && cursors.down.isDown) {
-                player.anims.play('walk-right', true);
-            } else if (cursors.left.isDown) {
-                player.anims.play('walk-left', true);
-            } else if (cursors.right.isDown) {
-                player.anims.play('walk-right', true);
-            } else if (cursors.up.isDown) {
-                player.anims.play('walk-up', true);
-            } else if (cursors.down.isDown) {
-                player.anims.play('walk-down', true);
-            }
-        } else {
-            player.anims.stop();
-            // Establecer el sprite idle correspondiente
-            if (player.anims.currentAnim) {
-                const direction = player.anims.currentAnim.key.split('-')[1];
-                player.setTexture(`idle-${direction}`);
-            }
-        }
-
-        // Actualizar la posición del texto del nombre del jugador
+        updatePlayerAnimation();
         playerNameText.setPosition(player.x, player.y - 40);
-
-        // Apply separation behavior to NPCs
         applySeparation();
     }
+    
     updateBossEmotion();
 }
 
