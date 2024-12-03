@@ -290,3 +290,60 @@ body.dark-mode .cls-1 {
 body.dark-mode .cls-2 {
     stroke: #ffffff;
 }
+
+/* Mejora el scroll personalizado */
+.main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+/* Estilizar la barra de scroll del sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+/* Ocultar scrollbar pero mantener funcionalidad */
+* {
+    -ms-overflow-style: none;  /* IE y Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+/* Ocultar scrollbar para Chrome, Safari y Opera */
+*::-webkit-scrollbar {
+    display: none;
+}
+/* Previene el parpadeo durante la carga inicial */
+html {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Opcional: si quieres ocultar el contenido hasta que se cargue el tema */
+html.js-loading {
+    visibility: hidden;
+    opacity: 0;
+}

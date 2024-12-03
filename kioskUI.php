@@ -56,6 +56,12 @@ CloseCon($conn);
     <script src="js/kiosco.js"></script>
     <link rel="stylesheet" href="css/fontAwesome/all.min.css">
     <script src="js/assignLocal.js"></script>
+    <script>
+        // Aplicar la clase dark-mode al cargar la página si está en localStorage
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
 </head>
 <body>
 <?php if(isset($_SESSION['message'])): ?>

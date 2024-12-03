@@ -3,13 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const icon = darkModeToggle.querySelector('i');
     
     // Función para actualizar el modo
-    const updateTheme = (isDark, withTransition = true) => {
+    const updateTheme = (isDark, withTransition = false) => {
+        // Aplicar o remover transición solo cuando se especifica
         if (withTransition) {
             document.body.classList.add('transition');
-            window.setTimeout(() => {
+            document.documentElement.classList.add('transition');
+            
+            // Remover clase de transición después de que termine
+            setTimeout(() => {
                 document.body.classList.remove('transition');
+                document.documentElement.classList.remove('transition');
             }, 300);
         }
+
+        // Actualizar clases de modo oscuro
         document.body.classList.toggle('dark-mode', isDark);
         document.documentElement.classList.toggle('dark-mode', isDark);
         document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
@@ -17,31 +24,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // Actualizar icono
         icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
         
-        // Guardar preferencia en localStorage y cookies
+        // Guardar preferencia
         localStorage.setItem('darkMode', isDark);
-        document.cookie = `darkMode=${isDark}; path=/; max-age=31536000`; // 1 año
+        document.cookie = `darkMode=${isDark}; path=/; max-age=31536000`;
     };
     
-    // Verificar preferencia guardada
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    const storedTheme = localStorage.getItem('darkMode');
-    
     // Aplicar tema inicial sin transición
+    const storedTheme = localStorage.getItem('darkMode');
     if (storedTheme !== null) {
         updateTheme(storedTheme === 'true', false);
     } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
         updateTheme(prefersDark.matches, false);
     }
     
-    // Escuchar cambios en el botón
+    // Aplicar transición solo en el click del botón
     darkModeToggle.addEventListener('click', () => {
-        updateTheme(!document.body.classList.contains('dark-mode'));
-    });
-    
-    // Escuchar cambios en preferencias del sistema
-    prefersDark.addEventListener('change', (e) => {
-        if (localStorage.getItem('darkMode') === null) {
-            updateTheme(e.matches, false);
-        }
+        updateTheme(!document.body.classList.contains('dark-mode'), true);
     });
 });

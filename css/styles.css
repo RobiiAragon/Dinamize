@@ -1078,3 +1078,24 @@ input[type="file"] {
         font-size: 1rem;
     }
 }
+/* Ocultar scrollbar pero mantener funcionalidad */
+* {
+    -ms-overflow-style: none;  /* IE y Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+/* Ocultar scrollbar para Chrome, Safari y Opera */
+*::-webkit-scrollbar {
+    display: none;
+}
+/* Previene el parpadeo durante la carga inicial */
+html {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Opcional: si quieres ocultar el contenido hasta que se cargue el tema */
+html.js-loading {
+    visibility: hidden;
+    opacity: 0;
+}

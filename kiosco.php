@@ -78,6 +78,12 @@ $locales = $controller->getLocales();
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/kiosco.css">
     <link rel="stylesheet" href="css/fontAwesome/all.min.css">
+    <script>
+        // Aplicar la clase dark-mode al cargar la página si está en localStorage
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
 </head>
 <body>
     <header>

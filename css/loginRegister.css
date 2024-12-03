@@ -113,3 +113,14 @@
 [data-theme="dark"] p[style*="color:red"] {
     color: #ff6b6b !important;
 }
+/* Previene el parpadeo durante la carga inicial */
+html {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Opcional: si quieres ocultar el contenido hasta que se cargue el tema */
+html.js-loading {
+    visibility: hidden;
+    opacity: 0;
+}
