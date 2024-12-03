@@ -205,7 +205,20 @@ function preload() {
     this.load.image('bench', 'assets/bench.png');
     this.load.image('kiosk', 'assets/kiosk.png');
     this.load.image('plant', 'assets/plant.png');
-    this.load.image('trashTexture', 'assets/trash/trash.png');
+    this.load.image('trashTexture1', 'assets/trash/trash (1).png');
+    this.load.image('trashTexture2', 'assets/trash/trash (2).png');
+    this.load.image('trashTexture3', 'assets/trash/trash (3).png');
+    this.load.image('trashTexture4', 'assets/trash/trash (4).png');
+    this.load.image('trashTexture5', 'assets/trash/trash (5).png');
+    this.load.image('trashTexture6', 'assets/trash/trash (6).png');
+    this.load.image('trashTexture7', 'assets/trash/trash (7).png');
+    this.load.image('trashTexture8', 'assets/trash/trash (8).png');
+    this.load.image('trashTexture9', 'assets/trash/trash (9).png');
+    this.load.image('trashTexture10', 'assets/trash/trash (10).png');
+    this.load.image('trashTexture11', 'assets/trash/trash (11).png');
+    this.load.image('trashTexture12', 'assets/trash/trash (12).png');
+    this.load.image('trashTexture13', 'assets/trash/trash (13).png');
+    this.load.image('trashTexture14', 'assets/trash/trash (14).png');
 
     // Cargar sprites idle
     this.load.image('idle-up', 'assets/player/idle/arriba1.png');
@@ -229,46 +242,162 @@ function preload() {
     this.load.image('walk-right-1', 'assets/player/animation_loop_right/derecha1.png');
     this.load.image('walk-right-2', 'assets/player/animation_loop_right/derecha2.png');
     this.load.image('walk-right-3', 'assets/player/animation_loop_right/derecha3.png');
+
+    // Cargar sprites de los multiples NPCs
+
+    // Cargar sprites idle NPC1
+    this.load.image('npc1-idle-up', 'assets/NPCs/npc1/idle/arriba1.png');
+    this.load.image('npc1-idle-down', 'assets/NPCs/npc1/idle/abajo1.png');
+    this.load.image('npc1-idle-left', 'assets/NPCs/npc1/idle/izquierda1.png');
+    this.load.image('npc1-idle-right', 'assets/NPCs/npc1/idle/derecha1.png');
+
+    this.load.image('npc1-up-1', 'assets/NPCs/npc1/animation_loop_UP/arriba1.png');
+    this.load.image('npc1-up-2', 'assets/NPCs/npc1/animation_loop_UP/arriba2.png');
+    this.load.image('npc1-up-3', 'assets/NPCs/npc1/animation_loop_UP/arriba3.png');
+
+    this.load.image('npc1-down-1', 'assets/NPCs/npc1/animation_loop_down/abajo1.png');
+    this.load.image('npc1-down-2', 'assets/NPCs/npc1/animation_loop_down/abajo2.png');
+    this.load.image('npc1-down-3', 'assets/NPCs/npc1/animation_loop_down/abajo3.png');
+
+    this.load.image('npc1-left-1', 'assets/NPCs/npc1/animation_loop_left/izquierda1.png');
+    this.load.image('npc1-left-2', 'assets/NPCs/npc1/animation_loop_left/izquierda2.png');
+    this.load.image('npc1-left-3', 'assets/NPCs/npc1/animation_loop_left/izquierda3.png');
+
+    this.load.image('npc1-right-1', 'assets/NPCs/npc1/animation_loop_right/derecha1.png');
+    this.load.image('npc1-right-2', 'assets/NPCs/npc1/animation_loop_right/derecha2.png');
+    this.load.image('npc1-right-3', 'assets/NPCs/npc1/animation_loop_right/derecha3.png');
+
+    // Cargar sprites idle NPC2
+    this.load.image('npc2-idle-up', 'assets/NPCs/npc2/idle/arriba1.png');
+    this.load.image('npc2-idle-down', 'assets/NPCs/npc2/idle/abajo1.png');
+    this.load.image('npc2-idle-left', 'assets/NPCs/npc2/idle/izquierda1.png');
+    this.load.image('npc2-idle-right', 'assets/NPCs/npc2/idle/derecha1.png');
+
+    this.load.image('npc2-up-1', 'assets/NPCs/npc2/animation_loop_UP/arriba1.png');
+    this.load.image('npc2-up-2', 'assets/NPCs/npc2/animation_loop_UP/arriba2.png');
+    this.load.image('npc2-up-3', 'assets/NPCs/npc2/animation_loop_UP/arriba3.png');
+
+    this.load.image('npc2-down-1', 'assets/NPCs/npc2/animation_loop_down/abajo1.png');
+    this.load.image('npc2-down-2', 'assets/NPCs/npc2/animation_loop_down/abajo2.png');
+    this.load.image('npc2-down-3', 'assets/NPCs/npc2/animation_loop_down/abajo3.png');
+
+    this.load.image('npc2-left-1', 'assets/NPCs/npc2/animation_loop_left/izquierda1.png');
+    this.load.image('npc2-left-2', 'assets/NPCs/npc2/animation_loop_left/izquierda2.png');
+    this.load.image('npc2-left-3', 'assets/NPCs/npc2/animation_loop_left/izquierda3.png');
+
+    this.load.image('npc2-right-1', 'assets/NPCs/npc2/animation_loop_right/derecha1.png');
+    this.load.image('npc2-right-2', 'assets/NPCs/npc2/animation_loop_right/derecha2.png');
+    this.load.image('npc2-right-3', 'assets/NPCs/npc2/animation_loop_right/derecha3.png');
+
+    // Cargar sprites idle NPC3
+    this.load.image('npc3-idle-up', 'assets/NPCs/npc3/idle/arriba1.png');
+    this.load.image('npc3-idle-down', 'assets/NPCs/npc3/idle/abajo1.png');
+    this.load.image('npc3-idle-left', 'assets/NPCs/npc3/idle/izquierda1.png');
+    this.load.image('npc3-idle-right', 'assets/NPCs/npc3/idle/derecha1.png');
+
+    this.load.image('npc3-up-1', 'assets/NPCs/npc3/animation_loop_UP/arriba1.png');
+    this.load.image('npc3-up-2', 'assets/NPCs/npc3/animation_loop_UP/arriba2.png');
+    this.load.image('npc3-up-3', 'assets/NPCs/npc3/animation_loop_UP/arriba3.png');
+
+    this.load.image('npc3-down-1', 'assets/NPCs/npc3/animation_loop_down/abajo1.png');
+    this.load.image('npc3-down-2', 'assets/NPCs/npc3/animation_loop_down/abajo2.png');
+    this.load.image('npc3-down-3', 'assets/NPCs/npc3/animation_loop_down/abajo3.png');
+
+    this.load.image('npc3-left-1', 'assets/NPCs/npc3/animation_loop_left/izquierda1.png');
+    this.load.image('npc3-left-2', 'assets/NPCs/npc3/animation_loop_left/izquierda2.png');
+    this.load.image('npc3-left-3', 'assets/NPCs/npc3/animation_loop_left/izquierda3.png');
+
+    this.load.image('npc3-right-1', 'assets/NPCs/npc3/animation_loop_right/derecha1.png');
+    this.load.image('npc3-right-2', 'assets/NPCs/npc3/animation_loop_right/derecha2.png');
+    this.load.image('npc3-right-3', 'assets/NPCs/npc3/animation_loop_right/derecha3.png');
+    
+    // Cargar sprites idle NPC4
+    this.load.image('npc4-idle-up', 'assets/NPCs/npc4/idle/arriba1.png');
+    this.load.image('npc4-idle-down', 'assets/NPCs/npc4/idle/abajo1.png');
+    this.load.image('npc4-idle-left', 'assets/NPCs/npc4/idle/izquierda1.png');
+    this.load.image('npc4-idle-right', 'assets/NPCs/npc4/idle/derecha1.png');
+
+    this.load.image('npc4-up-1', 'assets/NPCs/npc4/animation_loop_UP/arriba1.png');
+    this.load.image('npc4-up-2', 'assets/NPCs/npc4/animation_loop_UP/arriba2.png');
+    this.load.image('npc4-up-3', 'assets/NPCs/npc4/animation_loop_UP/arriba3.png');
+
+    this.load.image('npc4-down-1', 'assets/NPCs/npc4/animation_loop_down/abajo1.png');
+    this.load.image('npc4-down-2', 'assets/NPCs/npc4/animation_loop_down/abajo2.png');
+    this.load.image('npc4-down-3', 'assets/NPCs/npc4/animation_loop_down/abajo3.png');
+
+    this.load.image('npc4-left-1', 'assets/NPCs/npc4/animation_loop_left/izquierda1.png');
+    this.load.image('npc4-left-2', 'assets/NPCs/npc4/animation_loop_left/izquierda2.png');
+    this.load.image('npc4-left-3', 'assets/NPCs/npc4/animation_loop_left/izquierda3.png');
+
+    this.load.image('npc4-right-1', 'assets/NPCs/npc4/animation_loop_right/derecha1.png');
+    this.load.image('npc4-right-2', 'assets/NPCs/npc4/animation_loop_right/derecha2.png');
+    this.load.image('npc4-right-3', 'assets/NPCs/npc4/animation_loop_right/derecha3.png');
+
+    // Cargar sprites idle NPC5
+    this.load.image('npc5-idle-up', 'assets/NPCs/npc5/idle/arriba1.png');
+    this.load.image('npc5-idle-down', 'assets/NPCs/npc5/idle/abajo1.png');
+    this.load.image('npc5-idle-left', 'assets/NPCs/npc5/idle/izquierda1.png');
+    this.load.image('npc5-idle-right', 'assets/NPCs/npc5/idle/derecha1.png');
+
+    this.load.image('npc5-up-1', 'assets/NPCs/npc5/animation_loop_UP/arriba1.png');
+    this.load.image('npc5-up-2', 'assets/NPCs/npc5/animation_loop_UP/arriba2.png');
+    this.load.image('npc5-up-3', 'assets/NPCs/npc5/animation_loop_UP/arriba3.png');
+
+    this.load.image('npc5-down-1', 'assets/NPCs/npc5/animation_loop_down/abajo1.png');
+    this.load.image('npc5-down-2', 'assets/NPCs/npc5/animation_loop_down/abajo2.png');
+    this.load.image('npc5-down-3', 'assets/NPCs/npc5/animation_loop_down/abajo3.png');
+
+    this.load.image('npc5-left-1', 'assets/NPCs/npc5/animation_loop_left/izquierda1.png');
+    this.load.image('npc5-left-2', 'assets/NPCs/npc5/animation_loop_left/izquierda2.png');
+    this.load.image('npc5-left-3', 'assets/NPCs/npc5/animation_loop_left/izquierda3.png');
+
+    this.load.image('npc5-right-1', 'assets/NPCs/npc5/animation_loop_right/derecha1.png');
+    this.load.image('npc5-right-2', 'assets/NPCs/npc5/animation_loop_right/derecha2.png');
+    this.load.image('npc5-right-3', 'assets/NPCs/npc5/animation_loop_right/derecha3.png');
+
+    // Cargar sprites idle NPC6
+    this.load.image('npc6-idle-up', 'assets/NPCs/npc6/idle/arriba1.png');
+    this.load.image('npc6-idle-down', 'assets/NPCs/npc6/idle/abajo1.png');
+    this.load.image('npc6-idle-left', 'assets/NPCs/npc6/idle/izquierda1.png');
+    this.load.image('npc6-idle-right', 'assets/NPCs/npc6/idle/derecha1.png');
+
+    this.load.image('npc6-up-1', 'assets/NPCs/npc6/animation_loop_UP/arriba1.png');
+    this.load.image('npc6-up-2', 'assets/NPCs/npc6/animation_loop_UP/arriba2.png');
+    this.load.image('npc6-up-3', 'assets/NPCs/npc6/animation_loop_UP/arriba3.png');
+    
+    this.load.image('npc6-down-1', 'assets/NPCs/npc6/animation_loop_down/abajo1.png');
+    this.load.image('npc6-down-2', 'assets/NPCs/npc6/animation_loop_down/abajo2.png');
+    this.load.image('npc6-down-3', 'assets/NPCs/npc6/animation_loop_down/abajo3.png');
+
+    this.load.image('npc6-left-1', 'assets/NPCs/npc6/animation_loop_left/izquierda1.png');
+    this.load.image('npc6-left-2', 'assets/NPCs/npc6/animation_loop_left/izquierda2.png');
+    this.load.image('npc6-left-3', 'assets/NPCs/npc6/animation_loop_left/izquierda3.png');
+
+    this.load.image('npc6-right-1', 'assets/NPCs/npc6/animation_loop_right/derecha1.png');
+    this.load.image('npc6-right-2', 'assets/NPCs/npc6/animation_loop_right/derecha2.png');
+    this.load.image('npc6-right-3', 'assets/NPCs/npc6/animation_loop_right/derecha3.png');
 }
 
 // Crea y configura los elementos del juego
 function create() {
     // 1. INICIALIZACIÓN BÁSICA
-    // Fondo del juego
     const background = this.add.image(0, 0, 'background');
     background.setOrigin(0, 0);
     background.setDisplaySize(1280, 720);
 
-    // Generación de texturas
-    const graphics = this.add.graphics();
-    // Textura del jugador
-    graphics.fillStyle(0x0000ff, 1.0);
-    graphics.fillRect(0, 0, 50, 50);
-    graphics.generateTexture('playerTexture', 50, 50);
-    graphics.clear();
-    // Textura de NPC
-    graphics.fillStyle(0xffff00, 1.0);
-    graphics.fillRect(0, 0, 50, 50);
-    graphics.generateTexture('npcTexture', 50, 50);
-    graphics.clear();
-    // Textura de basura
-    graphics.fillStyle(0x808080, 1.0);
-    graphics.fillRect(0, 0, 20, 20);
-    graphics.generateTexture('trashTexture', 15, 20);
-    graphics.destroy();
-
     // 2. CREACIÓN DE ELEMENTOS DEL JUEGO
     // Contenedor de basura
-    trashBin = this.physics.add.sprite(90, 530, 'trashBin');
-    trashBin.setDisplaySize(120, 90);
+    trashBin = this.physics.add.sprite(90, 560, 'trashBin');
+    trashBin.setDisplaySize(120, 130);
     trashBin.setCircle(150, 200);
     trashBin.setImmovable(true);
+
     // Jugador
     player = this.physics.add.sprite(400, 300, 'idle-down');
     player.setCollideWorldBounds(true);
     player.setDisplaySize(50, 60);
 
-    // Crear animaciones
+    // Animaciones del jugador
     this.anims.create({
         key: 'walk-up',
         frames: [
@@ -313,14 +442,68 @@ function create() {
         repeat: -1
     });
 
-    // NPCs
+    // Crear animaciones para cada NPC
+    for (let i = 1; i <= 6; i++) {
+        // Animaciones para caminar hacia arriba
+        this.anims.create({
+            key: `npc${i}-walk-up`,
+            frames: [
+                { key: `npc${i}-up-1` },
+                { key: `npc${i}-up-2` },
+                { key: `npc${i}-up-3` }
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
+
+        // Animaciones para caminar hacia abajo
+        this.anims.create({
+            key: `npc${i}-walk-down`,
+            frames: [
+                { key: `npc${i}-down-1` },
+                { key: `npc${i}-down-2` },
+                { key: `npc${i}-down-3` }
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
+
+        // Animaciones para caminar hacia la izquierda
+        this.anims.create({
+            key: `npc${i}-walk-left`,
+            frames: [
+                { key: `npc${i}-left-1` },
+                { key: `npc${i}-left-2` },
+                { key: `npc${i}-left-3` }
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
+
+        // Animaciones para caminar hacia la derecha
+        this.anims.create({
+            key: `npc${i}-walk-right`,
+            frames: [
+                { key: `npc${i}-right-1` },
+                { key: `npc${i}-right-2` },
+                { key: `npc${i}-right-3` }
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
+    }
+
+    // Creación de NPCs
+    npcs = [];
     for (let i = 0; i < 6; i++) {
         const npc = this.physics.add.sprite(
             Phaser.Math.Between(100, 700),
             Phaser.Math.Between(100, 500),
-            'npcTexture'
+            `npc${i + 1}-idle-down`
         );
         npc.setCollideWorldBounds(true);
+        npc.setDisplaySize(25, 50);
+        npc.npcIndex = i + 1; // Guardar el índice del NPC
         npcs.push(npc);
 
         const settings = DIFFICULTY_SETTINGS[currentDifficulty];
@@ -332,6 +515,7 @@ function create() {
         });
         trashTimers.push(timer);
     }
+
     // Objetos del mall
     createMallObject(this, 200, 150, 'bench', 100, 60);
     createMallObject(this, 400, 150, 'plant', 50, 90);
@@ -368,7 +552,6 @@ function create() {
     this.physics.add.overlap(player, trashGroup, collectTrash, null, this);
 
     // 4. TEMPORIZADORES
-    // Movimiento de NPCs
     this.time.addEvent({
         delay: 1000,
         callback: changeNpcDirection,
@@ -376,7 +559,6 @@ function create() {
         loop: true
     });
 
-    // Penalización por basura
     this.time.addEvent({
         delay: 1000,
         callback: checkTrashPenalty,
@@ -384,7 +566,6 @@ function create() {
         loop: true
     });
 
-    // Temporizador del juego
     this.time.addEvent({
         delay: 1000,
         callback: updateTimer,
@@ -393,9 +574,8 @@ function create() {
     });
 
     // 5. UI Y CONTROLES
-    // Controles de teclado
     cursors = this.input.keyboard.createCursorKeys();
-    pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P); // Cambio a P
+    pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
     // Textos del juego
     scoreText = this.add.text(16, 16, 'Puntos: ' + score, { fontSize: '32px', fill: '#fff' });
@@ -409,13 +589,13 @@ function create() {
     inventoryCleanText = this.add.text(400, 300, 'Inventario limpio', { fontSize: '32px', fill: '#00ff00' }).setOrigin(0.5);
     gameOverText = this.add.text(400, 300, '', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
 
-    // Establecer visibilidad inicial de textos de estado
+    // Establecer visibilidad inicial
     pauseText.setVisible(false);
     inventoryFullText.setVisible(false);
     inventoryCleanText.setVisible(false);
     gameOverText.setVisible(false);
 
-    // Mostrar el nombre del jugador sobre el jugador
+    // Nombre del jugador
     playerNameText = this.add.text(player.x, player.y - 40, playerName, { fontSize: '20px', fill: '#fff' }).setOrigin(0.5);
 }
 
@@ -601,7 +781,39 @@ function changeNpcDirection() {
     npcs.forEach(npc => {
         const angle = Phaser.Math.FloatBetween(0, 2 * Math.PI);
         const speed = 100;
-        npc.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+        const velocityX = Math.cos(angle) * speed;
+        const velocityY = Math.sin(angle) * speed;
+        
+        npc.setVelocity(velocityX, velocityY);
+
+        // Determinar la dirección predominante y reproducir la animación correspondiente
+        if (Math.abs(velocityX) > Math.abs(velocityY)) {
+            if (velocityX > 0) {
+                npc.anims.play(`npc${npc.npcIndex}-walk-right`, true);
+            } else {
+                npc.anims.play(`npc${npc.npcIndex}-walk-left`, true);
+            }
+        } else {
+            if (velocityY > 0) {
+                npc.anims.play(`npc${npc.npcIndex}-walk-down`, true);
+            } else {
+                npc.anims.play(`npc${npc.npcIndex}-walk-up`, true);
+            }
+        }
+
+        // Si la velocidad es muy baja, mostrar el sprite idle correspondiente
+        if (Math.abs(velocityX) < 10 && Math.abs(velocityY) < 10) {
+            // Detener la animación actual
+            npc.anims.stop();
+            
+            // Determinar la última dirección y establecer el sprite idle correspondiente
+            let direction = 'down'; // dirección por defecto
+            if (npc.anims.currentAnim) {
+                const currentAnimName = npc.anims.currentAnim.key;
+                direction = currentAnimName.split('-')[2]; // obtiene 'up', 'down', 'left' o 'right'
+            }
+            npc.setTexture(`npc${npc.npcIndex}-idle-${direction}`);
+        }
     });
 }
 
@@ -642,9 +854,13 @@ function applySeparation() {
 // Crea una nueva basura en la posición del NPC especificado
 function dropTrash(npc) {
     if (trashGroup.countActive(true) < 20) {
-        const trash = trashGroup.create(npc.x, npc.y, 'trashTexture');
+        // Obtener un número aleatorio entre 1 y 14 para seleccionar la textura
+        const textureNumber = Phaser.Math.Between(1, 14);
+        const trashTextureName = `trashTexture${textureNumber}`;
+        
+        const trash = trashGroup.create(npc.x, npc.y, trashTextureName);
         trash.setCollideWorldBounds(true);
-        trash.setDisplaySize(20, 30); // Ajusta el tamaño de la basura aquí
+        trash.setDisplaySize(10, 20);
     }
 }
 
@@ -826,3 +1042,4 @@ function vibrateGamepad() {
         }
     }
 }
+
