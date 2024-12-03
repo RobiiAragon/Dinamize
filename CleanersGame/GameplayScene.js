@@ -57,10 +57,10 @@ let inventoryCleanText;
 let trashBin;
 let timerText;
 let gameOverText;
-let timeLimit = 120; // 2 minutes in segundos
+let timeLimit = 120; // 2 minutos en segundos
 let gamepadActive = false;
-let lastStartButtonState = false;
-let startButtonCooldown = false;
+let lastPauseButtonState = false;
+let pauseButtonCooldown = false;
 
 const config = {
     type: Phaser.AUTO,
@@ -81,7 +81,6 @@ const config = {
     }
 };
 let game = null;
-
 
 const DIFFICULTY_SETTINGS = {
     easy: {
@@ -393,9 +392,9 @@ function create() {
     });
 
     // 5. UI Y CONTROLES
-    // Controles
+    // Controles de teclado
     cursors = this.input.keyboard.createCursorKeys();
-    pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P); // Cambio a Y
 
     // Textos del juego
     scoreText = this.add.text(16, 16, 'Puntos: ' + score, { fontSize: '32px', fill: '#fff' });
@@ -425,80 +424,88 @@ function createMallObject(scene, x, y, key, width, height) {
     obj.setImmovable(true);
     mallObjects.push(obj);
 }
-let startButtonPressed = false;
+let pauseButtonPressed = false;
 
 function handleGamepadInput() {
     const gamepads = navigator.getGamepads();
-    if (!gamepads || !gamepads[0]) return;
+    if (!gamepads) return;
 
-    const gamepad = gamepads[0];
-    const speed = 200;
-    let moving = false;
+    for (let i = 0; i < gamepads.length; i++) {
+        const gamepad = gamepads[i];
+        if (!gamepad) continue;
 
-    // Joystick izquierdo
-    const leftStickX = gamepad.axes[0];
-    const leftStickY = gamepad.axes[1];
-    const deadZone = 0.2;
+        const speed = 200;
+        let moving = false;
 
-    // Movimiento con joystick
-    if (Math.abs(leftStickX) > deadZone || Math.abs(leftStickY) > deadZone) {
+        // Joystick izquierdo con deadzone ajustada
+        const leftStickX = Math.abs(gamepad.axes[0]) > 0.15 ? gamepad.axes[0] : 0;
+        const leftStickY = Math.abs(gamepad.axes[1]) > 0.15 ? gamepad.axes[1] : 0;
+
         player.setVelocityX(leftStickX * speed);
         player.setVelocityY(leftStickY * speed);
-        moving = true;
-        gamepadActive = true;
-    }
 
-    // D-pad
-    const dpadUp = gamepad.buttons[12]?.pressed;
-    const dpadDown = gamepad.buttons[13]?.pressed;
-    const dpadLeft = gamepad.buttons[14]?.pressed;
-    const dpadRight = gamepad.buttons[15]?.pressed;
-
-    // Movimiento con D-pad
-    if (dpadLeft) {
-        player.setVelocityX(-speed);
-        moving = true;
-        gamepadActive = true;
-    } else if (dpadRight) {
-        player.setVelocityX(speed);
-        moving = true;
-        gamepadActive = true;
-    }
-
-    if (dpadUp) {
-        player.setVelocityY(-speed);
-        moving = true;
-        gamepadActive = true;
-    } else if (dpadDown) {
-        player.setVelocityY(speed);
-        moving = true;
-        gamepadActive = true;
-    }
-
-    // Manejo de pausa mejorado
-    const startButton = gamepad.buttons[9];
-    
-    // Detectar cuando el botón se suelta
-    if (!startButton.pressed && lastStartButtonState) {
-        if (!gameOverText.visible && !startButtonCooldown) {
-            togglePause.call(this);
-            startButtonCooldown = true;
-            // Añadir un pequeño delay para evitar múltiples activaciones
-            setTimeout(() => {
-                startButtonCooldown = false;
-            }, 250);
+        if (leftStickX !== 0 || leftStickY !== 0) {
+            moving = true;
+            gamepadActive = true;
         }
-    }
-    
-    lastStartButtonState = startButton.pressed;
 
-    // Actualizar animación si hay movimiento
-    if (moving) {
-        updatePlayerAnimation();
-    } else if (!cursors.left.isDown && !cursors.right.isDown && 
-               !cursors.up.isDown && !cursors.down.isDown) {
-        player.setVelocity(0);
-        player.anims.stop();
+        // D-pad
+        const dpadUp = gamepad.buttons[12]?.pressed;
+        const dpadDown = gamepad.buttons[13]?.pressed;
+        const dpadLeft = gamepad.buttons[14]?.pressed;
+        const dpadRight = gamepad.buttons[15]?.pressed;
+
+        if (dpadLeft) {
+            player.setVelocityX(-speed);
+            moving = true;
+            gamepadActive = true;
+        }
+        if (dpadRight) {
+            player.setVelocityX(speed);
+            moving = true;
+            gamepadActive = true;
+        }
+        if (dpadUp) {
+            player.setVelocityY(-speed);
+            moving = true;
+            gamepadActive = true;
+        }
+        if (dpadDown) {
+            player.setVelocityY(speed);
+            moving = true;
+            gamepadActive = true;
+        }
+
+        // Botón Y para pausar
+        const yButton = gamepad.buttons[3]; // Y suele ser el botón 3
+
+        // Detectar cuando el botón se suelta
+        if (!yButton.pressed && lastPauseButtonState) {
+            if (!gameOverText.visible && !pauseButtonCooldown) {
+                togglePause.call(this);
+                pauseButtonCooldown = true;
+                // Añadir un pequeño delay para evitar múltiples activaciones
+                setTimeout(() => {
+                    pauseButtonCooldown = false;
+                }, 250);
+            }
+        }
+
+        lastPauseButtonState = yButton.pressed;
+
+        // Actualizar animación si hay movimiento
+        if (moving) {
+            updatePlayerAnimation();
+        } else {
+            player.setVelocity(0);
+            player.anims.stop();
+            if (player.anims.currentAnim) {
+                const direction = player.anims.currentAnim.key.split('-')[1];
+                player.setTexture(`idle-${direction}`);
+            }
+        }
+
+        // Feedback de vibración no en este lugar
     }
 }
 
@@ -543,6 +550,10 @@ function handleKeyboardInput() {
     } else {
         player.setVelocity(0);
         player.anims.stop();
+        if (player.anims.currentAnim) {
+            const direction = player.anims.currentAnim.key.split('-')[1];
+            player.setTexture(`idle-${direction}`);
+        }
     }
 }
 
@@ -555,12 +566,6 @@ function updatePlayerAnimation() {
         player.anims.play('walk-up', true);
     } else if (player.body.velocity.y > 0) {
         player.anims.play('walk-down', true);
-    } else {
-        player.anims.stop();
-        if (player.anims.currentAnim) {
-            const direction = player.anims.currentAnim.key.split('-')[1];
-            player.setTexture(`idle-${direction}`);
-        }
     }
 }
 
@@ -647,7 +652,7 @@ function dropTrash(npc) {
     }
 }
 
-// 2. Modificar la función collectTrash
+// Modificar la función collectTrash
 function collectTrash(player, trash) {
     const maxInventory = DIFFICULTY_SETTINGS[currentDifficulty].inventorySize;
     if (inventory < maxInventory) {
@@ -656,6 +661,9 @@ function collectTrash(player, trash) {
         score += 10;
         scoreText.setText('Puntos: ' + score);
         inventoryText.setText('Inventario: ' + inventory + '/' + maxInventory);
+        
+        // Vibración al recolectar basura
+        vibrateGamepad();
     } else {
         inventoryFullText.setVisible(true);
         this.time.delayedCall(2000, () => {
@@ -673,9 +681,11 @@ function emptyInventory() {
         this.time.delayedCall(2000, () => {
             inventoryCleanText.setVisible(false);
         });
+
+        // Vibración al limpiar inventario
+        vibrateGamepad();
     }
 }
-
 
 function checkTrashPenalty() {
     const trashCount = trashGroup.countActive(true);
@@ -798,5 +808,21 @@ function endGame() {
             spread: 180,
             origin: { y: 0.6 }
         });
+    }
+}
+
+// Función para vibrar el gamepad
+function vibrateGamepad() {
+    const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+    for (let gp of gamepads) {
+        if (gp && gp.vibrationActuator) {
+            gp.vibrationActuator.playEffect('dual-rumble', {
+                duration: 100,
+                strongMagnitude: 0.7,
+                weakMagnitude: 0.7
+            }).catch(err => {
+                console.warn('Vibración no soportada:', err);
+            });
+        }
     }
 }
