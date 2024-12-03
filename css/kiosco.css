@@ -1,11 +1,17 @@
 .main-content {
     display: flex;
     gap: 10px;
-    padding: 0; /* Quitar el padding */
+    padding: 0;
     max-width: 2000px;
     margin: 0;
-    height: calc(100vh - 60px); /* Ajustar según la altura de tu header */
+    height: calc(100vh - 60px);
     overflow: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.main-content::-webkit-scrollbar {
+    display: none;
 }
 
 .map-container {
@@ -13,9 +19,15 @@
     min-width: 300px;
     width: 100%;
     max-width: 100%;
-    overflow: auto;
     height: 100%;
     padding: 0;
+    overflow: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.map-container::-webkit-scrollbar {
+    display: none;
 }
 
 .map {
@@ -23,13 +35,13 @@
     width: 100%;
     height: 100%;
     background-color: #f0f0f000;
-    display: flex; /* Añadir flex */
-    align-items: flex-start; /* Alinear al inicio */
+    display: flex;
+    align-items: flex-start;
 }
 
 .local {
     position: relative;
-    z-index: 2; /* Encima del fondo */
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,14 +60,14 @@
 }
 
 .local img {
-    width: 50px; /* 10% menos de tamaño */
-    height: 50px; /* 10% menos de tamaño */
-    object-fit: cover; /* Mantiene la proporción de la imagen */
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
 }
 
 .local p {
     margin: 5px 0;
-    font-size: 7px; /* 50% menos de tamaño */
+    font-size: 7px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -66,7 +78,13 @@
     flex: 1;
     min-width: 300px;
     max-width: 100%;
-    overflow: auto;
+    overflow: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
 }
 
 .info-popup {
@@ -84,7 +102,13 @@
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    overflow: auto;
+    overflow: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.info-popup::-webkit-scrollbar {
+    display: none;
 }
 
 .info-popup p {
@@ -141,7 +165,7 @@
 @media screen and (max-width: 768px) {
     .main-content {
         padding: 1rem;
-        overflow-y: auto;
+        overflow: hidden;
     }
     
     .map-container,
@@ -151,15 +175,15 @@
     }
 }
 
-/* Modo oscuro para elementos específicos de kiosco.php */
+/* Modo oscuro */
 body.dark-mode .map {
-    background-color: #2d2d2d;
-    border-color: #404040;
+    background-color: #2d2d2d00;
+    border-color: #40404000;
 }
 
 body.dark-mode .local:hover {
-    background-color: rgba(55, 55, 55, 0.9);
-    box-shadow: 0 0 15px rgba(242, 139, 12, 0.3);
+    background-color: rgba(55, 55, 55, 0);
+    box-shadow: 0 0 15px rgba(242, 139, 12, 0);
 }
 
 body.dark-mode .local p {
@@ -168,7 +192,7 @@ body.dark-mode .local p {
 
 body.dark-mode .info-popup {
     background-color: #2d2d2d;
-    border-color: #404040;
+    border-color: #40404000;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     color: #fff;
 }
@@ -179,17 +203,17 @@ body.dark-mode .info-popup img {
 
 body.dark-mode .map-container {
     background-color: #1a1a1a;
-    border-color: #404040;
+    border-color: #00000000;
 }
 
 body.dark-mode .container {
-    background-color: #2d2d2d;
-    border-color: #404040;
+    background-color: #2d2d2d00;
+    border-color: #40404000;
 }
 
 body.dark-mode .local img {
     filter: brightness(0.9);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0);
 }
 
 .map,
@@ -219,18 +243,18 @@ body.dark-mode .local a:hover {
 }
 
 body.dark-mode .map {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0);
 }
 
 body.dark-mode [data-theme="dark"] .local {
-    background-color: rgba(45, 45, 45, 0.8);
+    background-color: rgba(45, 45, 45, 0);
 }
 
 .svg-container {
     position: relative;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Fondo */
+    z-index: 1;
 }
 
 .svg-container svg {
@@ -242,19 +266,27 @@ body.dark-mode [data-theme="dark"] .local {
     object-fit: contain;
     object-position: top;
 }
-/* Estilo normal */
+
+.cls-1, .cls-2 {
+    stroke: #1d1d1b;
+    stroke-miterlimit: 10;
+}
+
+.cls-2 {
+    fill: none;
+}
+
 .cls-1 {
     fill: none;
     stroke: #000000;
     stroke-miterlimit: 10;
+    transition: stroke 0.3s ease;
 }
 
-/* Modo oscuro */
 body.dark-mode .cls-1 {
     stroke: #ffffff;
 }
 
-/* Para asegurar una transición suave */
-.cls-1 {
-    transition: stroke 0.3s ease;
+body.dark-mode .cls-2 {
+    stroke: #ffffff;
 }

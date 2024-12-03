@@ -96,6 +96,7 @@ CloseCon($conn);
                 <li><a href="managePlaza.php" data-section="manage-plaza" class="active">Manage Plaza</a></li>
                 <li><a href="manageLocals.php" data-section="manage-locals">Manage Locals</a></li>
                 <li><a href="kioskUI.php" data-section="kiosk-ui">Kiosk UI</a></li>
+                <li><a href="kiosco.php" data-section="kiosco">Digital Kiosk</a></li>
             </ul>
             <div class="logout-container">
                 <a href="backend/logout.php" class="logout-button">

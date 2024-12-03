@@ -68,3 +68,48 @@
 .login-container button:hover {
     background-color: #f23828;
 }
+
+/* Estilos para el modo oscuro */
+[data-theme="dark"] .register-container,
+[data-theme="dark"] .login-container {
+    background-color: #2d2d2d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .register-container h2,
+[data-theme="dark"] .login-container h2 {
+    color: #4cc3b0;
+}
+
+[data-theme="dark"] .form-group label {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .form-group input {
+    background-color: #3d3d3d;
+    border-color: #4a4a4a;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .form-group input:focus {
+    border-color: #4cc3b0;
+    outline: none;
+}
+
+[data-theme="dark"] .toggle-password {
+    color: #999;
+}
+
+[data-theme="dark"] .register-container button,
+[data-theme="dark"] .login-container button {
+    background-color: #f28b0c;
+}
+
+[data-theme="dark"] .register-container button:hover,
+[data-theme="dark"] .login-container button:hover {
+    background-color: #f23828;
+}
+
+[data-theme="dark"] p[style*="color:red"] {
+    color: #ff6b6b !important;
+}
