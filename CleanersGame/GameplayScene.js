@@ -59,8 +59,6 @@ let timerText;
 let gameOverText;
 let timeLimit = 120; // 2 minutos en segundos
 let gamepadActive = false;
-let lastPauseButtonState = false;
-let pauseButtonCooldown = false;
 
 const config = {
     type: Phaser.AUTO,
@@ -191,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
+// Actualiza los temporizadores de los NPCs según la dificultad seleccionada
 function updateNPCTimers() {
     const settings = DIFFICULTY_SETTINGS[currentDifficulty];
     trashTimers.forEach(timer => {
@@ -199,6 +198,7 @@ function updateNPCTimers() {
     });
 }
 
+// Carga los activos del juego
 function preload() {
     this.load.image('background', 'assets/Background.png');
     this.load.image('trashBin', 'assets/Basurero.png');
@@ -231,6 +231,7 @@ function preload() {
     this.load.image('walk-right-3', 'assets/player/animation_loop_right/derecha3.png');
 }
 
+// Crea y configura los elementos del juego
 function create() {
     // 1. INICIALIZACIÓN BÁSICA
     // Fondo del juego
@@ -394,7 +395,7 @@ function create() {
     // 5. UI Y CONTROLES
     // Controles de teclado
     cursors = this.input.keyboard.createCursorKeys();
-    pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P); // Cambio a Y
+    pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P); // Cambio a P
 
     // Textos del juego
     scoreText = this.add.text(16, 16, 'Puntos: ' + score, { fontSize: '32px', fill: '#fff' });
@@ -418,14 +419,17 @@ function create() {
     playerNameText = this.add.text(player.x, player.y - 40, playerName, { fontSize: '20px', fill: '#fff' }).setOrigin(0.5);
 }
 
+// Crea objetos del mall en posiciones específicas
 function createMallObject(scene, x, y, key, width, height) {
     const obj = scene.physics.add.sprite(x, y, key);
     obj.setDisplaySize(width, height); // Ajustar el tamaño del sprite
     obj.setImmovable(true);
     mallObjects.push(obj);
 }
+
 let pauseButtonPressed = false;
 
+// Maneja la entrada del gamepad para controlar al jugador
 function handleGamepadInput() {
     const gamepads = navigator.getGamepads();
     if (!gamepads) return;
@@ -476,23 +480,6 @@ function handleGamepadInput() {
             gamepadActive = true;
         }
 
-        // Botón Y para pausar
-        const yButton = gamepad.buttons[3]; // Y suele ser el botón 3
-
-        // Detectar cuando el botón se suelta
-        if (!yButton.pressed && lastPauseButtonState) {
-            if (!gameOverText.visible && !pauseButtonCooldown) {
-                togglePause.call(this);
-                pauseButtonCooldown = true;
-                // Añadir un pequeño delay para evitar múltiples activaciones
-                setTimeout(() => {
-                    pauseButtonCooldown = false;
-                }, 250);
-            }
-        }
-
-        lastPauseButtonState = yButton.pressed;
-
         // Actualizar animación si hay movimiento
         if (moving) {
             updatePlayerAnimation();
@@ -511,6 +498,7 @@ function handleGamepadInput() {
 
 let lastInputType = 'keyboard'; // o 'gamepad'
 
+// Maneja la entrada del usuario, ya sea teclado o gamepad
 function handleInput() {
     if (gamepadActive) {
         lastInputType = 'gamepad';
@@ -521,6 +509,7 @@ function handleInput() {
     }
 }
 
+// Maneja la entrada del teclado para controlar al jugador
 function handleKeyboardInput() {
     const speed = 200;
     let moving = false;
@@ -557,6 +546,7 @@ function handleKeyboardInput() {
     }
 }
 
+// Actualiza la animación del jugador según su dirección de movimiento
 function updatePlayerAnimation() {
     if (player.body.velocity.x < 0) {
         player.anims.play('walk-left', true);
@@ -569,6 +559,7 @@ function updatePlayerAnimation() {
     }
 }
 
+// Alterna el estado de pausa del juego
 function togglePause() {
     isPaused = !isPaused;
     if (isPaused) {
@@ -584,6 +575,7 @@ function togglePause() {
     }
 }
 
+// Función principal de actualización del juego, llamada en cada frame
 function update() {
     if (Phaser.Input.Keyboard.JustDown(pauseKey) && !gameOverText.visible) {
         togglePause.call(this);
@@ -604,6 +596,7 @@ function update() {
     updateBossEmotion();
 }
 
+// Cambia la dirección de movimiento de todos los NPCs a una dirección aleatoria
 function changeNpcDirection() {
     npcs.forEach(npc => {
         const angle = Phaser.Math.FloatBetween(0, 2 * Math.PI);
@@ -612,6 +605,7 @@ function changeNpcDirection() {
     });
 }
 
+// Actualiza la emoción del jefe basándose en la cantidad de basura activa
 function updateBossEmotion() {
     const trashCount = trashGroup.countActive(true);
     const bossImage = document.getElementById('bossImage');
@@ -625,6 +619,7 @@ function updateBossEmotion() {
     }
 }
 
+// Aplica una separación entre los NPCs para evitar que se aglomeren
 function applySeparation() {
     const separationDistance = 50;
     npcs.forEach(npc1 => {
@@ -644,6 +639,7 @@ function applySeparation() {
     });
 }
 
+// Crea una nueva basura en la posición del NPC especificado
 function dropTrash(npc) {
     if (trashGroup.countActive(true) < 20) {
         const trash = trashGroup.create(npc.x, npc.y, 'trashTexture');
@@ -652,7 +648,7 @@ function dropTrash(npc) {
     }
 }
 
-// Modificar la función collectTrash
+// Recoge la basura cuando el jugador colisiona con ella
 function collectTrash(player, trash) {
     const maxInventory = DIFFICULTY_SETTINGS[currentDifficulty].inventorySize;
     if (inventory < maxInventory) {
@@ -672,6 +668,7 @@ function collectTrash(player, trash) {
     }
 }
 
+// Vacía el inventario cuando el jugador interactúa con el contenedor de basura
 function emptyInventory() {
     if (inventory > 0) {
         inventory = 0;
@@ -687,6 +684,7 @@ function emptyInventory() {
     }
 }
 
+// Aplica una penalización al puntaje si hay demasiada basura en juego
 function checkTrashPenalty() {
     const trashCount = trashGroup.countActive(true);
     if (trashCount > 10 && trashCount < 20 && trashCount > lastTrashCount) {
@@ -697,6 +695,7 @@ function checkTrashPenalty() {
     lastTrashCount = trashCount;
 }
 
+// Actualiza el temporizador del juego y termina el juego cuando se agota el tiempo
 function updateTimer() {
     if (timeLimit > 0) {
         timeLimit--;
@@ -708,7 +707,7 @@ function updateTimer() {
     }
 }
 
-// Modificar la función updateHighScores
+// Actualiza los puntajes altos en el almacenamiento local
 function updateHighScores(playerName, score) {
     const scoreKey = SCORES_KEYS[currentDifficulty];
     let scores = JSON.parse(localStorage.getItem(scoreKey)) || [];
@@ -733,7 +732,7 @@ function updateHighScores(playerName, score) {
     return isNewPlayer;
 }
 
-// Modificar la función updateScoreBoard
+// Actualiza la tabla de puntajes en la interfaz de usuario
 function updateScoreBoard(forceDifficulty = null) {
     const difficulty = forceDifficulty || currentDifficulty;
     const scores = JSON.parse(localStorage.getItem(SCORES_KEYS[difficulty])) || [];
@@ -773,6 +772,7 @@ function updateScoreBoard(forceDifficulty = null) {
     });
 }
 
+// Termina el juego, actualiza puntajes y muestra animaciones
 function endGame() {
     this.physics.pause();
     trashTimers.forEach(timer => timer.paused = true);
@@ -811,7 +811,7 @@ function endGame() {
     }
 }
 
-// Función para vibrar el gamepad
+// Función para vibrar el gamepad si está disponible
 function vibrateGamepad() {
     const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
     for (let gp of gamepads) {
