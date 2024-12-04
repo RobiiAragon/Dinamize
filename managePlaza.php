@@ -135,11 +135,6 @@ CloseCon($conn);
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('nombre');"></i>
                 </div>
                 <div class="form-group">
-                    <label for="categoria">Categoría:</label>
-                    <input type="text" id="categoria" name="categoria" value="<?php echo $categoria; ?>" readonly>
-                    <i class="fas fa-edit edit-icon" onclick="enableEdit('categoria');"></i>
-                </div>
-                <div class="form-group">
                     <label for="direccion">Dirección:</label>
                     <textarea id="direccion" name="direccion" readonly><?php echo $direccion; ?></textarea>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('direccion');"></i>

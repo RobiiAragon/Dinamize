@@ -68,6 +68,7 @@ if ($result->num_rows > 0) {
     $fotoPerfilSrc = 'img/noUserPhoto.png';
     $email = '';
     $numeroTelefono = '';
+    $nombreUsuario = '';
     $nombres = '';
     $apellidos = '';
     $fechaNacimiento = '';

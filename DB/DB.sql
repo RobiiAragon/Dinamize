@@ -54,10 +54,3 @@ CREATE TABLE negocios (
     instagram VARCHAR(255),
     descripcion TEXT
 );
-
-INSERT INTO usuarios (nombreUsuario, email, password)
-VALUES ('admin', 'robiiaragon@gmail.com', sha1('admin')),
-       ('Cocoro', 'caromartine18@gmail.com', sha1('cocoro12'));
-
-INSERT INTO infousuarios (user_id, nombres, apellidos, fechaNacimiento, numeroTelefono, genero)
-VALUES (1, 'Jesus Roberto', 'Aragon Lopez', '2002-10-01', '6633016320', 'Masculino');
