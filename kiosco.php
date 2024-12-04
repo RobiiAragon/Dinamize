@@ -3,6 +3,12 @@ session_start();
 require_once 'config.php';
 require_once 'DbHelper.php';
 
+// Asegurar que el usuario esté autenticado
+if (!isset($_SESSION['user_id'])) {
+  header("Location: login.php");
+  exit();
+}
+
 class KioscoController {
     private $conn;
     private $locales = [];

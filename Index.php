@@ -33,6 +33,9 @@ if (isset($_SESSION['user_id'])) {
     <title>Dinamize - Digital Kiosk</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/fontAwesome/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script>
         // Aplicar la clase dark-mode al cargar la página si está en localStorage
         if (localStorage.getItem('darkMode') === 'true') {
@@ -66,38 +69,52 @@ if (isset($_SESSION['user_id'])) {
              class="header-profile-pic">
     </a>
     <button onclick="location.href='backend/logout.php'" class="logout-btn">Cerrar Sesión</button>
-<?php else: ?>
-    <button onclick="location.href='login.php'">Login</button>
-    <button onclick="location.href='register.php'">Register</button>
-<?php endif; ?>
+        <?php else: ?>
+            <a href="https://linktr.ee/dinamizeenterprise" target="_blank" class="socialMedia">Nuestras Redes</a>
+            <button onclick="location.href='login.php'">Login</button>
+        <?php endif; ?>
         </div>
     </header>
-    <div class="container">
-        <section class="hero">
-            <h1>Welcome to Dinamize</h1>
-            <p>Your digital kiosk solution for plazas and malls</p>
-        </section>
-        <section class="features">
-            <div class="carousel">
+    <main>
+    <div class="anuncio-carrusel-container">
+        <div class="anuncio">
+            <div class="titGrande">
+            <label>Queremos trabajar contigo</label>
+        </div>
+                <div class="texto">
+                    <label>En Dinamize queremos ayudarte a transformar tus espacios y potenciar tu negocio con soluciones innovadoras como la revitalización de plazas y kioscos interactivos.</label><br>
+                    <label><strong>¡Contactanos ahora y obtén un 15% de descuento en tu primer servicio!</strong></label>
+                </div>
+                <button onclick="window.open('https://www.facebook.com/profile.php?id=61567673518071', '_blank')" class="cta-button">Contactanos!</button>            </div>
+            <div class="carrusel-division">
+            <div class="titServicios">
+                <h2>Nuestros Servicios</h2>
+            </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <h2>Feature 1</h2>
-                        <p>Description of feature 1.</p>
+                        <a href="https://dinamize-enterprise.rdi.store/products/c9ed751a-505f-4d0a-a421-1c67b57e56e7/Men-Digital" target="_blank">
+                            <img src="img/1.png" alt="Servicio 1">
+                        </a>
                     </div>
                     <div class="carousel-item">
-                        <h2>Feature 2</h2>
-                        <p>Description of feature 2.</p>
+                        <a href="https://dinamize-enterprise.rdi.store/products/06308d5b-5b5d-4433-9bb5-8ddeb2627238/Redes-sociales" target="_blank">
+                        <img src="img/2.png" alt="Servicio 2">
+                        </a>
                     </div>
                     <div class="carousel-item">
-                        <h2>Feature 3</h2>
-                        <p>Description of feature 3.</p>
+                        <a href="https://dinamize-enterprise.rdi.store/products/21dcc8d6-f24e-4505-acf3-d0806180fcc2/Tarjetas-de-presentacin" target="_blank">
+                        <img src="img/3.png" alt="Servicio 3">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="https://dinamize-enterprise.rdi.store/products/bba8261a-f087-4515-a8be-c91487c8dd37/Kiosco-Digital" target="_blank">
+                        <img src="img/8.png" alt="Servicio 4">
+                        </a>
                     </div>
                 </div>
-                <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
-                <button class="carousel-control next" onclick="nextSlide()">&#10095;</button>
             </div>
-        </section>
-    </div>
+        </div>
+    </main>
     <script src="js/scripts.js"></script>
     <script src="js/darkMode.js"></script>
     <button class="dark-mode-toggle" id="darkModeToggle" title="Cambiar modo oscuro">

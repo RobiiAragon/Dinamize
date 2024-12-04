@@ -45,11 +45,21 @@
 }
 
 .toggle-password {
-    position: absolute;
+    position: relative;
     right: 10px;
     cursor: pointer;
     font-size: 1.2rem;
     color: #777;
+}
+
+.pasteClipboard {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transform: translateY(-8px);
+    background-color: #f28b0c !important;
 }
 
 .register-container button,
@@ -123,4 +133,16 @@ html {
 html.js-loading {
     visibility: hidden;
     opacity: 0;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    color: green;
+    text-align: center;
+    margin-bottom: 1rem;
 }

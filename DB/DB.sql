@@ -9,6 +9,14 @@ CREATE TABLE usuarios (
     password VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE Claves_de_activacion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    clave VARCHAR(8) NOT NULL,
+    Estado VARCHAR(20) DEFAULT 'Sin Asignar'
+);
+
 CREATE TABLE infousuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,

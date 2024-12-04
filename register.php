@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    <?php session_start(); ?>
     <header>
         <div class="logo-container">
             <a href="index.php">
@@ -31,6 +32,19 @@
     <div class="container">
         <div class="register-container">
             <h2>Registro</h2>
+
+            <?php
+            if (isset($_SESSION['error'])) {
+                echo '<p class="error-message">'.htmlspecialchars($_SESSION['error']).'</p>';
+                unset($_SESSION['error']);
+            }
+
+            if (isset($_SESSION['success'])) {
+                echo '<p class="success-message">'.htmlspecialchars($_SESSION['success']).'</p>';
+                unset($_SESSION['success']);
+            }
+            ?>
+
             <form action="backend/register_process.php" method="POST">
                 <div class="form-group">
                     <label for="Nombres">Nombres</label>
@@ -49,6 +63,14 @@
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
+                    <label for="activation_key">Clave de activación
+                    </label>
+                    <input type="text" id="activation_key" name="activation_key" required maxlength="8">
+                        <button type="button" class="pasteClipboard" onclick="pasteClipboard('activation_key')" title="Pegar desde el portapapeles">
+                            📋
+                        </button>
+                </div>
+                <div class="form-group">
                     <label for="password">Contraseña</label>
                     <input type="password" id="password" name="password" required>
                     <span class="toggle-password" onclick="togglePassword('password')">👀</span>
@@ -62,9 +84,6 @@
             </form>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2024 Dinamize. All rights reserved.</p>
-    </footer>
     <script>
         function togglePassword(id) {
             var input = document.getElementById(id);
@@ -72,6 +91,15 @@
                 input.type = "text";
             } else {
                 input.type = "password";
+            }
+        }
+
+        async function pasteClipboard(id) {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById(id).value = text.slice(0, 8);
+            } catch (err) {
+                alert('No se pudo pegar el contenido del portapapeles.');
             }
         }
     </script>
@@ -83,7 +111,7 @@
     </script>
     <script src="js/darkMode.js"></script>
     <button class="dark-mode-toggle" id="darkModeToggle" title="Cambiar modo oscuro">
-    <i class="fas fa-moon"></i>
-</button>
+        <i class="fas fa-moon"></i>
+    </button>
 </body>
 </html>

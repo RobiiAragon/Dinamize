@@ -11,6 +11,7 @@
     font-weight: normal;
     font-style: normal;
 }
+
 html, body {
     height: 100%;
     margin: 0;
@@ -224,13 +225,33 @@ select[disabled] {
 
 /* Estilos independientes (afectan a un sitio en concreto) */
 header {
-    background-color: #277365;
+    background: linear-gradient(to right, #f28b0b, #f23839);
     color: #fff;
     padding: 1rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
+}
+
+.socialMedia {
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    transition: color 0.3s, text-shadow 0.3s;
+    border-bottom: 2px solid #fff;
+}
+
+.socialMedia:hover {
+    color: #fff;
+    text-shadow:
+        0 0 5px #f28b0b,
+        0 0 10px #f28b0b,
+        0 0 20px #f28b0b,
+        0 0 40px #f28b0b,
+        0 0 80px #f28b0b,
+        0 0 160px #f28b0b;
 }
 
 .logo-container {
@@ -285,36 +306,6 @@ header {
 
 .features {
     margin-top: 2rem;
-}
-
-.carousel {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-.carousel-inner {
-    display: flex;
-    transition: transform 0.5s ease;
-}
-
-.carousel-item {
-    min-width: 100%;
-    box-sizing: border-box;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 1rem;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.carousel-item h2 {
-    color: #f23828;
-}
-
-.carousel-control {
-    display: none; /* Ocultar los botones del carrusel */
 }
 
 .sidebar {
@@ -694,6 +685,7 @@ header {
         min-height: 400px;
     }
 }
+
 /* Estilos para el modal */
 .modal {
     display: none; 
@@ -811,6 +803,7 @@ body.dark-mode header {
 body.dark-mode .tooltip-container {
     background-color: #2d2d2d;
 }
+
 /* Estilos adicionales para modo oscuro */
 body.dark-mode .carousel-item {
     background-color: #2d2d2d;
@@ -889,15 +882,18 @@ body.dark-mode .edit-icon {
 body.dark-mode .edit-icon:hover {
     background: #277365;
 }
+
 body.dark-mode,
 html.dark-mode {
     background-color: #1a1a1a;
     color: #fff;
 }
+
 /* Clase para la transición del modo oscuro */
 .transition {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 /* Ocultar el input de tipo file */
 input[type="file"] {
     display: none;
@@ -924,7 +920,6 @@ input[type="file"] {
     margin-left: 10px;
     font-style: italic;
 }
-
 
 /* Ajustes para formato 16:9 */
 @media screen and (aspect-ratio: 16/9) {
@@ -1006,19 +1001,19 @@ input[type="file"] {
         font-size: 0.9rem;
     }
 
-        /* Reducir tamaño del menú y logo */
-        .sidebar {
-            width: 60px; /* Reducir ancho del menú */
-        }
-    
-        .sidebar .sidebar-header h2 {
-            display: none; /* Ocultar texto del logo */
-        }
-    
-        .sidebar .sidebar-header img {
-            height: 30px; /* Reducir tamaño del logo */
-            margin: 0 auto;
-        }
+    /* Reducir tamaño del menú y logo */
+    .sidebar {
+        width: 60px; /* Reducir ancho del menú */
+    }
+
+    .sidebar .sidebar-header h2 {
+        display: none; /* Ocultar texto del logo */
+    }
+
+    .sidebar .sidebar-header img {
+        height: 30px; /* Reducir tamaño del logo */
+        margin: 0 auto;
+    }
 
     .local img {
         width: 25px;
@@ -1078,6 +1073,7 @@ input[type="file"] {
         font-size: 1rem;
     }
 }
+
 /* Ocultar scrollbar pero mantener funcionalidad */
 * {
     -ms-overflow-style: none;  /* IE y Edge */
@@ -1088,6 +1084,7 @@ input[type="file"] {
 *::-webkit-scrollbar {
     display: none;
 }
+
 /* Previene el parpadeo durante la carga inicial */
 html {
     visibility: visible;
@@ -1098,4 +1095,338 @@ html {
 html.js-loading {
     visibility: hidden;
     opacity: 0;
+}
+
+.nombre {
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem; /* Mover los iconos al lado derecho */
+}
+
+.icon {
+    font-size: 1.5rem; /* Ajustar el tamaño del icono */
+    margin-left: 1rem; /* Ajustar el margen para separar los iconos */
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    padding: .5rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-control {
+    display: none; /* Ocultar los botones del carrusel */
+}
+
+.anuncio-carrusel-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.anuncio {
+    flex: 1;
+    margin: 20px;
+}
+
+.carrusel-division {
+    flex: 1%; /* Ajusta este valor según el tamaño deseado */
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-height: 900px; /* Eliminar max-width existente */
+    margin: 20px auto; /* Centrar el carrusel */
+}
+
+body.dark-mode .carrusel-division {
+    background-color: #2d2d2d;
+}
+
+.carrusel-division .carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carrusel-division .carousel-item {
+    min-width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.carrusel-division .carousel-item img {
+    max-width: 100%;
+    border-radius: 25px;
+    height: 80vh; /* Ajustar la altura del carrusel */
+    overflow: hidden;
+    margin: 10px;
+}
+
+.cta-button {
+    background-color: #f23839;
+    color: #ffffff;
+    border: none;
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px; /* Añade un margen superior para separar el botón del texto */
+}
+
+.cta-button:hover {
+    background: linear-gradient(to left, #f28b0b, #f23839);
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    font-size: 1.5rem;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.carousel-control.prev {
+    left: 10px;
+    background:  #f23839;
+}
+
+.carousel-control.next {
+    right: 10px;
+    background:#f23839;
+}
+
+.carousel img {
+    height: 100%;
+    width: auto;
+    object-fit: cover; /* Asegura que la imagen se ajuste bien dentro del contenedor */
+}
+
+.carousel-control {
+    font-size: 1.5rem;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.carousel-control.prev {
+    left: 10px;
+}
+
+.carousel-control.next {
+    right: 10px;
+}
+
+/*texto*/
+.titGrande{
+    font-size: 70pt;
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    color: #0d0d0d;
+}
+
+body.dark-mode .titGrande{
+    color: #fff;
+}
+
+.texto{
+    font-size: 25pt;
+    text-align: justify;
+    padding: 15pt;
+    font-family: "Poppins", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    color: #0d0d0d;
+}
+
+body.dark-mode .texto{
+    color: #fff;
+}
+
+
+/*iconos*/
+.social-icons {
+    display: flex;
+    align-items: left;
+    margin-right: 1rem;
+    color: #fff;
+}
+
+.i {
+    height: 40px; /* Mismo tamaño que el logo */
+    margin-right: 1rem;
+}
+
+/* Estilos para el encabezado "Nuestros Servicios" */
+.titServicios {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.titServicios h2 {
+    font-size: 2rem;
+    color: #277365;
+    border-bottom: 2px solid #f28b0c;
+    display: inline-block;
+}
+
+body.dark-mode .titServicios h2 {
+    color: #fff;
+    border-bottom: 2px solid #f28b0c;
+}
+
+/* Responsivo */
+@media screen and (max-width: 1200px) {
+    .main-content {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1.5rem;
+    }
+
+    .anuncio-carrusel-container {
+        flex-direction: column;
+    }
+
+    .anuncio, .carrusel-division {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .carousel img {
+        height: auto;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main-content {
+        padding: 1rem;
+    }
+
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-group label {
+        flex: none;
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-buttons {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .logo-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .btn-save, .btn-change-password, .btn-crop {
+        width: 100%;
+        text-align: center;
+    }
+
+    .carousel-control {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .titGrande {
+        font-size: 2.5rem;
+    }
+
+    .texto {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .cta-button {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .carousel img {
+        height: auto;
+    }
+}
+
+/* Responsive Images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Sidebar Responsivo */
+.sidebar {
+    display: none;
+}
+
+@media screen and (min-width: 993px) {
+    .sidebar {
+        display: flex;
+    }
+}
+
+/* Flex Container */
+.anuncio-carrusel-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.anuncio, .carrusel-division {
+    flex: 1 1 45%;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 1200px) {
+    .anuncio, .carrusel-division {
+        flex: 1 1 100%;
+    }
 }

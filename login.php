@@ -24,7 +24,7 @@
             <h1>Dinamize</h1>
         </div>
         <div class="auth-buttons">
-            <button onclick="location.href='register.php'">Registrarse</button>
+            <a href="link" class="socialMedia">Nuestras Redes</a>
         </div>
     </header>
     <div class="container">
@@ -51,9 +51,6 @@
             </form>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2024 Dinamize. All rights reserved.</p>
-    </footer>
     <script>
         function togglePassword(id) {
             var input = document.getElementById(id);
