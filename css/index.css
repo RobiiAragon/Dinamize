@@ -216,13 +216,6 @@ select[disabled] {
     100% { opacity: 0; transform: translateY(-20px); }
 }
 
-/* Asegurar que el contenido no se corte en pantallas pequeñas */
-@media screen and (max-width: 768px) {
-    .main-content {
-        width: 100%;
-    }
-}
-
 /* Estilos independientes (afectan a un sitio en concreto) */
 header {
     background: linear-gradient(to right, #f28b0b, #f23839);
@@ -526,29 +519,6 @@ header {
     margin-bottom: 1rem;
 }
 
-/* Estilos para mostrar/ocultar secciones */
-.main-content section {
-    display: none;
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-}
-
-.main-content section h1 {
-    color: #277365;
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 3px solid #f28b0c;
-    position: relative;
-}
-
-.main-content section.active {
-    display: block;
-}
-
 /* Estilos para botones activos en el sidebar */
 .sidebar ul li a.active {
     background-color: #f28b0c;
@@ -674,17 +644,6 @@ header {
 [id^="local"]:hover .cls-1 {
     fill: rgba(0, 123, 255, 0.1);
     cursor: pointer;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    #svg-editor-container {
-        padding: 10px;
-    }
-    
-    #svg-editor {
-        min-height: 400px;
-    }
 }
 
 /* Estilos para el modal */
@@ -923,157 +882,10 @@ input[type="file"] {
 }
 
 /* Ajustes para formato 16:9 */
-@media screen and (aspect-ratio: 16/9) {
-    .main-content {
-        flex-direction: row;
-        margin-left: 0;
-        padding: 2rem;
-    }
-
-    .map-container,
-    .container {
-        max-width: 50%;
-        margin: 0;
-    }
-
-    .map {
-        height: 60vh;
-    }
-
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero p {
-        font-size: 1.2rem;
-    }
-
-    .local img {
-        width: 50px;
-        height: 50px;
-    }
-
-    .local p {
-        font-size: 12px;
-    }
-
-    .carousel-item {
-        padding: 1.5rem;
-    }
-
-    .carousel-item h2 {
-        font-size: 1.5rem;
-    }
-
-    .carousel-item p {
-        font-size: 1rem;
-    }
-}
-
-/* Mejoras en formato 9:16 */
-@media screen and (aspect-ratio: 9/21) {
-    .main-content {
-        flex-direction: column;
-        margin-left: 0;
-        padding: 1rem;
-        overflow-y: auto; /* Permitir desplazamiento vertical */
-        max-height: 100vh; /* Limitar altura al viewport */
-    }
-
-    .map-container,
-    .container {
-        max-width: 80%;
-        margin: 0;
-    }
-
-    .map {
-        height: 35vh; /* Ajustar altura para mejor visibilidad */
-    }
-
-    .hero {
-        padding: 1rem;
-    }
-
-    .hero h1 {
-        font-size: 2rem; /* Reducir para adaptarse al ancho */
-    }
-
-    .hero p {
-        font-size: 0.9rem;
-    }
-
-    /* Reducir tamaño del menú y logo */
-    .sidebar {
-        width: 60px; /* Reducir ancho del menú */
-    }
-
-    .sidebar .sidebar-header h2 {
-        display: none; /* Ocultar texto del logo */
-    }
-
-    .sidebar .sidebar-header img {
-        height: 30px; /* Reducir tamaño del logo */
-        margin: 0 auto;
-    }
-
-    .local img {
-        width: 25px;
-        height: 25px;
-    }
-
-    .local p {
-        font-size: 9px;
-    }
-
-    .carousel-item {
-        padding: 0.5rem;
-    }
-
-    .carousel-item h2 {
-        font-size: 1rem;
-    }
-
-    .carousel-item p {
-        font-size: 0.8rem;
-    }
-
-    /* Asegurar que secciones se muestren correctamente */
-    .main-content section {
-        display: block;
-    }
-}
 
 /* Ajustes para zoom al 150% en formato 9:16 */
-@media screen and (aspect-ratio: 9/16) and (min-width: 500px) {
-    .main-content {
-        overflow-y: scroll;
-    }
-}
 
 /* Ajustes generales para mantener la proporcionalidad */
-@media screen and (max-width: 768px) {
-    .main-content {
-        margin-left: 0;
-        padding: 1rem;
-    }
-
-    .map-container,
-    .container {
-        max-width: 100%;
-    }
-
-    .map {
-        height: 50vh;
-    }
-
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .hero p {
-        font-size: 1rem;
-    }
-}
 
 /* Ocultar scrollbar pero mantener funcionalidad */
 * {
@@ -1105,8 +917,9 @@ html.js-loading {
 
 .social-icons {
     display: flex;
-    align-items: center;
+    align-items: left;
     margin-right: 1rem; /* Mover los iconos al lado derecho */
+    color: #fff;
 }
 
 .icon {
@@ -1284,7 +1097,7 @@ body.dark-mode .texto{
 
 .i {
     height: 40px; /* Mismo tamaño que el logo */
-    margin-right: 1rem;
+    margin-right: 1rem; /* Mismo margen para separar los iconos */
 }
 
 /* Estilos para el encabezado "Nuestros Servicios" */
@@ -1304,117 +1117,15 @@ body.dark-mode .titServicios h2 {
     color: #fff;
     border-bottom: 2px solid #f28b0c;
 }
-
-/* Responsivo */
-@media screen and (max-width: 1200px) {
-    .main-content {
-        padding: 2rem 1.5rem;
-    }
-}
-
-@media screen and (max-width: 992px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-
-    .main-content {
-        margin-left: 0;
-        padding: 1.5rem;
-    }
-
-    .anuncio-carrusel-container {
-        flex-direction: column;
-    }
-
-    .anuncio, .carrusel-division {
-        width: 100%;
-        margin: 10px 0;
-    }
-
-    .carousel img {
-        height: auto;
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .main-content {
-        padding: 1rem;
-    }
-
-    .form-group {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .form-group label {
-        flex: none;
-        margin-bottom: 0.5rem;
-    }
-
-    .auth-buttons {
-        flex-direction: column;
-        align-items: flex-end;
-    }
-
-    .logo-container h1 {
-        font-size: 1.5rem;
-    }
-
-    .btn-save, .btn-change-password, .btn-crop {
-        width: 100%;
-        text-align: center;
-    }
-
-    .carousel-control {
-        display: none;
-    }
-}
-
-@media screen and (max-width: 576px) {
-    .titGrande {
-        font-size: 2.5rem;
-    }
-
-    .texto {
-        font-size: 1rem;
-        padding: 10px;
-    }
-
-    .cta-button {
-        padding: 10px 20px;
-        font-size: 1rem;
-    }
-
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .carousel img {
-        height: auto;
-    }
-}
-
-/* Responsive Images */
 img {
     max-width: 100%;
     height: auto;
 }
 
-/* Sidebar Responsivo */
 .sidebar {
     display: none;
 }
 
-@media screen and (min-width: 993px) {
-    .sidebar {
-        display: flex;
-    }
-}
-
-/* Flex Container */
 .anuncio-carrusel-container {
     display: flex;
     flex-wrap: wrap;
@@ -1425,9 +1136,17 @@ img {
     flex: 1 1 45%;
     box-sizing: border-box;
 }
+@media (max-width: 768px) {
+    .anuncio-carrusel-container {
+        flex-direction: column;
+    }
 
-@media screen and (max-width: 1200px) {
-    .anuncio, .carrusel-division {
-        flex: 1 1 100%;
+    .carrusel-division {
+        order: 2;
+        margin-top: 20px;
+    }
+
+    .anuncio {
+        order: 1;
     }
 }
