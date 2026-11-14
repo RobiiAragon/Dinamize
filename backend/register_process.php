@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Encriptar la contraseña
-    $hashed_password = sha1($password);
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     $conn = OpenCon();
 
