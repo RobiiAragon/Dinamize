@@ -1,3 +1,4 @@
+import os
 import customtkinter as ctk
 import mysql.connector
 from tkinter import messagebox
@@ -5,10 +6,10 @@ from PIL import Image
 
 # Configuración de la conexión a la base de datos
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="Dinamize"
+    host=os.getenv("DB_HOST", "localhost"),
+    user=os.getenv("DB_USER", "root"),
+    password=os.getenv("DB_PASS", ""),
+    database=os.getenv("DB_NAME", "Dinamize"),
 )
 
 cursor = db.cursor()

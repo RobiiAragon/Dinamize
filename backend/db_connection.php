@@ -1,9 +1,9 @@
 <?php
 function OpenCon() {
-    $dbhost = "localhost";
-    $dbuser = "root";
-    $dbpass = "";
-    $dbname = "Dinamize";
+    $dbhost = getenv("DB_HOST") ?: "localhost";
+    $dbuser = getenv("DB_USER") ?: "root";
+    $dbpass = getenv("DB_PASS") ?: "";
+    $dbname = getenv("DB_NAME") ?: "Dinamize";
 
     $conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
