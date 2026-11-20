@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
 include 'backend/db_connection.php';
 
 if (isset($_SESSION['user_id'])) {
@@ -64,7 +65,7 @@ if (isset($_SESSION['user_id'])) {
             $fotoPerfilSrc = 'img/noUserPhoto.png';
         }
         ?>
-        <img src="<?php echo $fotoPerfilSrc; ?>" 
+        <img src="<?php echo e($fotoPerfilSrc); ?>" 
              alt="Profile Picture" 
              class="header-profile-pic">
     </a>

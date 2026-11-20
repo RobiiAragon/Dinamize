@@ -4,7 +4,7 @@
 
 **Digital kiosk for shopping malls — store directory, mall management and a mini-game.**
 
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=white) [![CI](https://github.com/RobiiAragon/Dinamize/actions/workflows/ci.yml/badge.svg)](https://github.com/RobiiAragon/Dinamize/actions/workflows/ci.yml) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 
 **English** · [Español](README.es.md)
 
@@ -39,6 +39,11 @@ python Claves.py
 ## Security
 
 Passwords are stored with `password_hash()`. Old SHA-1 accounts still work and are upgraded automatically the next time they log in.
+
+- All SQL goes through prepared statements.
+- Everything a store owner types (name, description, links…) is escaped before it is shown, both in PHP (`e()` in `backend/security.php`) and in the public kiosk popup (`js/kiosco.js`), so it can't inject scripts.
+- The session cookie is `HttpOnly` and `SameSite=Lax` (and `Secure` over HTTPS). Cross-site forms can't act as the logged-in user.
+- The `backend/` endpoints reject requests without a session, and errors go to the server log instead of the browser.
 
 ## Structure
 

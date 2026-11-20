@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
 include 'backend/db_connection.php';
 
 // Asegúrate de que el usuario esté autenticado
@@ -101,7 +102,7 @@ CloseCon($conn);
     <div class="tooltip-container success">
         <div class="tooltip-content">
             <?php 
-                echo $_SESSION['message']; 
+                echo e($_SESSION['message']); 
                 unset($_SESSION['message']);
             ?>
         </div>
@@ -111,7 +112,7 @@ CloseCon($conn);
     <div class="tooltip-container error">
         <div class="tooltip-content">
             <?php 
-                echo $_SESSION['error']; 
+                echo e($_SESSION['error']); 
                 unset($_SESSION['error']);
             ?>
         </div>
@@ -144,7 +145,7 @@ CloseCon($conn);
                 <form id="user-info-form" action="backend/update_user_info.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="fotoPerfil">Foto de perfil:</label>
-                        <img src="<?php echo $fotoPerfilSrc; ?>" alt="Foto de perfil" class="profile-pic" id="profile-pic">
+                        <img src="<?php echo e($fotoPerfilSrc); ?>" alt="Foto de perfil" class="profile-pic" id="profile-pic">
                         <input type="file" id="fotoPerfil" name="fotoPerfil" style="display: none;" accept="image/*" onchange="loadImage(event)">
                         <i class="fas fa-edit edit-icon" onclick="document.getElementById('fotoPerfil').click();"></i>
                     </div>
@@ -159,29 +160,29 @@ CloseCon($conn);
                 
                     <div class="form-group">
                         <label for="email">Correo Electrónico:</label>
-                        <input type="email" id="email" name="email" value="<?php echo $email; ?>" readonly>
+                        <input type="email" id="email" name="email" value="<?php echo e($email); ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="nombreUsuario">Nombre de Usuario:</label>
-                        <input type="text" id="nombreUsuario" name="nombreUsuario" value="<?php echo $nombreUsuario; ?>" readonly>
+                        <input type="text" id="nombreUsuario" name="nombreUsuario" value="<?php echo e($nombreUsuario); ?>" readonly>
                         <i class="fas fa-edit edit-icon" onclick="enableEdit('nombreUsuario');"></i>
                     </div>
                     <div class="form-group">
                         <label for="numeroTelefono">Número de Teléfono:</label>
-                        <input type="text" id="numeroTelefono" name="numeroTelefono" value="<?php echo $numeroTelefono; ?>" readonly>
+                        <input type="text" id="numeroTelefono" name="numeroTelefono" value="<?php echo e($numeroTelefono); ?>" readonly>
                         <i class="fas fa-edit edit-icon" onclick="enableEdit('numeroTelefono');"></i>
                     </div>
                     <div class="form-group">
                         <label for="nombres">Nombres:</label>
-                        <input type="text" id="nombres" name="nombres" value="<?php echo $nombres; ?>" readonly>
+                        <input type="text" id="nombres" name="nombres" value="<?php echo e($nombres); ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="apellidos">Apellidos:</label>
-                        <input type="text" id="apellidos" name="apellidos" value="<?php echo $apellidos; ?>" readonly>
+                        <input type="text" id="apellidos" name="apellidos" value="<?php echo e($apellidos); ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" value="<?php echo $fechaNacimiento; ?>" readonly>
+                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" value="<?php echo e($fechaNacimiento); ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="genero">Género:</label>

@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,9 +35,8 @@
         <div class="login-container">
             <h2>Iniciar Sesión</h2>
             <?php
-            session_start();
             if (isset($_SESSION['error'])) {
-                echo "<p style='color:red;'>" . $_SESSION['error'] . "</p>";
+                echo "<p style='color:red;'>" . e($_SESSION['error']) . "</p>";
                 unset($_SESSION['error']);
             }
             ?>

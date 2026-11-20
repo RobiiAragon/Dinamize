@@ -1,10 +1,12 @@
 <?php
-session_start();
+require_once __DIR__ . '/security.php';
+start_secure_session();
+require_login_redirect();
 include 'db_connection.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Errors go to the server log, never to the browser.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION['user_id'];

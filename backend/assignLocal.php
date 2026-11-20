@@ -1,7 +1,9 @@
 <?php
 // Esto pertenece al kioskUI.php
 include 'db_connection.php';
-session_start();
+require_once __DIR__ . '/security.php';
+start_secure_session();
+require_login_json();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $local_id = $_POST['local_id'];

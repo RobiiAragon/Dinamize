@@ -1,7 +1,9 @@
 <?php
 // Esto pertenece al kioskUI.php
 include 'db_connection.php';
-session_start();
+require_once __DIR__ . '/security.php';
+start_secure_session();
+require_login_json();
 
 $data = json_decode(file_get_contents('php://input'), true);
 $local_id = $data['local_id'];

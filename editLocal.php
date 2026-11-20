@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
 include 'backend/db_connection.php';
 
 // Asegúrate de que el usuario esté autenticado
@@ -66,7 +67,7 @@ CloseCon($conn);
     <div class="tooltip-container success">
         <div class="tooltip-content">
             <?php 
-                echo $_SESSION['message']; 
+                echo e($_SESSION['message']); 
                 unset($_SESSION['message']);
             ?>
         </div>
@@ -76,7 +77,7 @@ CloseCon($conn);
     <div class="tooltip-container error">
         <div class="tooltip-content">
             <?php 
-                echo $_SESSION['error']; 
+                echo e($_SESSION['error']); 
                 unset($_SESSION['error']);
             ?>
         </div>
@@ -107,10 +108,10 @@ CloseCon($conn);
         <main class="main-content">
             <h1>Edit Local</h1>
             <form id="local-info-form" action="backend/update_local_info.php" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="local_id" value="<?php echo $local_id; ?>">
+                <input type="hidden" name="local_id" value="<?php echo e($local_id); ?>">
                 <div class="form-group">
                     <label for="logoLocal">Logo del Local:</label>
-                    <img src="<?php echo $logoLocalSrc; ?>" alt="Logo del local" class="profile-pic" id="logo-local">
+                    <img src="<?php echo e($logoLocalSrc); ?>" alt="Logo del local" class="profile-pic" id="logo-local">
                     <input type="file" id="logoLocal" name="logoLocal" style="display: none;" accept="image/*" onchange="loadImage(event, 'logo-local')">
                     <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoLocal').click();"></i>
                 </div>
@@ -125,43 +126,43 @@ CloseCon($conn);
             
                 <div class="form-group">
                     <label for="nombre">Nombre del Local:</label>
-                    <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required>
+                    <input type="text" id="nombre" name="nombre" value="<?php echo e($nombre); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="categoria">Categoría:</label>
-                    <input type="text" id="categoria" name="categoria" value="<?php echo $categoria; ?>" required>
+                    <input type="text" id="categoria" name="categoria" value="<?php echo e($categoria); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="telefono">Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono" value="<?php echo $telefono; ?>" required>
+                    <input type="text" id="telefono" name="telefono" value="<?php echo e($telefono); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="horarioApertura">Horario de Apertura:</label>
-                    <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo $horarioApertura; ?>" required>
+                    <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo e($horarioApertura); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="horarioCierre">Horario de Cierre:</label>
-                    <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo $horarioCierre; ?>" required>
+                    <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo e($horarioCierre); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="sitioWeb">Sitio Web:</label>
-                    <input type="text" id="sitioWeb" name="sitioWeb" value="<?php echo $sitioWeb; ?>">
+                    <input type="text" id="sitioWeb" name="sitioWeb" value="<?php echo e($sitioWeb); ?>">
                 </div>
                 <div class="form-group">
                     <label for="facebook">Facebook:</label>
-                    <input type="text" id="facebook" name="facebook" value="<?php echo $facebook; ?>">
+                    <input type="text" id="facebook" name="facebook" value="<?php echo e($facebook); ?>">
                 </div>
                 <div class="form-group">
                     <label for="instagram">Instagram:</label>
-                    <input type="text" id="instagram" name="instagram" value="<?php echo $instagram; ?>">
+                    <input type="text" id="instagram" name="instagram" value="<?php echo e($instagram); ?>">
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción:</label>
-                    <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
+                    <textarea id="descripcion" name="descripcion"><?php echo e($descripcion); ?></textarea>
                 </div>
                 <div class="form-group">
                     <label for="DiasLaborales">Días Laborales:</label>
-                    <input type="text" id="DiasLaborales" name="DiasLaborales" value="<?php echo $diasLaborales; ?>">
+                    <input type="text" id="DiasLaborales" name="DiasLaborales" value="<?php echo e($diasLaborales); ?>">
                 </div>
                 <button type="submit" class="btn-save">Guardar</button>
             </form>

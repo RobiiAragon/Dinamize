@@ -1,12 +1,12 @@
 <?php
-session_start();
+require_once __DIR__ . '/security.php';
+start_secure_session();
+require_login_json();
 include 'db_connection.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-ini_set('log_errors', 1);
-ini_set('error_log', 'path/to/your/error.log'); // Cambia 'path/to/your/error.log' por la ruta de tu archivo de log
+// Errors go to the server log, never to the browser.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
 
 header('Content-Type: application/json');
 

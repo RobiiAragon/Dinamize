@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once __DIR__ . '/security.php';
+start_secure_session();
+require_login_json();
 include 'db_connection.php';
 
 header('Content-Type: application/json');

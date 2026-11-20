@@ -22,15 +22,19 @@ document.addEventListener('DOMContentLoaded', function() {
             facebook = facebook && !/^https?:\/\//i.test(facebook) ? `http://${facebook}` : facebook;
             instagram = instagram && !/^https?:\/\//i.test(instagram) ? `http://${instagram}` : instagram;
 
+            // Todos los valores vienen de lo que escribe cada negocio: se escapan antes de
+            // insertarlos como HTML para evitar XSS en el kiosco público.
+            const e = escapeHtml;
+            const link = (url) => url ? `<a href="${e(url)}" target="_blank" rel="noopener noreferrer">${e(url)}</a>` : '';
             popup.innerHTML = `
-                <h2>${nombre}</h2>
-                <img src="${logo}" alt="${nombre}">
-                <p><strong>Descripción:</strong> ${descripcion}</p>
-                <p><strong>Teléfono:</strong> ${telefono}</p>
-                <p><strong>Horario:</strong> ${horarioApertura} - ${horarioCierre}</p>
-                <p><strong>Sitio Web:</strong> <a href="${sitioWeb}" target="_blank">${sitioWeb}</a></p>
-                <p><strong>Facebook:</strong> <a href="${facebook}" target="_blank">${facebook}</a></p>
-                <p><strong>Instagram:</strong> <a href="${instagram}" target="_blank">${instagram}</a></p>
+                <h2>${e(nombre)}</h2>
+                <img src="${/^data:image\//.test(logo || '') ? e(logo) : ''}" alt="${e(nombre)}">
+                <p><strong>Descripción:</strong> ${e(descripcion)}</p>
+                <p><strong>Teléfono:</strong> ${e(telefono)}</p>
+                <p><strong>Horario:</strong> ${e(horarioApertura)} - ${e(horarioCierre)}</p>
+                <p><strong>Sitio Web:</strong> ${link(sitioWeb)}</p>
+                <p><strong>Facebook:</strong> ${link(facebook)}</p>
+                <p><strong>Instagram:</strong> ${link(instagram)}</p>
             `;
             popup.style.display = 'block';
         };
@@ -59,7 +63,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function escapeHtml(value) {
+    return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function formatTime(time) {
+    if (!time || !time.includes(':')) return '';
     const [hour, minute] = time.split(':');
     let hours = parseInt(hour);
     const minutes = parseInt(minute);

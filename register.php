@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +21,6 @@
 </head>
 
 <body>
-    <?php session_start(); ?>
     <header>
         <div class="logo-container">
             <a href="index.php">

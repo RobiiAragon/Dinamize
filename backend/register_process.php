@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/security.php';
+start_secure_session();
 include 'db_connection.php';
 
 // Función para generar una clave de activación única de 8 caracteres
