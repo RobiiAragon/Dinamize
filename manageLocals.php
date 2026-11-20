@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
 include 'backend/db_connection.php';
 
 // Asegúrate de que el usuario esté autenticado
@@ -75,7 +76,7 @@ CloseCon($conn);
                     <select id="negocio" name="id" required>
                         <option value="">Selecciona un negocio</option>
                         <?php foreach ($negocios as $negocio): ?>
-                            <option value="<?php echo $negocio['id']; ?>"><?php echo $negocio['nombre']; ?></option>
+                            <option value="<?php echo e($negocio['id']); ?>"><?php echo e($negocio['nombre']); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

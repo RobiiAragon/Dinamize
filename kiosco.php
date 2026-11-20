@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
 require_once 'config.php';
 require_once 'DbHelper.php';
 

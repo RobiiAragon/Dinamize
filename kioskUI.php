@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
 include 'backend/db_connection.php';
 
 // Asegurar que el usuario esté autenticado
@@ -87,7 +88,7 @@ CloseCon($conn);
     <div class="tooltip-container success">
         <div class="tooltip-content">
             <?php 
-                echo $_SESSION['message']; 
+                echo e($_SESSION['message']); 
                 unset($_SESSION['message']);
             ?>
         </div>
@@ -97,7 +98,7 @@ CloseCon($conn);
     <div class="tooltip-container error">
         <div class="tooltip-content">
             <?php 
-                echo $_SESSION['error']; 
+                echo e($_SESSION['error']); 
                 unset($_SESSION['error']);
             ?>
         </div>
@@ -453,7 +454,7 @@ CloseCon($conn);
                 <select name="negocio_id" id="negocio_id" required>
                     <option value="">-- Seleccione --</option>
                     <?php foreach($negocios as $negocio): ?>
-                        <option value="<?php echo $negocio['id']; ?>"><?php echo htmlspecialchars($negocio['nombre']); ?></option>
+                        <option value="<?php echo e($negocio['id']); ?>"><?php echo htmlspecialchars($negocio['nombre']); ?></option>
                     <?php endforeach; ?>
                 </select>
                 <button type="submit">Asignar</button>

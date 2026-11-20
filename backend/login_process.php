@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/security.php';
+start_secure_session();
 include 'db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

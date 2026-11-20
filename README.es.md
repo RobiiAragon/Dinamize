@@ -4,7 +4,7 @@
 
 **Kiosco digital para plazas comerciales — directorio de tiendas, administración de la plaza y un minijuego.**
 
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=white) [![CI](https://github.com/RobiiAragon/Dinamize/actions/workflows/ci.yml/badge.svg)](https://github.com/RobiiAragon/Dinamize/actions/workflows/ci.yml) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 
 [English](README.md) · **Español**
 
@@ -39,6 +39,11 @@ python Claves.py
 ## Seguridad
 
 Las contraseñas se guardan con `password_hash()`. Las cuentas viejas con SHA-1 siguen funcionando y se actualizan solas la próxima vez que inician sesión.
+
+- Todo el SQL usa consultas preparadas.
+- Todo lo que escribe un negocio (nombre, descripción, enlaces…) se escapa antes de mostrarse, tanto en PHP (`e()` en `backend/security.php`) como en el popup del kiosco público (`js/kiosco.js`), así que no puede inyectar scripts.
+- La cookie de sesión es `HttpOnly` y `SameSite=Lax` (y `Secure` con HTTPS). Formularios de otros sitios no pueden actuar como el usuario logueado.
+- Los endpoints de `backend/` rechazan peticiones sin sesión, y los errores van al log del servidor, no al navegador.
 
 ## Estructura
 

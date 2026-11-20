@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/backend/security.php';
+start_secure_session();
 include 'backend/db_connection.php';
 
 // Asegúrate de que el usuario esté autenticado
@@ -73,7 +74,7 @@ CloseCon($conn);
     <div class="tooltip-container success">
         <div class="tooltip-content">
             <?php 
-                echo $_SESSION['message']; 
+                echo e($_SESSION['message']); 
                 unset($_SESSION['message']);
             ?>
         </div>
@@ -83,7 +84,7 @@ CloseCon($conn);
     <div class="tooltip-container error">
         <div class="tooltip-content">
             <?php 
-                echo $_SESSION['error']; 
+                echo e($_SESSION['error']); 
                 unset($_SESSION['error']);
             ?>
         </div>
@@ -116,7 +117,7 @@ CloseCon($conn);
             <form id="plaza-info-form" action="backend/update_plaza_info.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="logoPlaza">Logo de la plaza:</label>
-                    <img src="<?php echo $logoPlazaSrc; ?>" alt="Logo de la plaza" class="profile-pic" id="logo-plaza">
+                    <img src="<?php echo e($logoPlazaSrc); ?>" alt="Logo de la plaza" class="profile-pic" id="logo-plaza">
                     <input type="file" id="logoPlaza" name="logoPlaza" style="display: none;" accept="image/*" onchange="loadImage(event)">
                     <i class="fas fa-edit edit-icon" onclick="document.getElementById('logoPlaza').click();"></i>
                 </div>
@@ -131,47 +132,47 @@ CloseCon($conn);
             
                 <div class="form-group">
                     <label for="nombre">Nombre de la plaza:</label>
-                    <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" readonly>
+                    <input type="text" id="nombre" name="nombre" value="<?php echo e($nombre); ?>" readonly>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('nombre');"></i>
                 </div>
                 <div class="form-group">
                     <label for="direccion">Dirección:</label>
-                    <textarea id="direccion" name="direccion" readonly><?php echo $direccion; ?></textarea>
+                    <textarea id="direccion" name="direccion" readonly><?php echo e($direccion); ?></textarea>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('direccion');"></i>
                 </div>
                 <div class="form-group">
                     <label for="telefono">Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono" value="<?php echo $telefono; ?>" readonly>
+                    <input type="text" id="telefono" name="telefono" value="<?php echo e($telefono); ?>" readonly>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('telefono');"></i>
                 </div>
                 <div class="form-group">
                     <label for="horarioApertura">Horario de Apertura:</label>
-                    <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo $horarioApertura; ?>" readonly>
+                    <input type="time" id="horarioApertura" name="horarioApertura" value="<?php echo e($horarioApertura); ?>" readonly>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('horarioApertura');"></i>
                 </div>
                 <div class="form-group">
                     <label for="horarioCierre">Horario de Cierre:</label>
-                    <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo $horarioCierre; ?>" readonly>
+                    <input type="time" id="horarioCierre" name="horarioCierre" value="<?php echo e($horarioCierre); ?>" readonly>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('horarioCierre');"></i>
                 </div>
                 <div class="form-group">
                     <label for="sitioWeb">Sitio Web:</label>
-                    <input type="text" id="sitioWeb" name="sitioWeb" value="<?php echo $sitioWeb; ?>" readonly>
+                    <input type="text" id="sitioWeb" name="sitioWeb" value="<?php echo e($sitioWeb); ?>" readonly>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('sitioWeb');"></i>
                 </div>
                 <div class="form-group">
                     <label for="facebook">Facebook:</label>
-                    <input type="text" id="facebook" name="facebook" value="<?php echo $facebook; ?>" readonly>
+                    <input type="text" id="facebook" name="facebook" value="<?php echo e($facebook); ?>" readonly>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('facebook');"></i>
                 </div>
                 <div class="form-group">
                     <label for="instagram">Instagram:</label>
-                    <input type="text" id="instagram" name="instagram" value="<?php echo $instagram; ?>" readonly>
+                    <input type="text" id="instagram" name="instagram" value="<?php echo e($instagram); ?>" readonly>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('instagram');"></i>
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción:</label>
-                    <textarea id="descripcion" name="descripcion" readonly><?php echo $descripcion; ?></textarea>
+                    <textarea id="descripcion" name="descripcion" readonly><?php echo e($descripcion); ?></textarea>
                     <i class="fas fa-edit edit-icon" onclick="enableEdit('descripcion');"></i>
                 </div>
                 <button type="submit" class="btn-save" style="display: none;">Guardar</button>
